@@ -1,0 +1,54 @@
+# --- Node / JavaScript ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Keep lockfiles (recommended) – comment out to ignore if desired
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# --- Environment files ---
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# --- Build outputs ---
+dist/
+.next/
+out/
+
+# --- Logs & runtime ---
+logs/
+*.log
+*.log.*
+*.pid
+*.pid.lock
+*.seed
+
+# --- Coverage ---
+coverage/
+.nyc_output/
+
+# --- Editor / OS ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.swp
+*.swo
+
+# --- TypeScript build info (future-proof) ---
+*.tsbuildinfo
+
+# --- Docker / Compose ---
+pg_data/
+*.orig
+
+# --- Misc cache ---
+.eslintcache

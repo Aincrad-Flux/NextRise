@@ -23,7 +23,12 @@ export default function TopBar() {
         </nav>
       )}
       <div className="topbar-right">
-        {!isStartup && <input className="search" placeholder="Search..." />}
+        {!isStartup && (
+          <div className="auth-buttons" aria-label="Authentication">
+            <a href="/sign-in" className="auth-btn sign-in" role="button">Sign in</a>
+            <a href="/sign-up" className="auth-btn sign-up" role="button">Sign up</a>
+          </div>
+        )}
         <div className="avatar" aria-label="profile" />
       </div>
     </header>

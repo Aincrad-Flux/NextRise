@@ -47,9 +47,13 @@
 }
 
 .home-main {
+  flex: 1; /* occupe tout l'espace disponible entre sidebar et bord fenêtre */
+  padding: 1rem 1.25rem 2rem;
+  min-width: 0; /* pour que les éléments internes puissent shrink dans flex */
+}
+.home-main.constrained {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1rem 1.25rem 2rem;
 }
 
 .layout {

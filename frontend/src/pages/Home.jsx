@@ -1,45 +1,15 @@
-import { useState } from 'react'
 import TopBar from '../components/TopBar.jsx'
-import Dashboard from '../components/Dashboard.jsx'
-import Sidebar from '../components/Sidebar.jsx'
 import './home.css'
 
 export default function Home() {
-  const [section, setSection] = useState('general')
-
   return (
     <div className="home-container">
       <TopBar />
-      <div className="layout">
-        <Sidebar active={section} onSelect={setSection} />
-        <main className="home-main">
-          {section === 'general' && (
-            <div style={{ padding: '2rem' }}>
-              <h1>Accueil (Général)</h1>
-              <p>Cette page d'accueil générale sera développée plus tard.</p>
-              <p>Consultez la section Startups via l'URL /startup.</p>
-            </div>
-          )}
-          {section !== 'general' && (
-            <div className="placeholder panel">
-              <div className="panel-header"><h2>{labelFor(section)}</h2></div>
-              <div style={{ padding: '1rem' }}>
-                <p>Contenu pour la section {labelFor(section)} à venir.</p>
-              </div>
-            </div>
-          )}
-        </main>
-      </div>
+      <main className="home-main" style={{ padding: '2rem' }}>
+        <h1>Accueil (Général)</h1>
+        <p>Cette page d'accueil générale sera développée plus tard.</p>
+        <p>Accédez à l'espace Startups via l'URL /startup.</p>
+      </main>
     </div>
   )
-}
-
-function labelFor(key) {
-  switch (key) {
-    case 'startups': return 'Startups'
-    case 'projects': return 'Projets'
-    case 'investors': return 'Investisseurs'
-    case 'mentors': return 'Mentors'
-    default: return 'Général'
-  }
 }

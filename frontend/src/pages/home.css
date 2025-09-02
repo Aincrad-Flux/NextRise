@@ -1,0 +1,117 @@
+:root {
+  --bg-page: #EAEAEA;
+  --bg-surface: #F5F6FA;
+  --text: #213547;
+  --muted: #5f6b7a;
+  --border: #d8d8d8;
+}
+
+.home-container {
+  background: var(--bg-page);
+  min-height: 100vh;
+  color: var(--text);
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+}
+.topbar .brand {
+  font-size: 1.125rem;
+  margin: 0;
+}
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.topbar .search {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+}
+.topbar .avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #bbb, #e0e0e0);
+  border: 1px solid var(--border);
+}
+
+.home-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.dashboard .cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+}
+.card-value {
+  font-size: 2rem;
+  font-weight: 700;
+}
+.card-label {
+  color: var(--muted);
+}
+
+.panel {
+  margin-top: 1.25rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.panel-header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.panel h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.table {
+  width: 100%;
+}
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+}
+.table-row:not(.table-head) {
+  border-top: 1px solid var(--border);
+}
+.table-head {
+  color: var(--muted);
+  background: #f0f0f0;
+}
+
+.status {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #fff;
+}
+.status.active { background: #e7f7ee; border-color: #bfe6cf; }
+.status.onboarding { background: #e8f0ff; border-color: #c7d9ff; }
+.status.in-review { background: #fff6e5; border-color: #ffe1ad; }
+.status.planning { background: #f4e9ff; border-color: #e1ccff; }

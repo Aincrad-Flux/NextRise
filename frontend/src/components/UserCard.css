@@ -1,0 +1,10 @@
+/* UserCard light theme using global CSS vars (see home.css :root) */
+.user-card { display:flex; flex-direction:column; align-items:center; gap:.6rem; background:var(--bg-surface,#ffffff); border:1px solid var(--border,#e5e7eb); border-radius:14px; padding:1rem .9rem 1.05rem; text-align:center; box-shadow:0 1px 2px rgba(0,0,0,.06),0 4px 10px -4px rgba(0,0,0,.08); margin-bottom:1rem; }
+.user-avatar { width:68px; height:68px; border-radius:50%; background:linear-gradient(135deg,#b8ccff,#dfe7ff); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:1.05rem; color:#1f2937; box-shadow:0 0 0 3px #fff,0 0 0 4px var(--border,#e5e7eb); }
+.user-info { line-height:1.15; }
+.user-name { font-size:.95rem; font-weight:600; color:var(--text,#1f2937); letter-spacing:.2px; }
+.user-role { font-size:.62rem; letter-spacing:.55px; text-transform:uppercase; color:var(--muted,#6b7280); margin-top:2px; background:#f2f5f8; padding:2px 6px; border-radius:10px; font-weight:500; border:1px solid var(--border,#e5e7eb); }
+.logout-btn { cursor:pointer; background:#ef5555; color:#fff; border:1px solid #ef5555; font-size:.7rem; font-weight:600; padding:.42rem .8rem; border-radius:7px; margin-top:.35rem; transition:background .18s,border-color .18s,box-shadow .18s; box-shadow:0 1px 1px rgba(0,0,0,.05); }
+.logout-btn:hover { background:#dc2626; border-color:#dc2626; }
+.logout-btn:active { background:#b91c1c; border-color:#b91c1c; }
+

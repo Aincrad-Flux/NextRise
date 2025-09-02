@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import UserCard from './UserCard.jsx'
 
 const navItems = [
   { key: 'general', label: 'Général', icon: DashboardIcon },
@@ -8,10 +9,13 @@ const navItems = [
   { key: 'mentors', label: 'Mentors', icon: PeopleIcon },
 ]
 
-export default function Sidebar({ active, onSelect }) {
+export default function Sidebar({ active, onSelect, user, onLogout }) {
   return (
     <aside className="sidebar">
       <div className="sidebar-inner">
+        {user && (
+          <UserCard user={user} onLogout={onLogout} />
+        )}
         <div className="sidebar-nav">
           {navItems.map(item => {
             const Icon = item.icon

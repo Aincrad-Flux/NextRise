@@ -24,12 +24,15 @@ export default function TopBar() {
       )}
       <div className="topbar-right">
         {!isStartup && (
+          // TODO: replace with real auth links when available
           <div className="auth-buttons" aria-label="Authentication">
-            <a href="/sign-in" className="auth-btn sign-in" role="button">Sign in</a>
+            <a href="/startup" className="auth-btn sign-in" role="button">Sign in</a>
             <a href="/sign-up" className="auth-btn sign-up" role="button">Sign up</a>
           </div>
         )}
+      {isStartup && (
         <div className="avatar" aria-label="profile" />
+      )}
       </div>
     </header>
   )

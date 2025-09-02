@@ -11,7 +11,8 @@
 /* Left side */
 .topbar-left { display: flex; align-items: center; gap: 0.5rem; flex-wrap: nowrap; }
 .brand { font-size: 1.1rem; margin: 0; font-weight: 600; white-space: nowrap; }
-.home-link { display: inline-flex; line-height: 0; flex-shrink: 0; }
+.home-link { display: inline-flex; line-height: 0; flex-shrink: 0; align-items: center; justify-content: center; width: 28px; height: 28px; }
+.home-icon { width: 25px; height: 25px; display: block; }
 
 /* Right side */
 .topbar-right { display: flex; align-items: center; gap: 0.75rem; }

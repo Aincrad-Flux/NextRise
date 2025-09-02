@@ -54,7 +54,7 @@
 
 .layout {
   display: flex;
-  align-items: stretch;
+  align-items: flex-start; /* éviter que la hauteur de la sidebar soit contrainte par le contenu main */
 }
 
 /* Sidebar */
@@ -63,6 +63,7 @@
   flex-shrink: 0;
   padding: 1rem 0.75rem 1.5rem 1rem;
   display: flex;
+  min-height: 100vh; /* occupe toute la hauteur viewport */
 }
 .sidebar-inner {
   background: var(--bg-surface);
@@ -73,10 +74,11 @@
   flex-direction: column;
   gap: 0.25rem;
   width: 100%;
-  max-height: calc(100vh - 5rem);
+  height: calc(100vh - 5rem); /* remplace max-height pour que le fond remplisse */
   position: sticky;
-  top: 4.25rem;
-  overflow-y: auto;
+  top: 4.25rem; /* espace sous la topbar */
+  overflow-y: auto; /* scroll interne quand dépasse */
+  box-sizing: border-box;
 }
 .sidebar-nav {
   display: flex;

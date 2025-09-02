@@ -6,7 +6,7 @@ export default function TopBar() {
   const { pathname } = useLocation()
   const isStartup = pathname.startsWith('/startup')
   return (
-    <header className="topbar">
+    <header className={`topbar${isStartup ? ' no-nav' : ''}`}>
       <div className="topbar-left">
         <h1 className="brand">JEB Incubator</h1>
         <a href="/" className="home-link" aria-label="Aller à l'accueil">

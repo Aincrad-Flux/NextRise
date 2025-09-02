@@ -1,0 +1,11 @@
+<svg width="360" height="240" viewBox="0 0 360 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="360" height="240" rx="16" fill="#0f172a"/>
+  <g font-family="'Arial', sans-serif" font-weight="700" text-anchor="middle">
+    <text x="50%" y="46%" font-size="92" fill="#38bdf8" letter-spacing="4">404</text>
+    <text x="50%" y="65%" font-size="20" fill="#e2e8f0">Page introuvable</text>
+  </g>
+  <circle cx="300" cy="40" r="8" fill="#38bdf8" opacity="0.4"/>
+  <circle cx="60" cy="180" r="6" fill="#38bdf8" opacity="0.25"/>
+  <circle cx="90" cy="60" r="4" fill="#38bdf8" opacity="0.35"/>
+  <circle cx="260" cy="190" r="5" fill="#38bdf8" opacity="0.3"/>
+</svg>

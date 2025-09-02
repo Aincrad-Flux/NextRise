@@ -11,7 +11,6 @@ export default function TopBar() {
         </a>
       </div>
       <div className="topbar-right">
-        <input className="search" placeholder="Search..." />
         <div className="avatar" aria-label="profile" />
       </div>
     </header>

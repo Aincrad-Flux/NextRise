@@ -6,12 +6,24 @@ import './home.css'
 
 export default function StartupHome() {
   const [section, setSection] = useState('general')
+  // TODO: replace mock user with real auth context when available
+  const user = {
+    firstName: 'Jean',
+    lastName: 'Dupont',
+    role: 'Startup',
+  }
+
+  function handleLogout() {
+    // Placeholder logout (clear tokens / redirect when auth implemented)
+    // eslint-disable-next-line no-alert
+    alert('Déconnexion... (à implémenter)')
+  }
 
   return (
     <div className="home-container">
       <TopBar />
       <div className="layout">
-        <Sidebar active={section} onSelect={setSection} />
+  <Sidebar active={section} onSelect={setSection} user={user} onLogout={handleLogout} />
         <main className="home-main">
           {section === 'general' && <Dashboard />}
           {section !== 'general' && (

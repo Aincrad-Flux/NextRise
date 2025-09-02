@@ -13,7 +13,13 @@ export default function Home() {
       <div className="layout">
         <Sidebar active={section} onSelect={setSection} />
         <main className="home-main">
-          {section === 'general' && <Dashboard />}
+          {section === 'general' && (
+            <div style={{ padding: '2rem' }}>
+              <h1>Accueil (Général)</h1>
+              <p>Cette page d'accueil générale sera développée plus tard.</p>
+              <p>Consultez la section Startups via l'URL /startup.</p>
+            </div>
+          )}
           {section !== 'general' && (
             <div className="placeholder panel">
               <div className="panel-header"><h2>{labelFor(section)}</h2></div>

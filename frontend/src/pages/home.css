@@ -1,28 +1,8 @@
 /* Page Home - thème sombre */
 
-.home-container {
-  background: var(--color-bg);
-  min-height: 100vh;
-  color: var(--color-text);
-}
+.home-container { background: var(--color-bg); min-height: 100vh; color: var(--color-text); }
 
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: linear-gradient(180deg, var(--color-bg-alt), rgba(15,23,42,0.72));
-  border-bottom: 1px solid var(--color-border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  backdrop-filter: blur(8px);
-}
-.topbar .brand { font-size: 1.125rem; margin: 0; font-weight:600; letter-spacing:.5px; }
-.topbar-right { display: flex; align-items: center; gap: 0.75rem; }
-.topbar .search { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; padding: 0.5rem 0.75rem; color: var(--color-text); }
-.topbar .search:focus { outline: 2px solid var(--color-accent); outline-offset:2px; }
-.topbar .avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg,#1e3a8a,#0ea5e9); border: 1px solid var(--color-border); box-shadow:0 0 0 1px rgba(255,255,255,.04); }
+/* Supprimé styles topbar spécifiques (voir components/TopBar.css) */
 
 .home-main { flex: 1; padding: 1rem 1.25rem 2rem; min-width: 0; }
 .home-main.constrained { max-width: 1200px; margin: 0 auto; }
@@ -39,10 +19,7 @@
 .nav-icon { opacity: .75; }
 .nav-item.active .nav-icon { opacity: 1; }
 
-@media (max-width: 960px) {
-  .sidebar { display: none; }
-  .home-main { padding-left: 1rem; padding-right: 1rem; }
-}
+@media (max-width: 960px) { .sidebar { display: none; } .home-main { padding-left: 1rem; padding-right: 1rem; } }
 
 .dashboard .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
 .card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 1rem; box-shadow: var(--shadow-sm); }

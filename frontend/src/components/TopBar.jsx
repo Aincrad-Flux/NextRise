@@ -1,7 +1,10 @@
 import homeIcon from '../assets/home.svg'
 import './TopBar.css'
+import { useLocation } from 'react-router-dom'
 
 export default function TopBar() {
+  const { pathname } = useLocation()
+  const isStartup = pathname.startsWith('/startup')
   return (
     <header className="topbar">
       <div className="topbar-left">
@@ -10,16 +13,17 @@ export default function TopBar() {
           <img src={homeIcon} alt="Accueil" className="home-icon" />
         </a>
       </div>
-      {/* Center navigation */}
-      <nav className="topbar-nav" aria-label="Principale">
-        <a href="/projects" className="nav-btn">Projects</a>
-        <a href="/news" className="nav-btn">News</a>
-        <a href="/events" className="nav-btn">Events</a>
-        <a href="/advanced-search" className="nav-btn">Advanced Search</a>
-        <a href="/about" className="nav-btn">About</a>
-      </nav>
+      {!isStartup && (
+        <nav className="topbar-nav" aria-label="Principale">
+          <a href="/projects" className="nav-btn">Projects</a>
+          <a href="/news" className="nav-btn">News</a>
+          <a href="/events" className="nav-btn">Events</a>
+          <a href="/advanced-search" className="nav-btn">Advanced Search</a>
+          <a href="/about" className="nav-btn">About</a>
+        </nav>
+      )}
       <div className="topbar-right">
-        <input className="search" placeholder="Search..." />
+        {!isStartup && <input className="search" placeholder="Search..." />}
         <div className="avatar" aria-label="profile" />
       </div>
     </header>

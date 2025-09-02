@@ -1,10 +1,6 @@
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.5rem 1rem; background: #0d1117; color: #000; border-bottom: 1px solid #222; }
-.topbar-left { display: flex; align-items: center; gap: 0.5rem; }
-.brand { font-size: 1.1rem; margin: 0; font-weight: 600; }
-.home-link { display: inline-flex; line-height: 0; }
-.home-icon { width: 24px; height: 24px; display: block; }
-.home-link:focus-visible { outline: 2px solid #2684ff; outline-offset: 2px; border-radius: 4px; }
-
+/* When nav absent (startup) we can tighten spacing */
+.topbar.no-nav { justify-content: space-between; }
 /* Center navigation */
 .topbar-nav { display: flex; gap: 0.5rem; flex: 1 1 auto; justify-content: center; }
 .nav-btn { appearance: none; background: transparent; color: #000; text-decoration: none; font-size: 0.9rem; padding: 0.5rem 0.9rem; border-radius: 6px; font-weight: 500; line-height: 1; position: relative; transition: background .15s, color .15s; }

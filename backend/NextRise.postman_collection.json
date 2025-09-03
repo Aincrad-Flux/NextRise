@@ -1,0 +1,109 @@
+{
+  "info": {
+    "name": "NextRise Backend API",
+    "_postman_id": "00000000-0000-0000-0000-000000000000",
+    "description": "Collection des endpoints backend (auth, db, health). Variables: {{baseUrl}}\nSet {{auth_token}} via login test script.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "auth_token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+            "request": {
+              "method": "POST",
+              "header": [ {"key": "Content-Type", "value": "application/json"} ],
+              "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path":["api","auth","register"] },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"secret123\",\n  \"name\": \"Test User\"\n}"
+              },
+              "description": "Créer un nouvel utilisateur. 409 si déjà existant."
+            },
+            "response": []
+        },
+        {
+          "name": "Login",
+            "request": {
+              "method": "POST",
+              "header": [ {"key": "Content-Type", "value": "application/json"} ],
+              "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path":["api","auth","login"] },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"secret123\"\n}"
+              },
+              "description": "Authentifie l'utilisateur et renvoie le profil. Stocke le cookie auth_token."
+            },
+            "event": [
+              {"listen": "test", "script": {"exec": [
+                "// Capture cookie auth_token pour les appels suivants (si le serveur renvoie Set-Cookie)",
+                "var cookieHeader = pm.response.headers.get('Set-Cookie');",
+                "if (cookieHeader) {",
+                "  var match = /auth_token=([^;]+)/.exec(cookieHeader);",
+                "  if (match) { pm.collectionVariables.set('auth_token', match[1]); pm.console.log('auth_token sauvegardé'); }",
+                "}",
+                "pm.test('Status 200', function(){ pm.response.to.have.status(200); });"
+              ]}}
+            ],
+            "response": []
+        },
+        {
+          "name": "Me",
+            "request": {
+              "method": "GET",
+              "header": [ {"key": "Cookie", "value": "auth_token={{auth_token}}"} ],
+              "url": { "raw": "{{baseUrl}}/api/auth/me", "host": ["{{baseUrl}}"], "path":["api","auth","me"] },
+              "description": "Renvoie l'utilisateur courant (ou null)."
+            },
+            "response": []
+        },
+        {
+          "name": "Logout",
+            "request": {
+              "method": "POST",
+              "header": [ {"key": "Cookie", "value": "auth_token={{auth_token}}"}, {"key": "Content-Type", "value": "application/json"} ],
+              "url": { "raw": "{{baseUrl}}/api/auth/logout", "host": ["{{baseUrl}}"], "path":["api","auth","logout"] },
+              "description": "Invalide le cookie en le vidant (maxAge 0)."
+            },
+            "event": [
+              {"listen": "test", "script": {"exec": [
+                "pm.collectionVariables.unset('auth_token');",
+                "pm.test('Status 200', function(){ pm.response.to.have.status(200); });"
+              ]}}
+            ],
+            "response": []
+        }
+      ]
+    },
+    {
+      "name": "DB",
+      "item": [
+        {
+          "name": "List Tables",
+          "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/db/tables", "host": ["{{baseUrl}}"], "path": ["api","db","tables"]}, "description": "Liste des tables publiques"},
+          "response": []
+        },
+        {
+          "name": "Dump All Tables",
+          "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/db/all", "host": ["{{baseUrl}}"], "path": ["api","db","all"]}, "description": "Récupère toutes les lignes de chaque table publique (attention volume)."},
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/health", "host": ["{{baseUrl}}"], "path": ["api","health"]}, "description": "Probe de santé"},
+          "response": []
+        }
+      ]
+    }
+  ]
+}

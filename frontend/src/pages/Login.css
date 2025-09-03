@@ -1,7 +1,7 @@
 /* Page Login */
 
-.login-page { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:2.5rem 1rem; background: radial-gradient(circle at 30% 20%, rgba(56,189,248,0.08), transparent 60%), var(--color-bg); }
-.login-inner { width:100%; max-width:420px; }
+.login-page { display:flex; align-items:center; justify-content:center; min-height:calc(100vh - 4.5rem); padding:1rem 1rem 2rem; background: radial-gradient(circle at 30% 20%, rgba(56,189,248,0.08), transparent 60%), var(--color-bg); box-sizing:border-box; }
+.login-inner { width:100%; max-width:420px; /* margin-top removed to prevent push causing scroll */ }
 .auth-card { background: var(--color-surface); border:1px solid var(--color-border); border-radius: 22px; padding: 2rem 1.85rem 1.9rem; position:relative; box-shadow: 0 10px 40px -12px rgba(0,0,0,.55), 0 4px 18px -6px rgba(0,0,0,.5); backdrop-filter: blur(8px); }
 .auth-header { text-align:center; margin-bottom:1.4rem; }
 .auth-header h1 { margin:0 0 .4rem; font-size:1.55rem; font-weight:600; letter-spacing:.5px; background:linear-gradient(90deg,var(--color-accent),#7dd3fc); -webkit-background-clip:text; background-clip:text; color:transparent; }

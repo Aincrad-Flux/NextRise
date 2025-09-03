@@ -1,6 +1,8 @@
 export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
 // Simple in-memory process start time (evaluated on first import)
 const startedAt = Date.now();
@@ -45,12 +47,15 @@ export async function GET() {
     overall = 'degraded';
   }
 
-  // Attempt to read version from package.json (best effort)
+  // Attempt to read version from package.json (best effort, cached after first read)
   let version = null;
   try {
-    // Using dynamic import with assert for ESM; path relative to project root.
-    const pkg = await import('../../../package.json', { assert: { type: 'json' } }).catch(() => null);
-    version = pkg?.default?.version || null;
+    if (globalThis.__APP_PKG_VERSION === undefined) {
+      const pkgPath = path.join(process.cwd(), 'package.json');
+      const raw = await fs.readFile(pkgPath, 'utf8');
+      globalThis.__APP_PKG_VERSION = JSON.parse(raw)?.version || null;
+    }
+    version = globalThis.__APP_PKG_VERSION;
   } catch { /* ignore */ }
 
   return NextResponse.json({

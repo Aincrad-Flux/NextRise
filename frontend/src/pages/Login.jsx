@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import TopBar from '../components/TopBar.jsx'
 
 export default function Login() {
     const [form, setForm] = useState({ email: '', password: '' });
@@ -14,11 +15,13 @@ export default function Login() {
     }
 
     return (
-        <form onSubmit={onSubmit} style={{ maxWidth: 320, margin: '0 auto', textAlign: 'left' }}>
-            <h1>Login</h1>
-            <label style={{ display: 'block', marginBottom: 12 }}>
-                Email
-                <input
+        <>
+            <TopBar />
+            <form onSubmit={onSubmit} style={{ maxWidth: 320, margin: '0 auto', textAlign: 'left' }}>
+                <h1>Login</h1>
+                <label style={{ display: 'block', marginBottom: 12 }}>
+                    Email
+                    <input
                     style={{ width: '100%', marginTop: 4 }}
                     name="email"
                     type="email"
@@ -40,5 +43,6 @@ export default function Login() {
             </label>
             <button type="submit" style={{ width: '100%' }}>Sign In</button>
         </form>
+    </>
     );
 }

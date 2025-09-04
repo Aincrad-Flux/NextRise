@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { fetchPublicTablesMeta } from '@/src/lib/supabase';
+import { fetchPublicTablesMeta } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
 

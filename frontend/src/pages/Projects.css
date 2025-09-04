@@ -96,6 +96,23 @@
     color: white;
 }
 
+/* Replace anchor Read more with button style */
+.read-more-btn {
+    margin-top: 1rem;
+    background: transparent;
+    color: #000; /* ensure black text */
+    border: 1px solid #0084d1;
+    padding: 0.4rem 0.75rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: 0.2s;
+}
+.read-more-btn:hover {
+    background: #0084d1;
+    color: #000; /* keep black on hover */
+}
+
 .filter-bar {
     margin-bottom: 1.5rem;
     display: flex;
@@ -198,3 +215,97 @@
     text-align: center;
     margin-bottom: 1.25rem;
 }
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 3rem 1rem;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.modal {
+    position: relative;
+    background: #fff;
+    width: min(900px, 100%);
+    border-radius: 16px;
+    padding: 2.25rem 2rem 2rem 2rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    animation: modalIn 0.25s ease;
+}
+
+@keyframes modalIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal .close-btn {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.modal .export-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #0084d1;
+    color: #fff;
+    border: none;
+    padding: 0.45rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: background 0.2s;
+}
+
+.modal .export-btn:hover {
+    background: #0066a3;
+}
+
+.modal-content img.modal-image {
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 1.25rem;
+}
+
+.modal-content h2 {
+    margin-bottom: 0.75rem;
+}
+
+/* Force black text inside modal for export */
+.modal, .modal-content, .modal-content h2, .modal-content p, .modal-tags .tag {
+    color: #000 !important;
+}
+
+.modal-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.modal-tags .tag {
+    background: #f0f0f0;
+    padding: 0.4rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    border: 1px solid #ccc;
+}
+
+.modal-content p + p { margin-top: 0.75rem; }

@@ -2,8 +2,7 @@ export const projectsData = [
     {
         id: 1,
         title: "Hollow Knight: Silksong",
-        description: "Hollow Knight: Silksong has officially launched Thursday, September 4, 2025, concluding a seven-year development cycle and a six-year wait for fans.\n" +
-            "The game is now available on PC, PlayStation 4, PlayStation 5, Xbox One, Xbox Series X|S, Nintendo Switch, and Nintendo Switch 2, with a price point of €19.99.\n",
+        description: "Hollow Knight: Silksong has officially launched Thursday, September 4, 2025, concluding a seven-year development cycle and a six-year wait for fans.\n",
         image: "https://imgs.search.brave.com/ZGW2uDpyFx5Jju9d0kIr_odMNtU66_WkIeXu9QmpWnA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/eW91dHViZS5jb20v/dmkvNlhHZUp3c1VQ/OWMvbWF4cmVzZGVm/YXVsdC5qcGc",
         tags: ["Game", "Australia", "Finished"]
     },

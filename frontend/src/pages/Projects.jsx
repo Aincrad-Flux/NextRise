@@ -3,10 +3,12 @@ import TopBar from '../components/TopBar.jsx';
 import './home.css';
 import './Projects.css';
 import { projectsData } from '../data/projectsData.js';
+import ProjectModal from '../components/ProjectModal.jsx';
 
 export default function Projects() {
     const [selectedTags, setSelectedTags] = useState({});
     const [openDropdown, setOpenDropdown] = useState(null);
+    const [activeProject, setActiveProject] = useState(null);
     const dropdownRef = useRef();
 
     // Close dropdown when clicking outside
@@ -95,11 +97,12 @@ export default function Projects() {
                             </div>
                             <div className="description">
                                 <p>{p.description}</p>
-                                <a href="#">Read more</a>
+                                <button className="read-more-btn" onClick={() => setActiveProject(p)}>View more</button>
                             </div>
                         </article>
                     ))}
                 </div>
+                <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />
             </main>
         </div>
     );

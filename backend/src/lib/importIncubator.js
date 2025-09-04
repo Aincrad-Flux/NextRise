@@ -85,10 +85,25 @@ export async function importPartners() {
 
 export async function importNews() {
 	requireApiConfig();
-	const items = ensureArray(await getAll('/news', { limit: 100 }));
-	const filtered = items.filter(hasId);
-	const res = await upsertTo('news', filtered);
-	return { count: filtered.length, upserted: res.inserted };
+	// Step 1: fetch a lightweight list (only IDs are guaranteed to be used)
+	const list = ensureArray(await getAll('/news', { limit: 100 }));
+	const ids = list.map((n) => n?.id).filter((v) => v !== undefined && v !== null);
+
+	// Step 2: fetch each news item detail individually (respect remote API with small concurrency)
+	const details = await mapWithConcurrency(ids, 5, async (id) => {
+		try {
+			return await getDetail(`/news/${id}`);
+		} catch (e) {
+			return { id, error: e?.message || String(e) };
+		}
+	});
+
+	// Step 3: keep only valid rows (with id)
+	const newsRows = details.filter(hasId);
+
+	// Step 4: upsert detailed rows to Supabase
+	const res = await upsertTo('news', newsRows);
+	return { count: newsRows.length, upserted: res.inserted };
 }
 
 export async function importUsers() {

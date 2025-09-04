@@ -71,7 +71,7 @@ export async function importInvestors() {
 	requireApiConfig();
 	const items = ensureArray(await getAll('/investors', { limit: 100 }));
 	const filtered = items.filter(hasId);
-	const res = await upsertTo('investor', filtered);
+	const res = await upsertTo('investors', filtered);
 	return { count: filtered.length, upserted: res.inserted };
 }
 
@@ -79,7 +79,7 @@ export async function importPartners() {
 	requireApiConfig();
 	const items = ensureArray(await getAll('/partners', { limit: 100 }));
 	const filtered = items.filter(hasId);
-	const res = await upsertTo('partner', filtered);
+	const res = await upsertTo('partners', filtered);
 	return { count: filtered.length, upserted: res.inserted };
 }
 

@@ -1,94 +1,56 @@
 import 'dotenv/config';
 import { createClient } from '@supabase/supabase-js';
 
-function mask(value) {
-    if (!value) return '<missing>';
-    if (value.length <= 10) return '***';
-    return `${value.slice(0, 6)}...${value.slice(-4)}`;
+// Chargement/validation des variables d'environnement (serveur uniquement)
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+console.log("SUPABASE_URL:", SUPABASE_URL);
+console.log("SUPABASE_ANON_KEY:", SUPABASE_ANON_KEY ? '****' + SUPABASE_ANON_KEY.slice(-4) : null);
+console.log("SUPABASE_SERVICE_ROLE_KEY:", SUPABASE_SERVICE_ROLE_KEY ? '****' + SUPABASE_SERVICE_ROLE_KEY.slice(-4) : null);
+
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    throw new Error('SUPABASE_URL et SUPABASE_ANON_KEY sont requis.');
 }
 
-function getEnv(name) {
-    return process.env[name] || undefined;
-}
+// Client public (clé anonyme)
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+});
 
-/* initial debug log to help locate env loading issues */
-console.log(
-    `[supabase] cwd=${process.cwd()} NODE_ENV=${process.env.NODE_ENV || '<unset>'} ` +
-    `SUPABASE_URL=${mask(process.env.SUPABASE_URL)} ` +
-    `SUPABASE_ANON_KEY=${mask(process.env.SUPABASE_ANON_KEY)} ` +
-    `SUPABASE_SERVICE_ROLE_KEY=${mask(process.env.SUPABASE_SERVICE_ROLE_KEY)}`
+// Client admin (service role). Si la clé manque, on crée quand même un client
+// avec une clé invalide: toute requête échouera clairement côté appelant.
+export const supabaseAdmin = createClient(
+    SUPABASE_URL,
+    SUPABASE_SERVICE_ROLE_KEY ?? 'invalid',
+    { auth: { persistSession: false, autoRefreshToken: false } }
 );
 
-let cachedAnonClient;
-let cachedAdminClient;
-
-export function getSupabaseClient({ serviceRole = false } = {}) {
-    console.log(`[supabase] getSupabaseClient called serviceRole=${serviceRole}`);
-    const url = getEnv('SUPABASE_URL');
-    const key = serviceRole ? getEnv('SUPABASE_SERVICE_ROLE_KEY') : getEnv('SUPABASE_ANON_KEY');
-
-    console.log(
-        `[supabase] env check inside getSupabaseClient: SUPABASE_URL=${mask(url)} key=${mask(key)}`
-    );
-
-    if (!url || !key) {
-        const missing = `Missing environment variables: SUPABASE_URL and ${serviceRole ? 'SUPABASE_SERVICE_ROLE_KEY' : 'SUPABASE_ANON_KEY'}.`;
-        console.error(`[supabase] ${missing}`);
-        throw new Error(missing);
-    }
-
-    if (serviceRole) {
-        if (!cachedAdminClient) {
-            cachedAdminClient = createClient(url, key, {
-                auth: { persistSession: false, autoRefreshToken: false },
-            });
-            console.log('[supabase] created cachedAdminClient');
-        }
-        return cachedAdminClient;
-    }
-
-    if (!cachedAnonClient) {
-        cachedAnonClient = createClient(url, key, {
-            auth: { persistSession: false, autoRefreshToken: false },
-        });
-        console.log('[supabase] created cachedAnonClient');
-    }
-    return cachedAnonClient;
-}
-
+// Récupère les métadonnées des tables publiques via l'endpoint pg-meta de Supabase.
+// Nécessite la clé service role; sinon une erreur explicite est levée.
 export async function fetchPublicTablesMeta() {
-    console.log('[supabase] fetchPublicTablesMeta called');
-    const url = getEnv('SUPABASE_URL');
-    const key = getEnv('SUPABASE_SERVICE_ROLE_KEY');
-
-    console.log(
-        `[supabase] env check inside fetchPublicTablesMeta: SUPABASE_URL=${mask(url)} ` +
-        `SUPABASE_SERVICE_ROLE_KEY=${mask(key)}`
-    );
-
-    if (!url || !key) {
-        const errMsg = 'SUPABASE_SERVICE_ROLE_KEY missing for pg-meta.';
-        console.error(`[supabase] ${errMsg}`);
-        throw new Error(errMsg);
+    if (!SUPABASE_SERVICE_ROLE_KEY) {
+        throw new Error('SUPABASE_SERVICE_ROLE_KEY manquante pour appeler pg-meta.');
     }
 
-    const res = await fetch(`${url}/pg/tables?included_schemas=public&exclude_system_schemas=true`, {
-        method: 'GET',
-        headers: {
-            apikey: key,
-            Authorization: `Bearer ${key}`,
-            'Content-Type': 'application/json',
-        },
-        cache: 'no-store',
-    });
+    const res = await fetch(
+        `${SUPABASE_URL}/pg/tables?included_schemas=public&exclude_system_schemas=true`,
+        {
+            method: 'GET',
+            headers: {
+                apikey: SUPABASE_SERVICE_ROLE_KEY,
+                Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+                'Content-Type': 'application/json',
+            },
+            cache: 'no-store',
+        }
+    );
 
     if (!res.ok) {
         const body = await res.text().catch(() => '');
-        const err = `pg-meta error ${res.status}: ${body || res.statusText}`;
-        console.error('[supabase] ' + err);
-        throw new Error(err);
+        throw new Error(`pg-meta error ${res.status}: ${body || res.statusText}`);
     }
 
-    console.log('[supabase] fetchPublicTablesMeta succeeded');
     return res.json();
 }

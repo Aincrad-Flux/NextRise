@@ -54,12 +54,13 @@ Placez-les dans `.env.local` à la racine du dossier `backend/`.
 ### Endpoint pour déclencher l’import
 
 - POST `/api/db/import` → importe toutes les entités (events, investors, partners, news, startups (+ détails + founders), users)
-- POST `/api/db/import?only=events`
-- POST `/api/db/import?only=investors`
-- POST `/api/db/import?only=partners`
-- POST `/api/db/import?only=news`
-- POST `/api/db/import?only=startups` (importe la liste, puis enrichit chaque startup par son détail et upsert les fondateurs)
-- POST `/api/db/import?only=users`
+- Paramètre de filtrage: `data` (alias: `only` – `data` prioritaire si les deux sont fournis)
+	- POST `/api/db/import?data=events`
+	- POST `/api/db/import?data=investors`
+	- POST `/api/db/import?data=partners`
+	- POST `/api/db/import?data=news`
+	- POST `/api/db/import?data=startups` (importe la liste, puis enrichit chaque startup par son détail et upsert les fondateurs)
+	- POST `/api/db/import?data=users`
 
 Réponse JSON: `{ ok: boolean, result: ... }`
 
@@ -70,7 +71,7 @@ Réponse JSON: `{ ok: boolean, result: ... }`
 curl -X POST http://localhost:3000/api/db/import
 
 # Import ciblé
-curl -X POST "http://localhost:3000/api/db/import?only=startups"
+curl -X POST "http://localhost:3000/api/db/import?data=startups"
 ```
 
 ### Notes d’implémentation

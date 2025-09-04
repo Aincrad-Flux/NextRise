@@ -1,6 +1,4 @@
-## NextRise Platform – Visual Style Overview (Non‑Technical)
-
-Last updated: 2025-09-04
+## NextRise Platform – Visual Style Overview
 
 This document explains, in plain language, how the product should look and feel so that everything stays consistent as we grow. No code knowledge required.
 

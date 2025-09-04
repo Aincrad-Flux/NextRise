@@ -2,7 +2,7 @@ import { useState } from 'react'
 import UserCard from './UserCard.jsx'
 
 const navItems = [
-  { key: 'general', label: 'GGeneral', icon: DashboardIcon },
+  { key: 'general', label: 'General', icon: DashboardIcon },
   { key: 'projects', label: 'Projects', icon: FolderIcon },
 ]
 

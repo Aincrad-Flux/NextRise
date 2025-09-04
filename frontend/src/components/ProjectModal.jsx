@@ -85,7 +85,7 @@ export default function ProjectModal({ project, onClose }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
         <button className="close-btn" onClick={onClose} aria-label="Fermer">×</button>
-        <button className="export-btn" onClick={handleExport}>Exporter</button>
+        <button className="export-btn" onClick={handleExport}>Export</button>
         <div ref={contentRef} className="modal-content" style={{ color: '#000' }}>
           {nameEntry && <h2>{nameEntry[1]}</h2>}
           {descriptionEntry && (

@@ -5,11 +5,6 @@ import './Projects.css';
 import { projectsData } from '../data/projectsData.js';
 import ProjectModal from '../components/ProjectModal.jsx';
 
-// Create a lightweight derived description if future explicit description missing
-function buildShortDescription(p) {
-    return `${p.sector} - ${p.maturity} | Contact: ${p.email}`;
-}
-
 export default function Projects() {
     const [activeProject, setActiveProject] = useState(null);
     const [selected, setSelected] = useState({ sector: new Set(), location: new Set(), maturity: new Set() });
@@ -70,15 +65,18 @@ export default function Projects() {
                 </div>
 
                 <div className="projects-grid simple">
-                    {filtered.map(p => (
-                        <article key={p.id} onClick={() => setActiveProject(p)} className="startup-card">
-                            <h2>{p.name}</h2>
-                            <div className="description">
-                                <p>{buildShortDescription(p)}</p>
-                                <button className="read-more-btn" onClick={(e) => { e.stopPropagation(); setActiveProject(p); }}>Détails</button>
-                            </div>
-                        </article>
-                    ))}
+                    {filtered.map(p => {
+                        const desc = (p.description && p.description.trim()) || 'Aucune description.';
+                        return (
+                            <article key={p.id || p.name} onClick={() => setActiveProject(p)} className="startup-card">
+                                <h2>{p.name}</h2>
+                                <div className="description">
+                                    <p>{desc}</p>
+                                    <button className="read-more-btn" onClick={(e) => { e.stopPropagation(); setActiveProject(p); }}>Détails</button>
+                                </div>
+                            </article>
+                        );
+                    })}
                     {filtered.length === 0 && (
                         <p style={{ gridColumn: '1/-1', opacity: 0.7 }}>Aucun résultat avec ces filtres.</p>
                     )}

@@ -122,8 +122,11 @@ export async function importStartups() {
 
 	// Fetch details with small concurrency to respect remote API
 	const details = await mapWithConcurrency(ids, 5, async (id) => {
-		const d = await getDetail(`/startups/${id}`);
-		return d;
+		try {
+			return await getDetail(`/startups/${id}`);
+		} catch (e) {
+			return { id, error: e?.message || String(e) };
+		}
 	});
 
 	const startupRows = details.filter(hasId);
@@ -148,7 +151,7 @@ export async function importStartups() {
 	let up2 = { inserted: 0 };
 	if (founderRows.length) {
 		// Try composite on_conflict if your DB has unique on (id) already, keep 'id'
-		up2 = await upsertTo('founder', founderRows);
+		up2 = await upsertTo('founders', founderRows);
 	}
 
 	return {

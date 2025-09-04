@@ -5,7 +5,7 @@
 .ms-control:hover { border-color:#0084d1; }
 .ms-control:focus-visible { outline:2px solid #0084d1; }
 .ms-control .ms-values { flex:1; display:flex; flex-wrap:wrap; gap:.35rem; align-items:center; }
-.ms-placeholder { color:#888; font-weight:400; }
+.ms-placeholder { color:#000; font-weight:400; }
 .ms-tags { display:flex; flex-wrap:wrap; gap:.3rem; align-items:center; }
 .ms-tag { background:#f1f3f5; border:1px solid #d0d5da; padding:.25rem .55rem; border-radius: 14px; line-height:1; display:inline-flex; align-items:center; gap:.35rem; cursor:pointer; font-size:.65rem; font-weight:500; transition:.2s; }
 .ms-tag:hover { background:#e2e8ec; }
@@ -21,7 +21,7 @@
 .ms-clear-btn { background:#ffe8e8; border:1px solid #ffb3b3; color:#a20000; border-radius:8px; cursor:pointer; padding:.35rem .55rem; font-size:.6rem; font-weight:600; }
 .ms-clear-btn:hover { background:#ffcfcf; }
 .ms-list { list-style:none; margin:0; padding:0; max-height:210px; overflow-y:auto; scrollbar-width:thin; }
-.ms-option { display:flex; align-items:center; gap:.45rem; padding:.4rem .45rem; font-size:.7rem; border-radius:8px; cursor:pointer; transition:.12s; }
+.ms-option { display:flex; align-items:center; gap:.45rem; padding:.4rem .45rem; font-size:.7rem; border-radius:8px; cursor:pointer; transition:.12s; color:#000; }
 .ms-option input { pointer-events:none; }
 .ms-option:hover, .ms-option.focused { background:#eef7fc; }
 .ms-option.selected { background:#0084d1; color:#fff; }

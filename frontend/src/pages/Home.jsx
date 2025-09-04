@@ -5,6 +5,7 @@ export default function Home() {
   return (
     <div className="home-container">
       <TopBar />
+      <h1 className='main-title'>Home page</h1>
       <main className="home-main constrained">
         <div className='image-text-block'>
           <img className='home-page-image' src='https://www.vsisi.co.uk/files/849/startup%20incubator.jpg'></img>

@@ -7,10 +7,15 @@
 .home-main { display: block; padding: 1rem 1.25rem 2rem; }
 .home-main.constrained { width: 75%; margin: 0 auto; }
 
+.main-title {
+    margin-top: 50px;
+    font-size: 4em;
+}
+
 .image-text-block {
     display: flex;
     align-items: center;
-    margin: 100px 0;
+    margin: 75px 0;
 }
 
 .home-page-image {
@@ -38,6 +43,24 @@
 
     .home-page-image {
         margin: 0 auto;
+    }
+
+    .text-block {
+        margin: 20px 50px;
+    }
+
+    .main-title {
+        margin-top: 100px;
+    }
+}
+
+@media (max-width: 760px) {
+    .image-text-block {
+        margin: 100px 0 100px 75px;
+    }
+
+    .main-title {
+        margin: 100px 0 0 75px;
     }
 }
 

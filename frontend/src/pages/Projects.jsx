@@ -1,105 +1,88 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import TopBar from '../components/TopBar.jsx';
 import './home.css';
 import './Projects.css';
 import { projectsData } from '../data/projectsData.js';
+import ProjectModal from '../components/ProjectModal.jsx';
+import MultiSelect from '../components/MultiSelect.jsx';
+import '../components/MultiSelect.css';
 
 export default function Projects() {
-    const [selectedTags, setSelectedTags] = useState({});
-    const [openDropdown, setOpenDropdown] = useState(null);
-    const dropdownRef = useRef();
+    const [activeProject, setActiveProject] = useState(null);
+    const [filters, setFilters] = useState({ sector: [], location: [], maturity: [] });
 
-    // Close dropdown when clicking outside
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setOpenDropdown(null);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+    // Derive location as last token in address (country) - fallback entire address
+    const enriched = useMemo(() => projectsData.map(p => ({
+        ...p,
+        location: (p.address && p.address.split(/[, ]+/).pop()) || p.address || ''
+    })), []);
 
-    // Group tags by index
-    const tagsByIndex = {};
-    projectsData.forEach(p => {
-        p.tags.forEach((tag, idx) => {
-            if (!tagsByIndex[idx]) tagsByIndex[idx] = new Set();
-            tagsByIndex[idx].add(tag);
+    const options = useMemo(() => {
+        const sector = new Set();
+        const location = new Set();
+        const maturity = new Set();
+        enriched.forEach(p => { sector.add(p.sector); location.add(p.location); maturity.add(p.maturity); });
+        return { sector: [...sector].sort(), location: [...location].sort(), maturity: [...maturity].sort() };
+    }, [enriched]);
+
+    const filtered = useMemo(() => {
+        return enriched.filter(p => {
+            const match = (key, val) => filters[key].length === 0 || filters[key].includes(val);
+            return match('sector', p.sector) && match('location', p.location) && match('maturity', p.maturity);
         });
-    });
+    }, [enriched, filters]);
 
-    // Filter projects (AND logic: must match all selected tags)
-    const filteredProjects = projectsData.filter(p => {
-        return Object.entries(selectedTags).every(([idx, tag]) => {
-            return !tag || p.tags[idx] === tag;
-        });
-    });
-
-    const handleSelect = (idx, tag) => {
-        setSelectedTags(prev => ({
-            ...prev,
-            [idx]: prev[idx] === tag ? null : tag
-        }));
-    };
-
-    const clearAll = () => setSelectedTags({});
+    const resetFilters = () => setFilters({ sector: [], location: [], maturity: [] });
 
     return (
         <div className="home-container">
             <TopBar />
             <main id="Projects" className="home-main constrained" style={{ padding: '2rem' }}>
-                <h1>Projects</h1>
+                <h1>Startups</h1>
 
-                {/* Multiple dropdowns */}
-                <div className="multi-dropdowns" ref={dropdownRef}>
-                    {Object.entries(tagsByIndex).map(([idx, tags]) => (
-                        <div key={idx} className="dropdown-filter">
-                            <button
-                                className="dropdown-button"
-                                onClick={() => setOpenDropdown(openDropdown === idx ? null : idx)}
-                            >
-                                {selectedTags[idx] || `Select Category ${parseInt(idx) + 1}`}
-                                <span className="arrow">{openDropdown === idx ? '▲' : '▼'}</span>
-                            </button>
-                            {openDropdown === idx && (
-                                <div className="dropdown-menu">
-                                    {[...tags].map(tag => (
-                                        <div
-                                            key={tag}
-                                            className={`dropdown-item ${selectedTags[idx] === tag ? 'selected' : ''}`}
-                                            onClick={() => handleSelect(idx, tag)}
-                                        >
-                                            {tag}
-                                        </div>
-                                    ))}
-                                    <div className="dropdown-item clear" onClick={() => handleSelect(idx, null)}>
-                                        Clear
-                                    </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
+                    <MultiSelect
+                        label="Sector"
+                        options={options.sector}
+                        values={filters.sector}
+                        onChange={(vals)=>setFilters(f=>({ ...f, sector: vals }))}
+                        placeholder="All sectors"
+                    />
+                    <MultiSelect
+                        label="Location"
+                        options={options.location}
+                        values={filters.location}
+                        onChange={(vals)=>setFilters(f=>({ ...f, location: vals }))}
+                        placeholder="All locations"
+                    />
+                    <MultiSelect
+                        label="Maturity"
+                        options={options.maturity}
+                        values={filters.maturity}
+                        onChange={(vals)=>setFilters(f=>({ ...f, maturity: vals }))}
+                        placeholder="All maturity levels"
+                    />
+                    <button onClick={resetFilters} style={{ alignSelf:'flex-end', height:'42px', background:'#ffe8e8', border:'1px solid #ffb3b3', color:'#a20000', borderRadius:'10px', padding:'0 .9rem', fontSize:'.65rem', fontWeight:600, cursor:'pointer' }}>Reset</button>
+                </div>
+
+                <div className="projects-grid simple">
+                    {filtered.map(p => {
+                        const desc = (p.description && p.description.trim()) || 'Aucune description.';
+                        return (
+                            <article key={p.id || p.name} onClick={() => setActiveProject(p)} className="startup-card">
+                                <h2>{p.name}</h2>
+                                <div className="description">
+                                    <p>{desc}</p>
+                                    <button className="read-more-btn" onClick={(e) => { e.stopPropagation(); setActiveProject(p); }}>Détails</button>
                                 </div>
-                            )}
-                        </div>
-                    ))}
-                    <button className="clear-all" onClick={clearAll}>Reset All</button>
+                            </article>
+                        );
+                    })}
+                    {filtered.length === 0 && (
+                        <p style={{ gridColumn: '1/-1', opacity: 0.7 }}>Aucun résultat avec ces filtres.</p>
+                    )}
                 </div>
-
-                <div className="projects-grid">
-                    {filteredProjects.map(p => (
-                        <article key={p.id}>
-                            <img src={p.image} alt={p.title} />
-                            <h2>{p.title}</h2>
-                            <div className="tags">
-                                {p.tags.map(tag => (
-                                    <span key={tag} className="tag">{tag}</span>
-                                ))}
-                            </div>
-                            <div className="description">
-                                <p>{p.description}</p>
-                                <a href="#">Read more</a>
-                            </div>
-                        </article>
-                    ))}
-                </div>
+                <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />
             </main>
         </div>
     );

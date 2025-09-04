@@ -21,6 +21,7 @@ function App() {
         <Route path="/events" element={<Events />} />
         <Route path="/advanced-search" element={<Search />} />
         <Route path="/about" element={<About />} />
+        <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

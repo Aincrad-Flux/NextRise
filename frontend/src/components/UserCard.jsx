@@ -11,7 +11,7 @@ export default function UserCard({ user, onLogout }) {
         <div className="user-name">{firstName} {lastName}</div>
         {role && <div className="user-role">{role}</div>}
       </div>
-      <button className="logout-btn" onClick={onLogout} type="button">Se déconnecter</button>
+      <button className="logout-btn" onClick={onLogout} type="button">log out</button>
     </div>
   )
 }

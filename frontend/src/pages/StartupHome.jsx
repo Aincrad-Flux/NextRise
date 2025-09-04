@@ -2,7 +2,9 @@ import { useState } from 'react'
 import TopBar from '../components/TopBar.jsx'
 import Dashboard from '../components/Dashboard.jsx'
 import Sidebar from '../components/Sidebar.jsx'
-import './home.css'
+import ProjectsPanel from '../components/ProjectsPanel.jsx'
+// NOTE: case fixed (Home.css) so styles apply on case-sensitive systems
+import './Home.css'
 
 export default function StartupHome() {
   const [section, setSection] = useState('general')
@@ -26,7 +28,8 @@ export default function StartupHome() {
   <Sidebar active={section} onSelect={setSection} user={user} onLogout={handleLogout} />
         <main className="home-main">
           {section === 'general' && <Dashboard />}
-          {section !== 'general' && (
+          {section === 'projects' && <ProjectsPanel />}
+          {section !== 'general' && section !== 'projects' && (
             <div className="placeholder panel">
               <div className="panel-header"><h2>{labelFor(section)}</h2></div>
               <div style={{ padding: '1rem' }}>

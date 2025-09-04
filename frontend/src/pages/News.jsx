@@ -8,7 +8,6 @@ export default function News() {
             <TopBar />
             <main id="News" className="home-main constrained" style={{ padding: '2rem' }}>
                 <h1>News</h1>
-                {/*<p>News page placeholder.</p>*/}
                 <div className="news-grid">
 
                     <article>

@@ -16,7 +16,7 @@ export async function GET(req) {
         }
         if (!hasSelect) query.select = '*';
 
-        const meta = await sendRequest({ path: '/startup', query });
+        const meta = await sendRequest({ path: '/user', query });
         return NextResponse.json({ tables: meta });
     } catch (err) {
         return NextResponse.json(
@@ -37,7 +37,7 @@ export async function POST(req) {
         }
 
         const created = await sendRequest({
-            path: '/founders',
+            path: '/user',
             method: 'POST',
             body: payload,
         });

@@ -11,7 +11,14 @@
     { "key": "event_id", "value": "" },
     { "key": "table", "value": "event" },
     { "key": "pk", "value": "id" },
-    { "key": "id", "value": "" }
+    { "key": "id", "value": "" },
+    { "key": "startup_id", "value": "1" },
+    { "key": "founder_id", "value": "1" },
+    { "key": "investor_id", "value": "1" },
+    { "key": "partner_id", "value": "1" },
+    { "key": "news_id", "value": "1" },
+    { "key": "user_id", "value": "1" },
+    { "key": "email", "value": "user@example.com" }
   ],
   "item": [
     {
@@ -280,6 +287,277 @@
           "name": "Health Check",
           "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/health", "host": ["{{baseUrl}}"], "path": ["api","health"]}, "description": "Probe de santé"},
           "response": []
+        }
+      ]
+    },
+    {
+      "name": "Incubator (proxy)",
+      "item": [
+        {
+          "name": "Startups",
+          "item": [
+            {
+              "name": "List Startups",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/startups?skip=0&limit=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","startups"],
+                  "query": [
+                    {"key": "skip", "value": "0"},
+                    {"key": "limit", "value": "10"}
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Startup by ID",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/startups/{{startup_id}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","startups","{{startup_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Founder Image",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/startups/{{startup_id}}/founders/{{founder_id}}/image",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","startups","{{startup_id}}","founders","{{founder_id}}","image"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Investors",
+          "item": [
+            {
+              "name": "List Investors",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/investors?skip=0&limit=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","investors"],
+                  "query": [
+                    {"key": "skip", "value": "0"},
+                    {"key": "limit", "value": "10"}
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Investor by ID",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/investors/{{investor_id}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","investors","{{investor_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Investor Image",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/investors/{{investor_id}}/image",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","investors","{{investor_id}}","image"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Partners",
+          "item": [
+            {
+              "name": "List Partners",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/partners?skip=0&limit=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","partners"],
+                  "query": [
+                    {"key": "skip", "value": "0"},
+                    {"key": "limit", "value": "10"}
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Partner by ID",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/partners/{{partner_id}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","partners","{{partner_id}}"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "News",
+          "item": [
+            {
+              "name": "List News",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/news?skip=0&limit=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","news"],
+                  "query": [
+                    {"key": "skip", "value": "0"},
+                    {"key": "limit", "value": "10"}
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get News by ID",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/news/{{news_id}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","news","{{news_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get News Image",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/news/{{news_id}}/image",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","news","{{news_id}}","image"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Events",
+          "item": [
+            {
+              "name": "List Events (proxy)",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/events?skip=0&limit=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","events"],
+                  "query": [
+                    {"key": "skip", "value": "0"},
+                    {"key": "limit", "value": "10"}
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Event by ID (proxy)",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/events/{{event_id}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","events","{{event_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Event Image",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/events/{{event_id}}/image",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","events","{{event_id}}","image"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Users",
+          "item": [
+            {
+              "name": "List Users",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/users",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","users"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get User by ID",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/users/{{user_id}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","users","{{user_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get User by Email",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/users/email/{{email}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","users","email","{{email}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get User Image",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/users/{{user_id}}/image",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","users","{{user_id}}","image"]
+                }
+              },
+              "response": []
+            }
+          ]
         }
       ]
     }

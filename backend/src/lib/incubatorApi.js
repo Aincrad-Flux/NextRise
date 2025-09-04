@@ -1,4 +1,3 @@
-// filepath: /Users/pandorian/Delivery/NextRise/backend/src/lib/incubatorApi.js
 import 'dotenv/config';
 
 const BASE_URL = process.env.INCUBATOR_API_BASE_URL;
@@ -37,6 +36,16 @@ async function doFetch(path, params) {
   return res.text();
 }
 
+export async function fetchRaw(path, params) {
+  if (!BASE_URL) throw new Error('INCUBATOR_API_BASE_URL manquant');
+  const url = buildUrl(path, params);
+  const headers = {
+    'Accept': '*/*',
+    ...(API_KEY ? { 'X-Group-Authorization': API_KEY } : {}),
+  };
+  return fetch(url, { headers, cache: 'no-store' });
+}
+
 export async function getList(path, { skip = 0, limit = 100 } = {}) {
   return doFetch(path, { skip, limit });
 }
@@ -61,4 +70,3 @@ export async function getDetail(path) {
 export function requireApiConfig() {
   if (!BASE_URL) throw new Error('INCUBATOR_API_BASE_URL manquant');
 }
-

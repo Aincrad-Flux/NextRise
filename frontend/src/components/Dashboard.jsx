@@ -1,7 +1,7 @@
 const stats = [
   { label: 'Startups in the incubator', value: 42 },
   { label: 'Active projects', value: 18 },
-  { label: 'Available mentors', value: 12 },
+  { label: 'Available invetisor', value: 12 },
   { label: 'Applications this month', value: 67 },
 ]
 
@@ -26,7 +26,7 @@ export default function Dashboard() {
           </div>
         ))}
         <div className="card engagement-card">
-          <div className="card-label" style={{ marginBottom: '.5rem' }}>Engagement projets</div>
+          <div className="card-label" style={{ marginBottom: '.5rem' }}>engagement rate</div>
           <div className="pie-wrapper">
             <PieChart engaged={engagements.engaged} total={engagements.total} />
             <div className="pie-center">

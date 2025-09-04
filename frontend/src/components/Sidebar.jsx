@@ -2,11 +2,9 @@ import { useState } from 'react'
 import UserCard from './UserCard.jsx'
 
 const navItems = [
-  { key: 'general', label: 'Général', icon: DashboardIcon },
-  { key: 'startups', label: 'Startups', icon: RocketIcon },
-  { key: 'projects', label: 'Projets', icon: FolderIcon },
-  { key: 'investors', label: 'Investisseurs', icon: InvestorIcon },
-  { key: 'mentors', label: 'Mentors', icon: PeopleIcon },
+  { key: 'general', label: 'GGeneral', icon: DashboardIcon },
+  { key: 'projects', label: 'Projects', icon: FolderIcon },
+  { key: 'investors', label: 'Investors', icon: InvestorIcon },
 ]
 
 export default function Sidebar({ active, onSelect, user, onLogout }) {

@@ -47,21 +47,30 @@ export default function Projects() {
                 <h1>Startups</h1>
 
                 <div className="filters">
-                    {['sector','location','maturity'].map(cat => (
-                        <div key={cat} className="filter-group">
-                            <div className="filter-title">{cat === 'sector' ? 'Secteur' : cat === 'location' ? 'Localisation' : 'Maturité'}</div>
-                            <div className="filter-chips">
-                                {options[cat].map(v => (
-                                    <button
-                                        key={v}
-                                        className={`filter-chip ${selected[cat].has(v) ? 'active' : ''}`}
-                                        onClick={() => toggleValue(cat, v)}
-                                    >{v}</button>
-                                ))}
+                    {['sector','location','maturity'].map(cat => {
+                        const label = cat === 'sector' ? 'Sector' : cat === 'location' ? 'Location' : 'Maturity';
+                        const handleChange = (e) => {
+                            const values = Array.from(e.target.selectedOptions).map(o => o.value);
+                            setSelected(prev => ({ ...prev, [cat]: new Set(values) }));
+                        };
+                        return (
+                            <div key={cat} className="filter-group">
+                                <label className="filter-title" htmlFor={`filter-${cat}`}>{label}</label>
+                                <select
+                                    id={`filter-${cat}`}
+                                    className="filter-select"
+                                    multiple
+                                    value={[...selected[cat]]}
+                                    onChange={handleChange}
+                                >
+                                    {options[cat].map(v => (
+                                        <option key={v} value={v}>{v}</option>
+                                    ))}
+                                </select>
                             </div>
-                        </div>
-                    ))}
-                    <button className="reset-filters" onClick={resetFilters}>Réinitialiser</button>
+                        );
+                    })}
+                    <button className="reset-filters" onClick={resetFilters}>Reset</button>
                 </div>
 
                 <div className="projects-grid simple">

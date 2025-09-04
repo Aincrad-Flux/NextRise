@@ -149,6 +149,25 @@
 .reset-filters { align-self: flex-start; background:#d10000; color:#fff; border:none; padding:.5rem .9rem; border-radius:8px; cursor:pointer; font-size:.75rem; font-weight:600; letter-spacing:.5px; box-shadow:0 2px 4px rgba(0,0,0,.15); }
 .reset-filters:hover { background:#a00000; }
 
+/* New dropdown selects replacing chips */
+.filter-select {
+    width: 100%;
+    min-width: 180px;
+    height: 110px; /* to show several options */
+    padding: .4rem .5rem;
+    border: 1px solid #d0d5da;
+    border-radius: 8px;
+    background: #fff;
+    font-size: .75rem;
+    line-height: 1.2;
+    resize: vertical;
+}
+.filter-select:focus {
+    outline: 2px solid #0084d1;
+    border-color: #0084d1;
+}
+.filter-select option { padding: .2rem .3rem; }
+
 /* Modal */
 .modal-overlay {
     position: fixed;

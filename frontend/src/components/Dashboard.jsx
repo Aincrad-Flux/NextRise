@@ -1,15 +1,15 @@
 const stats = [
-  { label: 'Startups dans l\'incubateur', value: 42 },
-  { label: 'Projets actifs', value: 18 },
-  { label: 'Mentors disponibles', value: 12 },
-  { label: 'Candidatures ce mois', value: 67 },
+  { label: 'Startups in the incubator', value: 42 },
+  { label: 'Active projects', value: 18 },
+  { label: 'Available mentors', value: 12 },
+  { label: 'Applications this month', value: 67 },
 ]
 
 const recent = [
   { name: 'AstraBio', type: 'Startup', status: 'Onboarding' },
-  { name: 'GreenGrid', type: 'Projet', status: 'In Review' },
+  { name: 'GreenGrid', type: 'Project', status: 'In Review' },
   { name: 'QuantumLeap', type: 'Startup', status: 'Active' },
-  { name: 'FinFlow', type: 'Projet', status: 'Planning' },
+  { name: 'FinFlow', type: 'Project', status: 'Planning' },
 ]
 
 const engagements = { engaged: 54, total: 120 }

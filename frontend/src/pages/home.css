@@ -4,8 +4,24 @@
 
 /* Supprimé styles topbar spécifiques (voir components/TopBar.css) */
 
-.home-main { flex: 1; padding: 1rem 1.25rem 2rem; min-width: 0; }
-.home-main.constrained { max-width: 1200px; margin: 0 auto; }
+.home-main { display: block; padding: 1rem 1.25rem 2rem; }
+.home-main.constrained { width: 95%; margin: 0 auto; }
+
+.image-text-block {
+    display: flex;
+    align-items: center;
+    margin: 100px 0;
+}
+
+.home-page-image {
+    width: 60%;
+    height: 430px;
+}
+
+.text-block {
+    display: block;
+    margin: 0 50px;
+}
 
 .layout { display: flex; align-items: flex-start; }
 

@@ -1,44 +1,72 @@
 export const projectsData = [
     {
-        id: 1,
-        title: "Hollow Knight: Silksong",
-        description: "Hollow Knight: Silksong has officially launched Thursday, September 4, 2025, concluding a seven-year development cycle and a six-year wait for fans.\n",
-        image: "https://imgs.search.brave.com/ZGW2uDpyFx5Jju9d0kIr_odMNtU66_WkIeXu9QmpWnA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/eW91dHViZS5jb20v/dmkvNlhHZUp3c1VQ/OWMvbWF4cmVzZGVm/YXVsdC5qcGc",
-        tags: ["Game", "Australia", "Finished"]
+        "id": 1,
+        "name": "EcoLoop",
+        "legal_status": "SAS",
+        "address": "77 Main Road, 37908 Ireland",
+        "email": "contact@ecoloop.com",
+        "phone": "+48 362 575 689",
+        "sector": "DeepTech",
+        "maturity": "Idea"
     },
     {
-        id: 2,
-        title: "MedLink Assist",
-        description: "Secure web app that streamlines outpatient follow-up scheduling and reminders for regional clinics.",
-        image: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=800&q=60",
-        tags: ["Healthcare", "Belgium", "Prototype"]
+        "id": 2,
+        "name": "HealthBridge",
+        "legal_status": "GmbH",
+        "address": "93 Innovation St., 36458 Netherlands",
+        "email": "contact@healthbridge.com",
+        "phone": "+33 502 240 585",
+        "sector": "DeepTech",
+        "maturity": "Idea"
     },
     {
-        id: 3,
-        title: "RetailPulse Analytics",
-        description: "Real-time sales and footfall insights for independent shops with anomaly spotting and weekly trend summaries.",
-        image: "https://images.unsplash.com/photo-1556742031-c6961e8560b0?auto=format&fit=crop&w=800&q=60",
-        tags: ["Retail", "Switzerland", "Beta"]
+        "id": 3,
+        "name": "UrbanNest",
+        "legal_status": "SpA",
+        "address": "4 Startup Blvd., 49535 Finland",
+        "email": "contact@urbannest.com",
+        "phone": "+48 770 513 105",
+        "sector": "FinTech",
+        "maturity": "Prototype"
     },
     {
-        id: 4,
-        title: "EcoFleet Optimizer",
-        description: "Route and load optimization service reducing emissions for mid-size delivery fleets.",
-        image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=60",
-        tags: ["Logistics", "France", "Scale-up"]
+        "id": 4,
+        "name": "BrightPath",
+        "legal_status": "Oy",
+        "address": "11 Startup Blvd., 23432 Finland",
+        "email": "contact@brightpath.com",
+        "phone": "+34 606 713 508",
+        "sector": "SaaS",
+        "maturity": "Idea"
     },
     {
-        id: 5,
-        title: "EduStream Classroom",
-        description: "Interactive micro-lesson streaming tool enabling quick formative assessments during live sessions.",
-        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=60",
-        tags: ["EdTech", "Canada", "Pilot"]
+        "id": 5,
+        "name": "AgroNova",
+        "legal_status": "SpA",
+        "address": "63 Startup Blvd., 70527 Spain",
+        "email": "contact@agronova.com",
+        "phone": "+32 589 986 693",
+        "sector": "Logistics",
+        "maturity": "MVP"
     },
     {
-        id: 6,
-        title: "FinGuard Monitor",
-        description: "Light compliance rules engine detecting suspicious transaction patterns for fintech startups.",
-        image: "https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=800&q=60",
-        tags: ["Finance", "Luxembourg", "Production"]
+        "id": 6,
+        "name": "SkillSpark",
+        "legal_status": "SAS",
+        "address": "70 Startup Blvd., 69275 Portugal",
+        "email": "contact@skillspark.com",
+        "phone": "+40 252 855 687",
+        "sector": "DeepTech",
+        "maturity": "Prototype"
+    },
+    {
+        "id": 7,
+        "name": "DataHaven",
+        "legal_status": "SpA",
+        "address": "11 Startup Blvd., 72680 Portugal",
+        "email": "contact@datahaven.com",
+        "phone": "+38 467 174 290",
+        "sector": "SaaS",
+        "maturity": "Idea"
     }
 ];

@@ -4,7 +4,6 @@ import UserCard from './UserCard.jsx'
 const navItems = [
   { key: 'general', label: 'GGeneral', icon: DashboardIcon },
   { key: 'projects', label: 'Projects', icon: FolderIcon },
-  { key: 'investors', label: 'Investors', icon: InvestorIcon },
 ]
 
 export default function Sidebar({ active, onSelect, user, onLogout }) {

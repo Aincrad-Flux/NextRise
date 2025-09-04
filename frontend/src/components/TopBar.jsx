@@ -27,7 +27,7 @@ export default function TopBar() {
           // TODO: replace with real auth links when available
           <div className="auth-buttons" aria-label="Authentication">
             <a href="/startup" className="auth-btn sign-in" role="button">Sign in</a>
-            <a href="/sign-up" className="auth-btn sign-up" role="button">Sign up</a>
+            <a href="/login" className="auth-btn sign-up" role="button">Sign up</a>
           </div>
         )}
       {isStartup && (

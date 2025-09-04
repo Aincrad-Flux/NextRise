@@ -8,6 +8,7 @@ import Events from './pages/Events.jsx'
 import Search from './pages/Search.jsx'
 import About from './pages/About.jsx'
 import NotFound from './pages/NotFound.jsx'
+import Login from './pages/Login.jsx'
 
 function App() {
   return (

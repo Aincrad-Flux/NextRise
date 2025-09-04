@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:24-alpine AS base
 WORKDIR /app
 
 # Install dependencies separately for better caching
@@ -19,7 +19,7 @@ ENV NODE_ENV=production
 RUN npm run build
 
 # ---------- Production runtime ----------
-FROM node:20-alpine AS prod
+FROM node:24-alpine AS prod
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=build /app/package*.json ./

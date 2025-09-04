@@ -24,26 +24,62 @@ export async function sendRequest(options) {
         throw new Error('SUPABASE_SERVICE_ROLE_KEY manquante pour appeler pg-meta.');
     }
 
-    const request = `${SUPABASE_URL}/rest/v1/${options}`
-    console.log(`Sending request ${request}`);
+    // Supporte soit une chaîne (compat), soit un objet détaillé
+    const isString = typeof options === 'string';
+    const path = isString ? options : options.path;
+    const method = isString ? 'GET' : (options.method || 'GET');
+    const body = isString ? undefined : options.body;
+    const extraHeaders = isString ? undefined : (options.headers || {});
+    const query = isString ? undefined : options.query;
 
-    const res = await fetch(
-        request,
-        {
-            method: 'GET',
-            headers: {
-                apikey: SUPABASE_SERVICE_ROLE_KEY,
-                Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
-                'Content-Type': 'application/json',
-            },
-            cache: 'no-store',
+    const base = `${SUPABASE_URL}/rest/v1/`;
+    // Chemin sans double slash
+    const normalized = path.startsWith('/') ? path.slice(1) : path;
+    const url = new URL(base + normalized);
+
+    // Ajout des query params si fournis en objet
+    if (query && typeof query === 'object') {
+        for (const [k, v] of Object.entries(query)) {
+            url.searchParams.append(k, String(v));
         }
-    );
-
-    if (!res.ok) {
-        const body = await res.text().catch(() => '');
-        throw new Error(`pg-meta error ${res.status}: ${body || res.statusText}`);
     }
 
-    return res.json();
+    console.log(`Sending request ${url.toString()} [${method}]`);
+
+    const headers = {
+        apikey: SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+        // Content-Type uniquement si corps JSON
+        ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}),
+        // Par défaut, retourner la représentation pour les écritures
+        ...(['POST', 'PATCH', 'PUT', 'DELETE'].includes(method.toUpperCase())
+            ? { Prefer: 'return=representation' }
+            : {}),
+        ...(extraHeaders || {}),
+    };
+
+    const res = await fetch(url.toString(), {
+        method,
+        headers,
+        cache: 'no-store',
+        body: body !== undefined ? JSON.stringify(body) : undefined,
+    });
+
+    if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        throw new Error(`pg-meta error ${res.status}: ${text || res.statusText}`);
+    }
+
+    // Certains DELETE/UPDATE peuvent retourner 204 si Prefer minimal
+    const contentLength = res.headers.get('content-length');
+    if (res.status === 204 || contentLength === '0') {
+        return null;
+    }
+
+    // Tente JSON, sinon texte
+    const contentType = res.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+        return res.json();
+    }
+    return res.text();
 }

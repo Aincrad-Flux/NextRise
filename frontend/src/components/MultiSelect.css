@@ -1,0 +1,41 @@
+/* MultiSelect component styles */
+.ms-container { position: relative; font-size: 0.8rem; min-width: 230px; }
+.ms-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-bottom: .3rem; opacity: .7; }
+.ms-control { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: .4rem .55rem; border:1px solid #d0d5da; background:#fff; border-radius:10px; cursor:pointer; gap:.5rem; min-height:42px; box-shadow:0 1px 2px rgba(0,0,0,.06); transition:.15s; }
+.ms-control:hover { border-color:#0084d1; }
+.ms-control:focus-visible { outline:2px solid #0084d1; }
+.ms-control .ms-values { flex:1; display:flex; flex-wrap:wrap; gap:.35rem; align-items:center; }
+.ms-placeholder { color:#888; font-weight:400; }
+.ms-tags { display:flex; flex-wrap:wrap; gap:.3rem; align-items:center; }
+.ms-tag { background:#f1f3f5; border:1px solid #d0d5da; padding:.25rem .55rem; border-radius: 14px; line-height:1; display:inline-flex; align-items:center; gap:.35rem; cursor:pointer; font-size:.65rem; font-weight:500; transition:.2s; }
+.ms-tag:hover { background:#e2e8ec; }
+.ms-tag .ms-remove { margin-left:.15rem; font-weight:700; }
+.ms-tag.more { background:#0084d1; color:#fff; border-color:#0084d1; }
+.ms-arrow { font-size:.6rem; opacity:.7; }
+
+.ms-popover { position:absolute; top:100%; left:0; margin-top:.4rem; background:#fff; border:1px solid #d0d5da; border-radius:12px; width:320px; max-width:calc(100vw - 2rem); box-shadow:0 6px 24px -2px rgba(0,0,0,.15); z-index:50; padding:.6rem .55rem .7rem; animation: msIn .18s ease; }
+@keyframes msIn { from { opacity:0; transform:translateY(4px);} to { opacity:1; transform:translateY(0);} }
+.ms-search-row { display:flex; align-items:center; gap:.4rem; margin-bottom:.45rem; }
+.ms-search { flex:1; border:1px solid #c8cdd2; padding:.4rem .5rem; border-radius:8px; font-size:.7rem; }
+.ms-search:focus { outline:2px solid #0084d1; border-color:#0084d1; }
+.ms-clear-btn { background:#ffe8e8; border:1px solid #ffb3b3; color:#a20000; border-radius:8px; cursor:pointer; padding:.35rem .55rem; font-size:.6rem; font-weight:600; }
+.ms-clear-btn:hover { background:#ffcfcf; }
+.ms-list { list-style:none; margin:0; padding:0; max-height:210px; overflow-y:auto; scrollbar-width:thin; }
+.ms-option { display:flex; align-items:center; gap:.45rem; padding:.4rem .45rem; font-size:.7rem; border-radius:8px; cursor:pointer; transition:.12s; }
+.ms-option input { pointer-events:none; }
+.ms-option:hover, .ms-option.focused { background:#eef7fc; }
+.ms-option.selected { background:#0084d1; color:#fff; }
+.ms-option.selected:hover { background:#0072b3; }
+.ms-option.select-all { font-weight:600; border-bottom:1px solid #e6e8ea; margin-bottom:.3rem; }
+.ms-empty { padding:.6rem; font-size:.65rem; text-align:center; opacity:.7; }
+
+/* Scrollbar styling */
+.ms-list::-webkit-scrollbar { width:8px; }
+.ms-list::-webkit-scrollbar-track { background:transparent; }
+.ms-list::-webkit-scrollbar-thumb { background:#d0d5da; border-radius:4px; }
+.ms-list::-webkit-scrollbar-thumb:hover { background:#b4bcc4; }
+
+/* Responsive tweak */
+@media (max-width: 640px) {
+  .ms-popover { width: 100%; }
+}

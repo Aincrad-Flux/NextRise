@@ -4,10 +4,12 @@ import './home.css';
 import './Projects.css';
 import { projectsData } from '../data/projectsData.js';
 import ProjectModal from '../components/ProjectModal.jsx';
+import MultiSelect from '../components/MultiSelect.jsx';
+import '../components/MultiSelect.css';
 
 export default function Projects() {
     const [activeProject, setActiveProject] = useState(null);
-    const [selected, setSelected] = useState({ sector: new Set(), location: new Set(), maturity: new Set() });
+    const [filters, setFilters] = useState({ sector: [], location: [], maturity: [] });
 
     // Derive location as last token in address (country) - fallback entire address
     const enriched = useMemo(() => projectsData.map(p => ({
@@ -23,22 +25,14 @@ export default function Projects() {
         return { sector: [...sector].sort(), location: [...location].sort(), maturity: [...maturity].sort() };
     }, [enriched]);
 
-    const toggleValue = (category, value) => {
-        setSelected(prev => {
-            const next = { ...prev, [category]: new Set(prev[category]) };
-            if (next[category].has(value)) next[category].delete(value); else next[category].add(value);
-            return next;
-        });
-    };
-
-    const resetFilters = () => setSelected({ sector: new Set(), location: new Set(), maturity: new Set() });
-
     const filtered = useMemo(() => {
         return enriched.filter(p => {
-            const catMatch = (cat, val) => selected[cat].size === 0 || selected[cat].has(val);
-            return catMatch('sector', p.sector) && catMatch('location', p.location) && catMatch('maturity', p.maturity);
+            const match = (key, val) => filters[key].length === 0 || filters[key].includes(val);
+            return match('sector', p.sector) && match('location', p.location) && match('maturity', p.maturity);
         });
-    }, [enriched, selected]);
+    }, [enriched, filters]);
+
+    const resetFilters = () => setFilters({ sector: [], location: [], maturity: [] });
 
     return (
         <div className="home-container">
@@ -46,31 +40,29 @@ export default function Projects() {
             <main id="Projects" className="home-main constrained" style={{ padding: '2rem' }}>
                 <h1>Startups</h1>
 
-                <div className="filters">
-                    {['sector','location','maturity'].map(cat => {
-                        const label = cat === 'sector' ? 'Sector' : cat === 'location' ? 'Location' : 'Maturity';
-                        const handleChange = (e) => {
-                            const values = Array.from(e.target.selectedOptions).map(o => o.value);
-                            setSelected(prev => ({ ...prev, [cat]: new Set(values) }));
-                        };
-                        return (
-                            <div key={cat} className="filter-group">
-                                <label className="filter-title" htmlFor={`filter-${cat}`}>{label}</label>
-                                <select
-                                    id={`filter-${cat}`}
-                                    className="filter-select"
-                                    multiple
-                                    value={[...selected[cat]]}
-                                    onChange={handleChange}
-                                >
-                                    {options[cat].map(v => (
-                                        <option key={v} value={v}>{v}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        );
-                    })}
-                    <button className="reset-filters" onClick={resetFilters}>Reset</button>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
+                    <MultiSelect
+                        label="Sector"
+                        options={options.sector}
+                        values={filters.sector}
+                        onChange={(vals)=>setFilters(f=>({ ...f, sector: vals }))}
+                        placeholder="All sectors"
+                    />
+                    <MultiSelect
+                        label="Location"
+                        options={options.location}
+                        values={filters.location}
+                        onChange={(vals)=>setFilters(f=>({ ...f, location: vals }))}
+                        placeholder="All locations"
+                    />
+                    <MultiSelect
+                        label="Maturity"
+                        options={options.maturity}
+                        values={filters.maturity}
+                        onChange={(vals)=>setFilters(f=>({ ...f, maturity: vals }))}
+                        placeholder="All maturity levels"
+                    />
+                    <button onClick={resetFilters} style={{ alignSelf:'flex-end', height:'42px', background:'#ffe8e8', border:'1px solid #ffb3b3', color:'#a20000', borderRadius:'10px', padding:'0 .9rem', fontSize:'.65rem', fontWeight:600, cursor:'pointer' }}>Reset</button>
                 </div>
 
                 <div className="projects-grid simple">

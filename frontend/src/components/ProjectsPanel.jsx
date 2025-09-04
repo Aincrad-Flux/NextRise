@@ -1,9 +1,9 @@
 export default function ProjectsPanel() {
   const projects = [
-    { name: 'GreenGrid Optimizer', owner: 'GreenGrid', status: 'Actif', progress: 72 },
-    { name: 'AstraBio Analytics', owner: 'AstraBio', status: 'En revue', progress: 43 },
-    { name: 'QuantumLeap SDK', owner: 'QuantumLeap', status: 'Planification', progress: 15 },
-    { name: 'FinFlow Mobile', owner: 'FinFlow', status: 'Actif', progress: 58 },
+    { name: 'GreenGrid Optimizer', owner: 'GreenGrid', status: 'Active', progress: 72 },
+    { name: 'AstraBio Analytics', owner: 'AstraBio', status: 'In Review', progress: 43 },
+    { name: 'QuantumLeap SDK', owner: 'QuantumLeap', status: 'Planning', progress: 15 },
+    { name: 'FinFlow Mobile', owner: 'FinFlow', status: 'Active', progress: 58 },
   ]
 
   return (

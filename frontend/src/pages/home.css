@@ -5,7 +5,7 @@
 /* Supprimé styles topbar spécifiques (voir components/TopBar.css) */
 
 .home-main { display: block; padding: 1rem 1.25rem 2rem; }
-.home-main.constrained { width: 95%; margin: 0 auto; }
+.home-main.constrained { width: 75%; margin: 0 auto; }
 
 .image-text-block {
     display: flex;
@@ -14,13 +14,31 @@
 }
 
 .home-page-image {
-    width: 60%;
-    height: 430px;
+    width: min(100%, 600px);
+    height: auto;
 }
 
 .text-block {
     display: block;
     margin: 0 50px;
+}
+
+@media (max-width: 1200px) {
+    .home-page-image {
+        width: min(100%, 400px);
+    }
+}
+
+@media (max-width: 850px) {
+    .image-text-block {
+        flex-direction: column;
+        align-items: center;
+        margin: 100px 0;
+    }
+
+    .home-page-image {
+        margin: 0 auto;
+    }
 }
 
 .layout { display: flex; align-items: flex-start; }

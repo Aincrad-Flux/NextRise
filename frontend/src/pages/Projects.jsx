@@ -73,7 +73,7 @@ export default function Projects() {
                                 <h2>{p.name}</h2>
                                 <div className="description">
                                     <p>{desc}</p>
-                                    <button className="read-more-btn" onClick={(e) => { e.stopPropagation(); setActiveProject(p); }}>Détails</button>
+                                    <button className="read-more-btn" onClick={(e) => { e.stopPropagation(); setActiveProject(p); }}>Details</button>
                                 </div>
                             </article>
                         );

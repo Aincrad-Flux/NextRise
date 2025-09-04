@@ -8,7 +8,7 @@ export default function ProjectsPanel() {
 
   return (
     <section className="panel">
-      <div className="panel-header"><h2>Projets</h2></div>
+      <div className="panel-header"><h2>Projects</h2></div>
       <div className="table">
         <div className="table-row table-head">
           <div>Name</div>

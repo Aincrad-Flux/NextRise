@@ -11,19 +11,15 @@ export default function ProjectsPanel() {
       <div className="panel-header"><h2>Projets</h2></div>
       <div className="table">
         <div className="table-row table-head">
-          <div>Nom</div>
+          <div>Name</div>
           <div>Startup</div>
-          <div>Statut</div>
-          <div>Avancement</div>
+          <div>Status</div>
         </div>
         {projects.map(p => (
           <div key={p.name} className="table-row">
             <div>{p.name}</div>
             <div>{p.owner}</div>
             <div><span className={`status ${cssStatus(p.status)}`}>{p.status}</span></div>
-            <div>
-              <div className="progress-bar"><span style={{ width: `${p.progress}%` }} /></div>
-            </div>
           </div>
         ))}
       </div>
@@ -33,9 +29,9 @@ export default function ProjectsPanel() {
 
 function cssStatus(label) {
   switch (label) {
-    case 'Actif': return 'active'
-    case 'En revue': return 'in-review'
-    case 'Planification': return 'planning'
+    case 'Active': return 'active'
+    case 'In Review': return 'in-review'
+    case 'Planning': return 'planning'
     default: return ''
   }
 }

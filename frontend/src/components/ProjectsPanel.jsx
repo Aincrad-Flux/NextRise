@@ -29,9 +29,9 @@ export default function ProjectsPanel() {
 
 function cssStatus(label) {
   switch (label) {
-    case 'Active': return 'active'
-    case 'In Review': return 'in-review'
-    case 'Planning': return 'planning'
+    case 'Actif': return 'active'
+    case 'En revue': return 'in-review'
+    case 'Planification': return 'planning'
     default: return ''
   }
 }

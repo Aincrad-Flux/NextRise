@@ -1,0 +1,565 @@
+{
+  "info": {
+    "name": "NextRise Backend API",
+    "_postman_id": "00000000-0000-0000-0000-000000000000",
+    "description": "Collection des endpoints backend (auth, db, health). Variables: {{baseUrl}}\nSet {{auth_token}} via login test script.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "auth_token", "value": "" },
+    { "key": "event_id", "value": "" },
+    { "key": "table", "value": "event" },
+    { "key": "pk", "value": "id" },
+    { "key": "id", "value": "" },
+    { "key": "startup_id", "value": "1" },
+    { "key": "founder_id", "value": "1" },
+    { "key": "investor_id", "value": "1" },
+    { "key": "partner_id", "value": "1" },
+    { "key": "news_id", "value": "1" },
+    { "key": "user_id", "value": "1" },
+    { "key": "email", "value": "user@example.com" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [ {"key": "Content-Type", "value": "application/json"} ],
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path":["api","auth","register"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"secret123\",\n  \"name\": \"Test User\"\n}"
+            },
+            "description": "Créer un nouvel utilisateur. 409 si déjà existant."
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [ {"key": "Content-Type", "value": "application/json"} ],
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path":["api","auth","login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"secret123\"\n}"
+            },
+            "description": "Authentifie l'utilisateur et renvoie le profil. Stocke le cookie auth_token."
+          },
+          "event": [
+            {"listen": "test", "script": {"exec": [
+              "// Capture cookie auth_token pour les appels suivants (si le serveur renvoie Set-Cookie)",
+              "var cookieHeader = pm.response.headers.get('Set-Cookie');",
+              "if (cookieHeader) {",
+              "  var match = /auth_token=([^;]+)/.exec(cookieHeader);",
+              "  if (match) { pm.collectionVariables.set('auth_token', match[1]); pm.console.log('auth_token sauvegardé'); }",
+              "}",
+              "pm.test('Status 200', function(){ pm.response.to.have.status(200); });"
+            ]}}
+          ],
+          "response": []
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "header": [ {"key": "Cookie", "value": "auth_token={{auth_token}}"} ],
+            "url": { "raw": "{{baseUrl}}/api/auth/me", "host": ["{{baseUrl}}"], "path":["api","auth","me"] },
+            "description": "Renvoie l'utilisateur courant (ou null)."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [ {"key": "Cookie", "value": "auth_token={{auth_token}}"}, {"key": "Content-Type", "value": "application/json"} ],
+            "url": { "raw": "{{baseUrl}}/api/auth/logout", "host": ["{{baseUrl}}"], "path":["api","auth","logout"] },
+            "description": "Invalide le cookie en le vidant (maxAge 0)."
+          },
+          "event": [
+            {"listen": "test", "script": {"exec": [
+              "pm.collectionVariables.unset('auth_token');",
+              "pm.test('Status 200', function(){ pm.response.to.have.status(200); });"
+            ]}}
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "DB",
+      "item": [
+        {
+          "name": "List Tables",
+          "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/db/tables", "host": ["{{baseUrl}}"], "path": ["api","db","tables"]}, "description": "Liste des tables publiques"},
+          "response": []
+        },
+        {
+          "name": "Dump All Tables",
+          "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/db/all", "host": ["{{baseUrl}}"], "path": ["api","db","all"]}, "description": "Récupère toutes les lignes de chaque table publique (attention volume)."},
+          "response": []
+        },
+        {
+          "name": "Events",
+          "item": [
+            {
+              "name": "List Events",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/db/events?select=*",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","db","events"],
+                  "query": [ {"key": "select", "value": "*"} ]
+                },
+                "description": "Liste les événements (supporte filtres PostgREST en query)."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Event",
+              "request": {
+                "method": "POST",
+                "header": [ {"key": "Content-Type", "value": "application/json"} ],
+                "url": { "raw": "{{baseUrl}}/api/db/events", "host": ["{{baseUrl}}"], "path": ["api","db","events"] },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Demo Event\",\n  \"description\": \"Optional description\"\n}"
+                },
+                "description": "Crée un événement. Le corps dépend du schéma de la table event."
+              },
+              "event": [
+                {"listen": "test", "script": {"exec": [
+                  "let body = {}; try { body = pm.response.json(); } catch(e) {}",
+                  "let id = Array.isArray(body) ? body[0] && body[0].id : body && body.id;",
+                  "if (id) { pm.collectionVariables.set('event_id', String(id)); pm.console.log('event_id sauvegardé:', id); }",
+                  "pm.test('Status 201', function(){ pm.response.to.have.status(201); });"
+                ]}}
+              ],
+              "response": []
+            },
+            {
+              "name": "Get Event by ID",
+              "request": {
+                "method": "GET",
+                "url": { "raw": "{{baseUrl}}/api/db/events/{{event_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","events","{{event_id}}"] },
+                "description": "Récupère un événement par id."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Event",
+              "request": {
+                "method": "PATCH",
+                "header": [ {"key": "Content-Type", "value": "application/json"} ],
+                "url": { "raw": "{{baseUrl}}/api/db/events/{{event_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","events","{{event_id}}"] },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Updated Title\"\n}"
+                },
+                "description": "Met à jour partiellement un événement."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Event",
+              "request": {
+                "method": "DELETE",
+                "url": { "raw": "{{baseUrl}}/api/db/events/{{event_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","events","{{event_id}}"] },
+                "description": "Supprime un événement."
+              },
+              "event": [
+                {"listen": "test", "script": {"exec": [
+                  "pm.collectionVariables.unset('event_id');",
+                  "pm.test('Status 200 or 204', function(){ pm.expect([200,204]).to.include(pm.response.code); });"
+                ]}}
+              ],
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Generic CRUD",
+          "item": [
+            {
+              "name": "List Rows",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/db/{{table}}?select=*",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","db","{{table}}"],
+                  "query": [ {"key": "select", "value": "*"} ]
+                },
+                "description": "Liste les lignes d'une table. Utilise PostgREST filters en query."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Row(s)",
+              "request": {
+                "method": "POST",
+                "header": [ {"key": "Content-Type", "value": "application/json"} ],
+                "url": { "raw": "{{baseUrl}}/api/db/{{table}}", "host": ["{{baseUrl}}"], "path": ["api","db","{{table}}"] },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field\": \"value\"\n}\n// Ou tableau:\n/*\n[\n  { \n    \"field\": \"value1\"\n  },\n  { \n    \"field\": \"value2\"\n  }\n]\n*/"
+                },
+                "description": "Crée une ou plusieurs lignes (objet ou tableau)."
+              },
+              "event": [
+                {"listen": "test", "script": {"exec": [
+                  "let body = {}; try { body = pm.response.json(); } catch(e) {}",
+                  "let first = Array.isArray(body) ? body[0] : body;",
+                  "let id = first && first[pm.collectionVariables.get('pk') || 'id'];",
+                  "if (id) { pm.collectionVariables.set('id', String(id)); pm.console.log('id sauvegardé:', id); }",
+                  "pm.test('Status 201', function(){ pm.response.to.have.status(201); });"
+                ]}}
+              ],
+              "response": []
+            },
+            {
+              "name": "Get Row by PK",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/db/{{table}}/{{id}}?pk={{pk}}&select=*",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","db","{{table}}","{{id}}"],
+                  "query": [
+                    {"key": "pk", "value": "{{pk}}"},
+                    {"key": "select", "value": "*"}
+                  ]
+                },
+                "description": "Récupère une ligne par clé primaire (customisable via pk)."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Row by PK",
+              "request": {
+                "method": "PATCH",
+                "header": [ {"key": "Content-Type", "value": "application/json"} ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/db/{{table}}/{{id}}?pk={{pk}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","db","{{table}}","{{id}}"],
+                  "query": [ {"key": "pk", "value": "{{pk}}"} ]
+                },
+                "body": { "mode": "raw", "raw": "{\n  \"field\": \"new value\"\n}" },
+                "description": "Met à jour partiellement une ligne par pk."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Row by PK",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/api/db/{{table}}/{{id}}?pk={{pk}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","db","{{table}}","{{id}}"],
+                  "query": [ {"key": "pk", "value": "{{pk}}"} ]
+                },
+                "description": "Supprime une ligne par pk."
+              },
+              "event": [
+                {"listen": "test", "script": {"exec": [
+                  "pm.collectionVariables.unset('id');",
+                  "pm.test('Status 200 or 204', function(){ pm.expect([200,204]).to.include(pm.response.code); });"
+                ]}}
+              ],
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/health", "host": ["{{baseUrl}}"], "path": ["api","health"]}, "description": "Probe de santé"},
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Incubator (proxy)",
+      "item": [
+        {
+          "name": "Startups",
+          "item": [
+            {
+              "name": "List Startups",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/startups?skip=0&limit=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","startups"],
+                  "query": [
+                    {"key": "skip", "value": "0"},
+                    {"key": "limit", "value": "10"}
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Startup by ID",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/startups/{{startup_id}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","startups","{{startup_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Founder Image",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/startups/{{startup_id}}/founders/{{founder_id}}/image",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","startups","{{startup_id}}","founders","{{founder_id}}","image"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Investors",
+          "item": [
+            {
+              "name": "List Investors",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/investors?skip=0&limit=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","investors"],
+                  "query": [
+                    {"key": "skip", "value": "0"},
+                    {"key": "limit", "value": "10"}
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Investor by ID",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/investors/{{investor_id}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","investors","{{investor_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Investor Image",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/investors/{{investor_id}}/image",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","investors","{{investor_id}}","image"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Partners",
+          "item": [
+            {
+              "name": "List Partners",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/partners?skip=0&limit=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","partners"],
+                  "query": [
+                    {"key": "skip", "value": "0"},
+                    {"key": "limit", "value": "10"}
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Partner by ID",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/partners/{{partner_id}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","partners","{{partner_id}}"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "News",
+          "item": [
+            {
+              "name": "List News",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/news?skip=0&limit=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","news"],
+                  "query": [
+                    {"key": "skip", "value": "0"},
+                    {"key": "limit", "value": "10"}
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get News by ID",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/news/{{news_id}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","news","{{news_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get News Image",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/news/{{news_id}}/image",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","news","{{news_id}}","image"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Events",
+          "item": [
+            {
+              "name": "List Events (proxy)",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/events?skip=0&limit=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","events"],
+                  "query": [
+                    {"key": "skip", "value": "0"},
+                    {"key": "limit", "value": "10"}
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Event by ID (proxy)",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/events/{{event_id}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","events","{{event_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Event Image",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/events/{{event_id}}/image",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","events","{{event_id}}","image"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Users",
+          "item": [
+            {
+              "name": "List Users",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/users",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","users"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get User by ID",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/users/{{user_id}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","users","{{user_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get User by Email",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/users/email/{{email}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","users","email","{{email}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get User Image",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/incubator/users/{{user_id}}/image",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","incubator","users","{{user_id}}","image"]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

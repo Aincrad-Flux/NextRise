@@ -1,0 +1,37 @@
+name: Docker Compose Build
+
+on:
+  pull_request:
+    paths:
+      - 'docker-compose.yml'
+      - 'backend/**'
+      - 'frontend/**'
+      - '.github/workflows/compose-build.yml'
+
+jobs:
+  compose-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Create CI .env
+        run: |
+          cat > .env <<'EOF'
+          # Minimal CI defaults
+          DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres?schema=public
+          VITE_BACKEND_URL=http://localhost:3000
+          POSTGRES_USER=postgres
+          POSTGRES_PASSWORD=postgres
+          POSTGRES_DB=postgres
+          EOF
+
+      - name: Validate docker-compose config
+        run: docker compose -f docker-compose.yml config
+
+      - name: Build images (dev targets as defined)
+        run: docker compose -f docker-compose.yml build --pull
+

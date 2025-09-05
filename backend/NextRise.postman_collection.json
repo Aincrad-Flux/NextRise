@@ -184,6 +184,128 @@
           ]
         },
         {
+          "name": "Founders",
+          "item": [
+            {
+              "name": "List Founders",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/api/db/founders?select=*",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api","db","founders"],
+                  "query": [ {"key": "select", "value": "*"} ]
+                },
+                "description": "Liste les founders."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Founder",
+              "request": {
+                "method": "POST",
+                "header": [ {"key": "Content-Type", "value": "application/json"} ],
+                "url": { "raw": "{{baseUrl}}/api/db/founders", "host": ["{{baseUrl}}"], "path": ["api","db","founders"] },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"John Founder\"\n}"
+                },
+                "description": "Crée un founder."
+              },
+              "event": [
+                {"listen": "test", "script": {"exec": [
+                  "let body = {}; try { body = pm.response.json(); } catch(e) {}",
+                  "let id = Array.isArray(body) ? body[0] && body[0].id : body && body.id;",
+                  "if (id) { pm.collectionVariables.set('founder_id', String(id)); pm.console.log('founder_id sauvegardé:', id); }",
+                  "pm.test('Status 201', function(){ pm.response.to.have.status(201); });"
+                ]}}
+              ],
+              "response": []
+            },
+            {
+              "name": "Get Founder by ID",
+              "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/db/founders/{{founder_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","founders","{{founder_id}}"]}},
+              "response": []
+            },
+            {
+              "name": "Update Founder",
+              "request": {
+                "method": "PATCH",
+                "header": [ {"key": "Content-Type", "value": "application/json"} ],
+                "url": { "raw": "{{baseUrl}}/api/db/founders/{{founder_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","founders","{{founder_id}}"] },
+                "body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Founder\"\n}"},
+                "description": "Met à jour partiellement un founder."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Founder",
+              "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/db/founders/{{founder_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","founders","{{founder_id}}"]}},
+              "event": [
+                {"listen": "test", "script": {"exec": [
+                  "pm.collectionVariables.unset('founder_id');",
+                  "pm.test('Status 200 or 204', function(){ pm.expect([200,204]).to.include(pm.response.code); });"
+                ]}}
+              ],
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Investors",
+          "item": [
+            {
+              "name": "List Investors (db)",
+              "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/db/investors?select=*", "host": ["{{baseUrl}}"], "path": ["api","db","investors"], "query": [{"key": "select", "value": "*"}]}, "description": "Liste les investors."},
+              "response": []
+            },
+            {"name": "Create Investor", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "url": {"raw": "{{baseUrl}}/api/db/investors", "host": ["{{baseUrl}}"], "path": ["api","db","investors"]}, "body": {"mode": "raw", "raw": "{\n  \"name\": \"Investor A\"\n}"}, "description": "Crée un investor."}, "event": [{"listen": "test", "script": {"exec": ["let body = {}; try { body = pm.response.json(); } catch(e) {}","let id = Array.isArray(body) ? body[0] && body[0].id : body && body.id;","if (id) { pm.collectionVariables.set('investor_id', String(id)); pm.console.log('investor_id sauvegardé:', id); }","pm.test('Status 201', function(){ pm.response.to.have.status(201); });"]}}], "response": []},
+            {"name": "Get Investor by ID (db)", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/db/investors/{{investor_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","investors","{{investor_id}}"]}}, "response": []},
+            {"name": "Update Investor", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "url": {"raw": "{{baseUrl}}/api/db/investors/{{investor_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","investors","{{investor_id}}"]}, "body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Investor\"\n}"}, "description": "Met à jour partiellement un investor."}, "response": []},
+            {"name": "Delete Investor", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/db/investors/{{investor_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","investors","{{investor_id}}"]}}, "event": [{"listen": "test", "script": {"exec": ["pm.collectionVariables.unset('investor_id');","pm.test('Status 200 or 204', function(){ pm.expect([200,204]).to.include(pm.response.code); });"]}}], "response": []}
+          ]
+        },
+        {
+          "name": "News",
+          "item": [
+            {"name": "List News (db)", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/db/news?select=*", "host": ["{{baseUrl}}"], "path": ["api","db","news"], "query": [{"key": "select", "value": "*"}]}, "description": "Liste les news."}, "response": []},
+            {"name": "Create News", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "url": {"raw": "{{baseUrl}}/api/db/news", "host": ["{{baseUrl}}"], "path": ["api","db","news"]}, "body": {"mode": "raw", "raw": "{\n  \"title\": \"News Title\"\n}"}, "description": "Crée une news."}, "event": [{"listen": "test", "script": {"exec": ["let body = {}; try { body = pm.response.json(); } catch(e) {}","let id = Array.isArray(body) ? body[0] && body[0].id : body && body.id;","if (id) { pm.collectionVariables.set('news_id', String(id)); pm.console.log('news_id sauvegardé:', id); }","pm.test('Status 201', function(){ pm.response.to.have.status(201); });"]}}], "response": []},
+            {"name": "Get News by ID (db)", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/db/news/{{news_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","news","{{news_id}}"]}}, "response": []},
+            {"name": "Update News", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "url": {"raw": "{{baseUrl}}/api/db/news/{{news_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","news","{{news_id}}"]}, "body": {"mode": "raw", "raw": "{\n  \"title\": \"Updated News\"\n}"}, "description": "Met à jour partiellement une news."}, "response": []},
+            {"name": "Delete News", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/db/news/{{news_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","news","{{news_id}}"]}}, "event": [{"listen": "test", "script": {"exec": ["pm.collectionVariables.unset('news_id');","pm.test('Status 200 or 204', function(){ pm.expect([200,204]).to.include(pm.response.code); });"]}}], "response": []}
+          ]
+        },
+        {
+          "name": "Partners",
+          "item": [
+            {"name": "List Partners (db)", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/db/partners?select=*", "host": ["{{baseUrl}}"], "path": ["api","db","partners"], "query": [{"key": "select", "value": "*"}]}, "description": "Liste les partners."}, "response": []},
+            {"name": "Create Partner", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "url": {"raw": "{{baseUrl}}/api/db/partners", "host": ["{{baseUrl}}"], "path": ["api","db","partners"]}, "body": {"mode": "raw", "raw": "{\n  \"name\": \"Partner X\"\n}"}, "description": "Crée un partner."}, "event": [{"listen": "test", "script": {"exec": ["let body = {}; try { body = pm.response.json(); } catch(e) {}","let id = Array.isArray(body) ? body[0] && body[0].id : body && body.id;","if (id) { pm.collectionVariables.set('partner_id', String(id)); pm.console.log('partner_id sauvegardé:', id); }","pm.test('Status 201', function(){ pm.response.to.have.status(201); });"]}}], "response": []},
+            {"name": "Get Partner by ID (db)", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/db/partners/{{partner_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","partners","{{partner_id}}"]}}, "response": []},
+            {"name": "Update Partner", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "url": {"raw": "{{baseUrl}}/api/db/partners/{{partner_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","partners","{{partner_id}}"]}, "body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Partner\"\n}"}, "description": "Met à jour partiellement un partner."}, "response": []},
+            {"name": "Delete Partner", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/db/partners/{{partner_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","partners","{{partner_id}}"]}}, "event": [{"listen": "test", "script": {"exec": ["pm.collectionVariables.unset('partner_id');","pm.test('Status 200 or 204', function(){ pm.expect([200,204]).to.include(pm.response.code); });"]}}], "response": []}
+          ]
+        },
+        {
+          "name": "Startup",
+          "item": [
+            {"name": "List Startup (db)", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/db/startup?select=*", "host": ["{{baseUrl}}"], "path": ["api","db","startup"], "query": [{"key": "select", "value": "*"}]}, "description": "Liste startup."}, "response": []},
+            {"name": "Create Startup", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "url": {"raw": "{{baseUrl}}/api/db/startup", "host": ["{{baseUrl}}"], "path": ["api","db","startup"]}, "body": {"mode": "raw", "raw": "{\n  \"name\": \"Startup Y\"\n}"}, "description": "Crée une startup."}, "event": [{"listen": "test", "script": {"exec": ["let body = {}; try { body = pm.response.json(); } catch(e) {}","let id = Array.isArray(body) ? body[0] && body[0].id : body && body.id;","if (id) { pm.collectionVariables.set('startup_id', String(id)); pm.console.log('startup_id sauvegardé:', id); }","pm.test('Status 201', function(){ pm.response.to.have.status(201); });"]}}], "response": []},
+            {"name": "Get Startup by ID (db)", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/db/startup/{{startup_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","startup","{{startup_id}}"]}}, "response": []},
+            {"name": "Update Startup", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "url": {"raw": "{{baseUrl}}/api/db/startup/{{startup_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","startup","{{startup_id}}"]}, "body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Startup\"\n}"}, "description": "Met à jour partiellement une startup."}, "response": []},
+            {"name": "Delete Startup", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/db/startup/{{startup_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","startup","{{startup_id}}"]}}, "event": [{"listen": "test", "script": {"exec": ["pm.collectionVariables.unset('startup_id');","pm.test('Status 200 or 204', function(){ pm.expect([200,204]).to.include(pm.response.code); });"]}}], "response": []}
+          ]
+        },
+        {
+          "name": "User",
+          "item": [
+            {"name": "List Users (db)", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/db/user?select=*", "host": ["{{baseUrl}}"], "path": ["api","db","user"], "query": [{"key": "select", "value": "*"}]}, "description": "Liste les users."}, "response": []},
+            {"name": "Create User", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "url": {"raw": "{{baseUrl}}/api/db/user", "host": ["{{baseUrl}}"], "path": ["api","db","user"]}, "body": {"mode": "raw", "raw": "{\n  \"email\": \"new@example.com\"\n}"}, "description": "Crée un user."}, "event": [{"listen": "test", "script": {"exec": ["let body = {}; try { body = pm.response.json(); } catch(e) {}","let id = Array.isArray(body) ? body[0] && body[0].id : body && body.id;","if (id) { pm.collectionVariables.set('user_id', String(id)); pm.console.log('user_id sauvegardé:', id); }","pm.test('Status 201', function(){ pm.response.to.have.status(201); });"]}}], "response": []},
+            {"name": "Get User by ID (db)", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/db/user/{{user_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","user","{{user_id}}"]}}, "response": []},
+            {"name": "Update User", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "url": {"raw": "{{baseUrl}}/api/db/user/{{user_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","user","{{user_id}}"]}, "body": {"mode": "raw", "raw": "{\n  \"email\": \"updated@example.com\"\n}"}, "description": "Met à jour partiellement un user."}, "response": []},
+            {"name": "Delete User", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/db/user/{{user_id}}", "host": ["{{baseUrl}}"], "path": ["api","db","user","{{user_id}}"]}}, "event": [{"listen": "test", "script": {"exec": ["pm.collectionVariables.unset('user_id');","pm.test('Status 200 or 204', function(){ pm.expect([200,204]).to.include(pm.response.code); });"]}}], "response": []}
+          ]
+        },
+        {
           "name": "Generic CRUD",
           "item": [
             {

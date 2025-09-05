@@ -25,6 +25,7 @@ tags:
   - name: Partners
   - name: Startups
   - name: Images
+  - name: Founders
 
 components:
   securitySchemes:
@@ -197,255 +198,579 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /api/incubator/users:
-    get:
-      tags: [Users]
-      summary: List users
-      responses:
-        '200': { description: OK }
-        '500': { description: Server error }
-  /api/incubator/users/{id}:
-    get:
-      tags: [Users]
-      summary: Get user by id
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200': { description: OK }
-        '500': { description: Server error }
-  /api/incubator/users/{id}/image:
-    get:
-      tags: [Users, Images]
-      summary: Get user image (binary)
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Binary image
-          content:
-            image/*:
-              schema:
-                type: string
-                format: binary
-        '500': { description: Error }
-  /api/incubator/users/email/{email}:
-    get:
-      tags: [Users]
-      summary: Get user by email
-      parameters:
-        - name: email
-          in: path
-          required: true
-          schema:
-            type: string
-            format: email
-      responses:
-        '200': { description: OK }
-        '500': { description: Error }
 
-  /api/incubator/events:
+  # Core DB direct CRUD (PostgREST wrapper) endpoints
+  /api/db/events:
     get:
       tags: [Events]
-      summary: List events (paginated)
+      summary: List events (direct DB)
       parameters:
         - in: query
-          name: skip
-          schema: { type: integer, minimum: 0, default: 0 }
-        - in: query
-          name: limit
-          schema: { type: integer, minimum: 1, default: 100 }
+          name: select
+          schema: { type: string, default: '*' }
+          description: PostgREST select clause
       responses:
         '200': { description: OK }
-        '500': { description: Server error }
-  /api/incubator/events/{id}:
+        '500': { description: Error }
+    post:
+      tags: [Events]
+      summary: Create event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Event payload (schema TBD)
+      responses:
+        '201': { description: Created }
+        '400': { description: Invalid body }
+        '500': { description: Error }
+  /api/db/events/{id}:
     get:
       tags: [Events]
-      summary: Get event details
+      summary: Get event by id (direct DB)
       parameters:
         - name: id
           in: path
           required: true
-          schema:
-            type: string
+          schema: { type: string }
+      responses:
+        '200': { description: OK }
+        '404': { description: Not found }
+        '500': { description: Error }
+    patch:
+      tags: [Events]
+      summary: Update event (partial)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200': { description: Updated }
+        '400': { description: Invalid body }
+        '404': { description: Not found }
+        '500': { description: Error }
+    delete:
+      tags: [Events]
+      summary: Delete event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: Deleted }
+        '404': { description: Not found }
+        '500': { description: Error }
+
+  /api/db/founders:
+    get:
+      tags: [Founders]
+      summary: List founders
+      parameters:
+        - in: query
+          name: select
+          schema: { type: string, default: '*' }
       responses:
         '200': { description: OK }
         '500': { description: Error }
-  /api/incubator/events/{id}/image:
+    post:
+      tags: [Founders]
+      summary: Create founder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '201': { description: Created }
+        '400': { description: Invalid body }
+        '500': { description: Error }
+  /api/db/founders/{id}:
     get:
-      tags: [Events, Images]
-      summary: Get event image (binary)
+      tags: [Founders]
+      summary: Get founder by id
       parameters:
         - name: id
           in: path
           required: true
-          schema:
-            type: string
+          schema: { type: string }
       responses:
-        '200': { description: Binary image }
+        '200': { description: OK }
+        '404': { description: Not found }
+        '500': { description: Error }
+    patch:
+      tags: [Founders]
+      summary: Update founder (partial)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200': { description: Updated }
+        '400': { description: Invalid body }
+        '404': { description: Not found }
+        '500': { description: Error }
+    delete:
+      tags: [Founders]
+      summary: Delete founder
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: Deleted }
+        '404': { description: Not found }
         '500': { description: Error }
 
-  /api/incubator/investors:
+  /api/db/investors:
     get:
       tags: [Investors]
-      summary: List investors (paginated)
+      summary: List investors (direct DB)
       parameters:
         - in: query
-          name: skip
-          schema: { type: integer, minimum: 0, default: 0 }
-        - in: query
-          name: limit
-          schema: { type: integer, minimum: 1, default: 100 }
+          name: select
+          schema: { type: string, default: '*' }
       responses:
         '200': { description: OK }
-        '500': { description: Server error }
-  /api/incubator/investors/{id}:
+        '500': { description: Error }
+    post:
+      tags: [Investors]
+      summary: Create investor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '201': { description: Created }
+        '400': { description: Invalid body }
+        '500': { description: Error }
+  /api/db/investors/{id}:
     get:
       tags: [Investors]
-      summary: Get investor by id
+      summary: Get investor by id (direct DB)
       parameters:
         - name: id
           in: path
           required: true
-          schema:
-            type: string
+          schema: { type: string }
       responses:
         '200': { description: OK }
+        '404': { description: Not found }
         '500': { description: Error }
-  /api/incubator/investors/{id}/image:
-    get:
-      tags: [Investors, Images]
-      summary: Get investor image (binary)
+    patch:
+      tags: [Investors]
+      summary: Update investor (partial)
       parameters:
         - name: id
           in: path
           required: true
-          schema:
-            type: string
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
       responses:
-        '200': { description: Binary image }
+        '200': { description: Updated }
+        '400': { description: Invalid body }
+        '404': { description: Not found }
+        '500': { description: Error }
+    delete:
+      tags: [Investors]
+      summary: Delete investor
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: Deleted }
+        '404': { description: Not found }
         '500': { description: Error }
 
-  /api/incubator/news:
+  /api/db/news:
     get:
       tags: [News]
-      summary: List news (paginated)
+      summary: List news (direct DB)
       parameters:
         - in: query
-          name: skip
-          schema: { type: integer, minimum: 0, default: 0 }
-        - in: query
-          name: limit
-          schema: { type: integer, minimum: 1, default: 100 }
+          name: select
+          schema: { type: string, default: '*' }
       responses:
         '200': { description: OK }
         '500': { description: Error }
-  /api/incubator/news/{id}:
+    post:
+      tags: [News]
+      summary: Create news item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '201': { description: Created }
+        '400': { description: Invalid body }
+        '500': { description: Error }
+  /api/db/news/{id}:
     get:
       tags: [News]
-      summary: Get news item by id
+      summary: Get news by id (direct DB)
       parameters:
         - name: id
           in: path
           required: true
-          schema:
-            type: string
+          schema: { type: string }
       responses:
         '200': { description: OK }
+        '404': { description: Not found }
         '500': { description: Error }
-  /api/incubator/news/{id}/image:
-    get:
-      tags: [News, Images]
-      summary: Get news image (binary)
+    patch:
+      tags: [News]
+      summary: Update news (partial)
       parameters:
         - name: id
           in: path
           required: true
-          schema:
-            type: string
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
       responses:
-        '200': { description: Binary image }
+        '200': { description: Updated }
+        '400': { description: Invalid body }
+        '404': { description: Not found }
+        '500': { description: Error }
+    delete:
+      tags: [News]
+      summary: Delete news
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: Deleted }
+        '404': { description: Not found }
         '500': { description: Error }
 
-  /api/incubator/partners:
+  /api/db/partners:
     get:
       tags: [Partners]
-      summary: List partners (paginated)
+      summary: List partners (direct DB)
       parameters:
         - in: query
-          name: skip
-          schema: { type: integer, minimum: 0, default: 0 }
-        - in: query
-          name: limit
-          schema: { type: integer, minimum: 1, default: 100 }
+          name: select
+          schema: { type: string, default: '*' }
       responses:
         '200': { description: OK }
         '500': { description: Error }
-  /api/incubator/partners/{id}:
+    post:
+      tags: [Partners]
+      summary: Create partner
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '201': { description: Created }
+        '400': { description: Invalid body }
+        '500': { description: Error }
+  /api/db/partners/{id}:
     get:
       tags: [Partners]
-      summary: Get partner by id
+      summary: Get partner by id (direct DB)
       parameters:
         - name: id
           in: path
           required: true
-          schema:
-            type: string
+          schema: { type: string }
       responses:
         '200': { description: OK }
+        '404': { description: Not found }
+        '500': { description: Error }
+    patch:
+      tags: [Partners]
+      summary: Update partner (partial)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200': { description: Updated }
+        '400': { description: Invalid body }
+        '404': { description: Not found }
+        '500': { description: Error }
+    delete:
+      tags: [Partners]
+      summary: Delete partner
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: Deleted }
+        '404': { description: Not found }
         '500': { description: Error }
 
-  /api/incubator/startups:
+  /api/db/startup:
     get:
       tags: [Startups]
-      summary: List startups (paginated)
+      summary: List startups (direct DB)
       parameters:
         - in: query
-          name: skip
-          schema: { type: integer, minimum: 0, default: 0 }
-        - in: query
-          name: limit
-          schema: { type: integer, minimum: 1, default: 100 }
+          name: select
+          schema: { type: string, default: '*' }
       responses:
         '200': { description: OK }
         '500': { description: Error }
-  /api/incubator/startups/{id}:
+    post:
+      tags: [Startups]
+      summary: Create startup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '201': { description: Created }
+        '400': { description: Invalid body }
+        '500': { description: Error }
+  /api/db/startup/{id}:
     get:
       tags: [Startups]
-      summary: Get startup by id
+      summary: Get startup by id (direct DB)
       parameters:
         - name: id
           in: path
           required: true
-          schema:
-            type: string
+          schema: { type: string }
       responses:
         '200': { description: OK }
+        '404': { description: Not found }
         '500': { description: Error }
-  /api/incubator/startups/{id}/founders/{founder_id}/image:
-    get:
-      tags: [Startups, Images]
-      summary: Get founder image (binary)
+    patch:
+      tags: [Startups]
+      summary: Update startup (partial)
       parameters:
         - name: id
           in: path
           required: true
-          schema:
-            type: string
-        - name: founder_id
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200': { description: Updated }
+        '400': { description: Invalid body }
+        '404': { description: Not found }
+        '500': { description: Error }
+    delete:
+      tags: [Startups]
+      summary: Delete startup
+      parameters:
+        - name: id
           in: path
           required: true
-          schema:
-            type: string
+          schema: { type: string }
       responses:
-        '200': { description: Binary image }
+        '200': { description: Deleted }
+        '404': { description: Not found }
+        '500': { description: Error }
+
+  /api/db/user:
+    get:
+      tags: [Users]
+      summary: List users (direct DB)
+      parameters:
+        - in: query
+          name: select
+          schema: { type: string, default: '*' }
+      responses:
+        '200': { description: OK }
+        '500': { description: Error }
+    post:
+      tags: [Users]
+      summary: Create user (direct DB)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '201': { description: Created }
+        '400': { description: Invalid body }
+        '500': { description: Error }
+  /api/db/user/{id}:
+    get:
+      tags: [Users]
+      summary: Get user by id (direct DB)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: OK }
+        '404': { description: Not found }
+        '500': { description: Error }
+    patch:
+      tags: [Users]
+      summary: Update user (partial)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200': { description: Updated }
+        '400': { description: Invalid body }
+        '404': { description: Not found }
+        '500': { description: Error }
+    delete:
+      tags: [Users]
+      summary: Delete user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: Deleted }
+        '404': { description: Not found }
+        '500': { description: Error }
+
+  # Generic proxy CRUD for arbitrary table (limited documentation; requires table variable)
+  /api/db/{table}:
+    get:
+      tags: [Events]
+      summary: Generic list rows
+      parameters:
+        - name: table
+          in: path
+          required: true
+          schema: { type: string }
+        - in: query
+          name: select
+          schema: { type: string, default: '*' }
+      responses:
+        '200': { description: OK }
+        '500': { description: Error }
+    post:
+      tags: [Events]
+      summary: Generic create row(s)
+      parameters:
+        - name: table
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '201': { description: Created }
+        '400': { description: Invalid body }
+        '500': { description: Error }
+  /api/db/{table}/{id}:
+    get:
+      tags: [Events]
+      summary: Generic get row
+      parameters:
+        - name: table
+          in: path
+          required: true
+          schema: { type: string }
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - in: query
+          name: pk
+          schema: { type: string, default: id }
+        - in: query
+          name: select
+          schema: { type: string, default: '*' }
+      responses:
+        '200': { description: OK }
+        '404': { description: Not found }
+        '500': { description: Error }
+    patch:
+      tags: [Events]
+      summary: Generic update row
+      parameters:
+        - name: table
+          in: path
+          required: true
+          schema: { type: string }
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - in: query
+          name: pk
+          schema: { type: string, default: id }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200': { description: Updated }
+        '400': { description: Invalid body }
+        '404': { description: Not found }
+        '500': { description: Error }
+    delete:
+      tags: [Events]
+      summary: Generic delete row
+      parameters:
+        - name: table
+          in: path
+          required: true
+          schema: { type: string }
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - in: query
+          name: pk
+          schema: { type: string, default: id }
+      responses:
+        '200': { description: Deleted }
+        '404': { description: Not found }
         '500': { description: Error }
 
 # TODO (manual completion needed): Add schemas for each domain object (Event, Investor, News, Partner, Startup, User detail) once the upstream API data shape is defined.

@@ -2,8 +2,9 @@ export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
 import { cookieOptions } from "@/lib/auth";
+import { withLogging } from "@/lib/logging";
 
-export async function POST() {
+export const POST = withLogging(async function POST() {
   const res = NextResponse.json({ ok: true }, { status: 200 });
   res.cookies.set({
     name: cookieOptions.name,
@@ -15,5 +16,5 @@ export async function POST() {
     maxAge: 0,
   });
   return res;
-}
+});
 

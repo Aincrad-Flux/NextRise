@@ -2,6 +2,7 @@
 // Usage: export const POST = withLogging(async (req) => { ... })
 
 import { NextResponse } from "next/server";
+import { logger } from "@/lib/fileLogger";
 
 function safeJsonParse(str) {
   try { return JSON.parse(str); } catch { return str; }
@@ -39,6 +40,14 @@ async function cloneResponseData(res) {
   return { status: res.status, headers, body };
 }
 
+function redact(data) {
+  if (data && data.body && typeof data.body === 'object') {
+    if (data.body.password) data.body.password = '[REDACTED]';
+    if (data.body.pass) data.body.pass = '[REDACTED]';
+  }
+  return data;
+}
+
 export function withLogging(handler) {
   return async function loggedHandler(req, ctx) {
     const start = Date.now();
@@ -48,22 +57,23 @@ export function withLogging(handler) {
     } catch (e) {
       requestData = { error: 'could_not_read_request', details: String(e) };
     }
-    console.log('[API][IN]', JSON.stringify(requestData));
+    redact(requestData);
+    logger.info('api_in', requestData);
 
     let response;
     try {
       response = await handler(req, ctx);
     } catch (err) {
-      console.error('[API][ERR]', err);
+      logger.error('api_err', { error: String(err && err.stack || err) });
       response = NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 
     try {
       const responseData = await cloneResponseData(response);
       const duration = Date.now() - start;
-      console.log('[API][OUT]', JSON.stringify({ ...responseData, durationMs: duration }));
+      logger.info('api_out', { ...responseData, durationMs: duration });
     } catch (e) {
-      console.error('[API][LOG_OUT_FAIL]', e);
+      logger.error('api_log_out_fail', { error: String(e) });
     }
     return response;
   };

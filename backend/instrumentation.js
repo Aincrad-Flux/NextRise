@@ -1,9 +1,19 @@
 // Next.js instrumentation hook (loaded when NEXT_RUNTIME instrumentation enabled)
 // Logs all outgoing fetch requests + responses (server side only)
 
+import { logger } from "@/lib/fileLogger";
+
 const originalFetch = global.fetch;
 
 function safeJsonParse(str) { try { return JSON.parse(str); } catch { return str; } }
+
+function redact(obj) {
+  if (obj && obj.body && typeof obj.body === 'object') {
+    if (obj.body.password) obj.body.password = '[REDACTED]';
+    if (obj.body.pass) obj.body.pass = '[REDACTED]';
+  }
+  return obj;
+}
 
 global.fetch = async function loggedFetch(resource, init = {}) {
   const start = Date.now();
@@ -17,7 +27,8 @@ global.fetch = async function loggedFetch(resource, init = {}) {
       else requestBody = '[unserializable body]';
     }
   } catch {}
-  console.log('[FETCH][OUT]', JSON.stringify({ method, url, body: requestBody }));
+  redact({ body: requestBody });
+  logger.info('fetch_out', { method, url, body: requestBody });
   try {
     const res = await originalFetch(resource, init);
     let responseBody = null;
@@ -26,12 +37,13 @@ global.fetch = async function loggedFetch(resource, init = {}) {
       const text = await clone.text();
       responseBody = safeJsonParse(text);
     } catch {}
+    redact({ body: responseBody });
     const duration = Date.now() - start;
-    console.log('[FETCH][IN]', JSON.stringify({ url, status: res.status, durationMs: duration, body: responseBody }));
+    logger.info('fetch_in', { url, status: res.status, durationMs: duration, body: responseBody });
     return res;
   } catch (err) {
     const duration = Date.now() - start;
-    console.error('[FETCH][ERR]', JSON.stringify({ url, method, durationMs: duration, error: String(err) }));
+    logger.error('fetch_err', { url, method, durationMs: duration, error: String(err) });
     throw err;
   }
 };

@@ -8,20 +8,23 @@ function safeJsonParse(str) {
   try { return JSON.parse(str); } catch { return str; }
 }
 
-async function cloneRequestData(req) {
+async function cloneRequestData(originalReq) {
+  // We purposefully clone so that the original body stream remains readable by the route handler.
+  const req = originalReq.clone();
   const { method, headers } = req;
   let body = null;
+  let rawBodyText = null;
   if (method !== 'GET' && method !== 'HEAD') {
     try {
-      const text = await req.text();
-      body = safeJsonParse(text);
+      rawBodyText = await req.text();
+      body = safeJsonParse(rawBodyText);
     } catch {
       body = null;
     }
   }
   const headerObj = {};
   headers.forEach((v,k)=>{ headerObj[k] = v; });
-  return { method, url: req.url, headers: headerObj, body };
+  return { method, url: req.url, headers: headerObj, body, rawBodyText };
 }
 
 async function cloneResponseData(res) {
@@ -58,11 +61,36 @@ export function withLogging(handler) {
       requestData = { error: 'could_not_read_request', details: String(e) };
     }
     redact(requestData);
-    logger.info('api_in', requestData);
+    logger.info('api_in', { method: requestData.method, url: requestData.url, headers: requestData.headers, body: requestData.body });
+
+    // Provide a wrapped request whose json()/text() return cached body to avoid double parsing issues if handler calls them multiple times.
+    let wrappedReq = req;
+    if (requestData.rawBodyText !== null) {
+      const cachedText = requestData.rawBodyText;
+      let parsedOnce = false;
+      let parsedValue;
+      wrappedReq = new Proxy(req, {
+        get(target, prop) {
+          if (prop === 'text') {
+            return async () => cachedText;
+          }
+          if (prop === 'json') {
+            return async () => {
+              if (!parsedOnce) {
+                try { parsedValue = JSON.parse(cachedText); } catch { parsedValue = {}; }
+                parsedOnce = true;
+              }
+              return parsedValue;
+            };
+          }
+          return Reflect.get(target, prop);
+        }
+      });
+    }
 
     let response;
     try {
-      response = await handler(req, ctx);
+      response = await handler(wrappedReq, ctx);
     } catch (err) {
       logger.error('api_err', { error: String(err && err.stack || err) });
       response = NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

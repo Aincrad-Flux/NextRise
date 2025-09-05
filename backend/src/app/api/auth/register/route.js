@@ -3,12 +3,13 @@ export const runtime = "nodejs";
 import { NextResponse } from "next/server";
 import { addUser, publicUser } from "@/lib/db";
 import { hashPassword, signToken, cookieOptions } from "@/lib/auth";
+import { withLogging } from "@/lib/logging";
 
 function badRequest(message) {
   return NextResponse.json({ error: message }, { status: 400 });
 }
 
-export async function POST(req) {
+export const POST = withLogging(async function POST(req) {
   try {
     const body = await req.json().catch(() => ({}));
     const { email, password, name } = body || {};
@@ -30,5 +31,5 @@ export async function POST(req) {
     }
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
-}
+});
 

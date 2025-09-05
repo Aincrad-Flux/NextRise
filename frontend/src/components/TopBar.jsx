@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom'
 export default function TopBar() {
   const { pathname } = useLocation()
   const isStartup = pathname.startsWith('/startup')
+  const isLoggedIn = Boolean(localStorage.getItem('token'))
   return (
     <header className={`topbar${isStartup ? ' no-nav' : ''}`}>
       <div className="topbar-left">
@@ -23,7 +24,7 @@ export default function TopBar() {
         </nav>
       )}
       <div className="topbar-right">
-        {!isStartup && (
+        {!isStartup || !isLoggedIn && (
           // TODO: replace with real auth links when available
           <div className="auth-buttons" aria-label="Authentication">
             <a href="/startup" className="auth-btn sign-in" role="button">Sign in</a>

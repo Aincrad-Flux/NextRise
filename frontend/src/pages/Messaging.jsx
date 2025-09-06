@@ -76,7 +76,6 @@ export default function Messaging() {
       <div className="layout">
         <Sidebar active="messaging" user={user} onLogout={handleLogout} />
   <main className="home-main messaging">
-          <h2>Messaging</h2>
           <div className="messaging-layout">
             <div className="messaging-conversations">
               <h3>Conversations</h3>
@@ -90,7 +89,7 @@ export default function Messaging() {
               <button className="primary-btn new-conv-btn" onClick={openNewConversation}>New conversation</button>
             </div>
             <div className="messaging-thread">
-              <h3>Chat with {selected?.investor || '—'}</h3>
+              <h2>Chat with {selected?.investor || '—'}</h2>
               <div className="messages-scroll">
                 {selected?.messages?.map((m, i) => (
                   <div key={i} className={`message-row ${m.from === 'startup' ? 'out' : 'in'}`}>

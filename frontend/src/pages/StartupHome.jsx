@@ -2,7 +2,7 @@ import { useState } from 'react'
 import TopBar from '../components/TopBar.jsx'
 import Dashboard from '../components/Dashboard.jsx'
 import Sidebar from '../components/Sidebar.jsx'
-import ProjectsPanel from '../components/ProjectsPanel.jsx'
+import StartupProjects from './StartupProjects.jsx'
 // NOTE: case fixed (Home.css) so styles apply on case-sensitive systems
 import './Home.css'
 
@@ -18,7 +18,7 @@ export default function StartupHome() {
   function handleLogout() {
     // Placeholder logout (clear tokens / redirect when auth implemented)
     // eslint-disable-next-line no-alert
-    alert('Déconnexion... (à implémenter)')
+    alert('Not implemented: logout action')
   }
 
   return (
@@ -28,7 +28,7 @@ export default function StartupHome() {
   <Sidebar active={section} onSelect={setSection} user={user} onLogout={handleLogout} />
         <main className="home-main">
           {section === 'general' && <Dashboard />}
-          {section === 'projects' && <ProjectsPanel />}
+          {section === 'projects' && <StartupProjects embedded />}
           {section !== 'general' && section !== 'projects' && (
             <div className="placeholder panel">
               <div className="panel-header"><h2>{labelFor(section)}</h2></div>

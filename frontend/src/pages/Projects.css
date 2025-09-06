@@ -15,16 +15,18 @@
 .projects-grid article {
     display: flex;
     flex-direction: column;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
     overflow: hidden;
-    background: white;
-    color: black;
-    transition: transform 0.2s ease-in-out;
+    background: var(--color-surface);
+    color: var(--color-text);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease-in-out, box-shadow .2s;
 }
 
 .projects-grid article:hover {
     transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
 }
 
 /* Image styles retained only if future images added */
@@ -59,8 +61,8 @@
     height: 24px;
     padding: 0 0.6rem;
     line-height: 1;
-    background: #f0f0f0;
-    border: 1px solid #ccc;
+    background: var(--color-surface-alt);
+    border: 1px solid var(--color-border);
     border-radius: 20px;
     font-size: 0.8rem;
     cursor: pointer;
@@ -68,32 +70,33 @@
 }
 
 .projects-grid .tag:hover {
-    background: #0084d1;
-    color: white;
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #0f172a;
 }
 
 .projects-grid a {
     display: inline-block;
     margin-top: 1rem;
     text-decoration: none;
-    color: #0084d1;
-    border: 1px solid #0084d1;
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
     padding: 0.3rem 0.6rem;
     border-radius: 5px;
     transition: 0.2s;
 }
 
 .projects-grid a:hover {
-    background: #0084d1;
-    color: white;
+    background: var(--color-accent);
+    color: #0f172a;
 }
 
 /* Replace anchor Read more with button style */
 .read-more-btn {
     margin-top: 1rem;
     background: transparent;
-    color: #000; /* ensure black text */
-    border: 1px solid #0084d1;
+    color: var(--color-text);
+    border: 1px solid var(--color-accent);
     padding: 0.4rem 0.75rem;
     border-radius: 5px;
     cursor: pointer;
@@ -101,8 +104,8 @@
     transition: 0.2s;
 }
 .read-more-btn:hover {
-    background: #0084d1;
-    color: #000; /* keep black on hover */
+    background: var(--color-accent);
+    color: #0f172a;
 }
 
 .filter-bar {

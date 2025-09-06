@@ -3,6 +3,7 @@ import TopBar from '../components/TopBar.jsx';
 import Sidebar from '../components/Sidebar';
 import './Home.css';
 import './Projects.css';
+import './Messaging.css';
 import investorsData from '../data/investorsData';
 
 const mockConversations = [
@@ -77,16 +78,16 @@ export default function Messaging() {
   <main className="home-main messaging">
           <h2>Messaging</h2>
           <div className="messaging-layout">
-            <div className="messaging-conversations" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-              <h3 style={{ marginBottom: '.5rem' }}>Conversations</h3>
-              <ul className="conv-list" style={{ flex: 1, overflowY: 'auto' }}>
+            <div className="messaging-conversations">
+              <h3>Conversations</h3>
+              <ul className="conv-list">
                 {conversations.map(c => (
                   <li key={c.id} className={selected?.id === c.id ? 'active' : ''} onClick={() => handleSelect(c.id)}>
                     {c.investor}
                   </li>
                 ))}
               </ul>
-              <button className="primary-btn" onClick={openNewConversation}>New conversation</button>
+              <button className="primary-btn new-conv-btn" onClick={openNewConversation}>New conversation</button>
             </div>
             <div className="messaging-thread">
               <h3>Chat with {selected?.investor || '—'}</h3>
@@ -105,7 +106,7 @@ export default function Messaging() {
           </div>
           {isModalOpen && (
             <div className="modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) closeModal(); }}>
-              <div className="modal" role="dialog" aria-modal="true" aria-label="Start new conversation">
+              <div className="messaging-modal" role="dialog" aria-modal="true" aria-label="Start new conversation">
                 <button className="close-btn" aria-label="Close" onClick={closeModal}>×</button>
                 <h2 style={{ marginTop: 0 }}>Start a new conversation</h2>
                 <p style={{ marginTop: 0, color: 'var(--color-text-muted)' }}>Search and pick an investor to chat with.</p>
@@ -117,8 +118,8 @@ export default function Messaging() {
                   onChange={(e) => setQuery(e.target.value)}
                   style={{ width: '100%', margin: '0.5rem 0 0.75rem' }}
                 />
-                <div style={{ maxHeight: '320px', overflowY: 'auto', border: '1px solid var(--color-border)', borderRadius: '10px' }}>
-                  <ul className="conv-list" style={{ margin: 0 }}>
+                <div className="investor-list">
+                  <ul className="conv-list">
                     {filteredInvestors.length === 0 && (
                       <li style={{ cursor: 'default' }}>No investors found</li>
                     )}

@@ -1,0 +1,33 @@
+/* Dashboard layout and visuals */
+.dashboard { display: flex; flex-direction: column; gap: 1rem; }
+.cards-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1rem; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1rem; }
+
+.card { background: var(--panel-bg, #0b1220); border: 1px solid var(--color-border, #1f2a44); border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; gap: .25rem; }
+.card-value { font-size: 1.75rem; font-weight: 700; color: var(--color-text, #e5e7eb); }
+.card-label { color: var(--color-muted, #9ca3af); font-size: .9rem; }
+
+.panel { background: var(--panel-bg, #0b1220); border: 1px solid var(--color-border, #1f2a44); border-radius: 12px; overflow: hidden; }
+.panel-header { padding: .75rem 1rem; border-bottom: 1px solid var(--color-border, #1f2a44); display:flex; align-items:center; justify-content: space-between; }
+.panel-header h2 { font-size: 1rem; margin: 0; }
+
+.table { width: 100%; }
+.table-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: .5rem; padding: .75rem 1rem; align-items: center; }
+.table-head { font-weight: 600; color: var(--color-muted, #9ca3af); }
+.table-row:not(.table-head) { border-top: 1px solid var(--color-border, #1f2a44); }
+
+.chart-row { display: flex; align-items: center; gap: 1rem; padding: 1rem; }
+.chart-axis { fill: var(--color-muted, #9ca3af); font-size: .75rem; }
+.chart-value { fill: var(--color-text, #e5e7eb); font-size: .75rem; }
+.legend { list-style: none; padding: 0 1rem 1rem; margin: 0; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .5rem 1rem; }
+.legend li { display: flex; align-items: center; gap: .5rem; }
+.legend .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.legend .name { color: var(--color-text, #e5e7eb); }
+.legend .value { margin-left: auto; color: var(--color-muted, #9ca3af); font-variant-numeric: tabular-nums; }
+
+.empty { padding: 1rem; color: var(--color-muted, #9ca3af); }
+
+@media (max-width: 1024px) {
+  .cards-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .grid-2 { grid-template-columns: 1fr; }
+}

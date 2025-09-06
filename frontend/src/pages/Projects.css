@@ -262,13 +262,13 @@
 
 /* === Layout commun startup (dashboard + sidebar) === */
 .dashboard-container { display: flex; gap: 1rem; padding: 1rem; align-items: flex-start; }
-.dashboard-container .sidebar { min-width: 240px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
-.dashboard-container .sidebar-inner { padding: 0.75rem; display: flex; flex-direction: column; gap: 0.75rem; }
-.dashboard-container .sidebar-nav { display: flex; flex-direction: column; gap: 0.4rem; }
-.dashboard-container .nav-item { display: flex; align-items: center; gap: 0.6rem; width: 100%; text-align: left; padding: 0.55rem 0.7rem; background: var(--color-surface); color: var(--color-text-muted); border: 1px solid var(--color-border); border-radius: var(--radius-md); cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
-.dashboard-container .nav-item:hover { background: var(--color-surface-alt); color: var(--color-text); }
-.dashboard-container .nav-item.active { outline: 2px solid var(--color-accent); color: var(--color-text); }
-.dashboard-container .nav-icon { width: 20px; height: 20px; }
+.sidebar { min-width: 240px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+.sidebar-inner { padding: 0.75rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.sidebar-nav { display: flex; flex-direction: column; gap: 0.4rem; }
+.nav-item { display: flex; align-items: center; gap: 0.6rem; width: 100%; text-align: left; padding: 0.55rem 0.7rem; background: var(--color-surface); color: var(--color-text-muted); border: 1px solid var(--color-border); border-radius: var(--radius-md); cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
+.nav-item:hover { background: var(--color-surface-alt); color: var(--color-text); }
+.nav-item.active { outline: 2px solid var(--color-accent); color: var(--color-text); }
+.nav-icon { width: 20px; height: 20px; }
 
 .dashboard-content { flex: 1; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 1rem; text-align: left; }
 .dashboard-content h2, .dashboard-content h3 { color: var(--color-text); margin-bottom: 0.75rem; }

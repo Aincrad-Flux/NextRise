@@ -62,46 +62,62 @@ export default function Dashboard() {
     myProjects.map(p => ({ label: p.title, value: p.progress || 0 }))
   ), [myProjects])
 
+  // Engagement: consider engaged any incubator project past "Idea" maturity
+  const engagement = useMemo(() => {
+    const total = projectsData.length
+    const engaged = projectsData.filter(p => (p.maturity || '').toLowerCase() !== 'idea').length
+    const rate = Math.round((engaged / Math.max(1, total)) * 100)
+    return { total, engaged, rate }
+  }, [])
+
+  const engagementDonut = useMemo(() => (
+    withColors([
+      { label: 'Engaged', value: engagement.engaged },
+      { label: 'Not engaged', value: Math.max(0, engagement.total - engagement.engaged) },
+    ])
+  ), [engagement])
+
   return (
     <section className="dashboard">
       <div className="cards-grid">
-        <KpiCard label="Mes projets" value={kpis.total} />
-        <KpiCard label="Progression moyenne" value={`${kpis.avgProgress}%`} />
-        <KpiCard label="Investisseurs recherchés" value={kpis.investors} />
-        <KpiCard label="Besoin total" value={formatCurrency(kpis.need)} />
+        <KpiCard label="My Projects" value={kpis.total} />
+        <KpiCard label="Average Progress" value={`${kpis.avgProgress}%`} />
+        <KpiCard label="Investors Wanted" value={kpis.investors} />
+        <KpiCard label="Total Funding Need" value={formatCurrency(kpis.need)} />
+        <KpiCard label="Engagement Rate" value={`${engagement.rate}%`} />
       </div>
 
       <div className="grid-2">
         <div className="panel">
-          <div className="panel-header"><h2>Tags de mes projets</h2></div>
+          <div className="panel-header"><h2>My Project Tags</h2></div>
           {tagBreakdown.length ? (
             <div className="chart-row">
               <DonutMulti data={withColors(tagBreakdown)} />
               <Legend items={withColors(tagBreakdown)} />
             </div>
           ) : (
-            <EmptyState text="Aucun tag" />
+            <EmptyState text="No tags" />
           )}
         </div>
 
         <div className="panel">
-          <div className="panel-header"><h2>Progression par projet</h2></div>
+          <div className="panel-header"><h2>Progress by Project</h2></div>
           {myProgressBars.length ? (
             <BarChartMini data={withColors(myProgressBars)} max={100} unit="%" />
           ) : (
-            <EmptyState text="Aucun projet" />
+            <EmptyState text="No projects" />
           )}
         </div>
       </div>
 
       <div className="grid-2">
         <div className="panel">
-          <div className="panel-header"><h2>Créations sur 12 mois</h2></div>
+          <div className="panel-header"><h2>Creations in the Last 12 Months</h2></div>
           <LineChartMini data={withColors(monthlySeries)} />
         </div>
 
         <div className="panel">
-          <div className="panel-header"><h2>Répartition par secteur</h2></div>
+          <div className="panel-header"><h2>Sector Distribution</h2></div>
           <div className="chart-row">
             <DonutMulti data={withColors(sectorPie)} />
             <Legend items={withColors(sectorPie)} />
@@ -110,11 +126,19 @@ export default function Dashboard() {
       </div>
 
       <div className="panel">
-        <div className="panel-header"><h2>Dernières créations</h2></div>
+        <div className="panel-header"><h2>Engagement Rate</h2></div>
+        <div className="chart-row">
+          <DonutMulti data={engagementDonut} />
+          <Legend items={engagementDonut} />
+        </div>
+      </div>
+
+      <div className="panel">
+        <div className="panel-header"><h2>Latest Projects</h2></div>
         <div className="table">
           <div className="table-row table-head">
-            <div>Nom</div>
-            <div>Secteur</div>
+            <div>Name</div>
+            <div>Sector</div>
             <div>Date</div>
           </div>
           {latest.map(r => (
@@ -256,5 +280,5 @@ function withColors(arr) {
 
 function truncate(s, n) { return s.length > n ? s.slice(0, n - 1) + '…' : s }
 function shortMonth(key) { const [y, m] = key.split('-'); return `${m}/${y.slice(2)}` }
-function formatCurrency(v) { return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(v || 0) }
-function formatDate(d) { return new Intl.DateTimeFormat('fr-FR').format(d) }
+function formatCurrency(v) { return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(v || 0) }
+function formatDate(d) { return new Intl.DateTimeFormat('en-GB').format(d) }

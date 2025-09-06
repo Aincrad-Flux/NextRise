@@ -184,11 +184,11 @@
 
 .modal {
     position: relative;
-    background: #fff;
+    background: var(--color-surface);
     width: min(900px, 100%);
     border-radius: 16px;
     padding: 2.25rem 2rem 2rem 2rem;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
     animation: modalIn 0.25s ease;
 }
 
@@ -212,21 +212,21 @@
     position: absolute;
     top: 10px;
     left: 10px;
-    background: #0084d1;
-    color: #fff;
-    border: none;
+    background: linear-gradient(135deg, var(--color-accent), #7dd3fc);
+    color: #0f172a;
+    border: 1px solid #38bdf8;
     padding: 0.45rem 0.9rem;
     border-radius: 6px;
     font-size: 0.8rem;
     cursor: pointer;
     font-weight: 600;
     letter-spacing: 0.5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    transition: background 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    transition: filter 0.2s;
 }
 
 .modal .export-btn:hover {
-    background: #0066a3;
+    filter: brightness(1.07);
 }
 
 .modal-content img.modal-image {
@@ -241,9 +241,9 @@
     margin-bottom: 0.75rem;
 }
 
-/* Force black text inside modal for export */
+/* Use theme text color inside modal */
 .modal, .modal-content, .modal-content h2, .modal-content p, .modal-tags .tag {
-    color: #000 !important;
+    color: var(--color-text) !important;
 }
 
 .modal-tags {
@@ -254,11 +254,11 @@
 }
 
 .modal-tags .tag {
-    background: #f0f0f0;
+    background: var(--color-surface-alt);
     padding: 0.4rem 0.75rem;
     border-radius: 20px;
     font-size: 0.7rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--color-border);
 }
 
 /* Sidebar and dashboard layout styles are defined in Home.css for consistency across startup pages. */

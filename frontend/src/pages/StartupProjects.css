@@ -123,9 +123,7 @@
 /* (Old dropdown styles removed) */
 
 
-#Projects {
-    width: 75%;
-}
+#Projects { width: 100%; }
 
 #Projects h1 { text-align: center; margin-bottom: 1.25rem; }
 

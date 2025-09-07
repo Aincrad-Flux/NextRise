@@ -3,7 +3,7 @@ import { verifyToken } from "@/lib/auth";
 import { findUserById, publicUser } from "@/lib/db";
 
 export async function getSessionUser() {
-  const jar = cookies();
+  const jar = await cookies();
   const token = jar.get("auth_token")?.value;
   if (!token) return null;
   const payload = verifyToken(token);

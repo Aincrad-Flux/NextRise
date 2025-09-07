@@ -1,7 +1,21 @@
 // Next.js instrumentation hook (loaded when NEXT_RUNTIME instrumentation enabled)
 // Logs all outgoing fetch requests + responses (server side only)
 
-import { logger } from "@/lib/fileLogger";
+// Avoid importing Node-only modules in Edge. We'll provide a console-based logger
+// for Edge and dynamically import the file logger in Node runtime.
+let logger = {
+  info: (msg, data) => console.log(JSON.stringify({ ts: new Date().toISOString(), level: 'info', msg, ...data })),
+  warn: (msg, data) => console.warn(JSON.stringify({ ts: new Date().toISOString(), level: 'warn', msg, ...data })),
+  error: (msg, data) => console.error(JSON.stringify({ ts: new Date().toISOString(), level: 'error', msg, ...data })),
+};
+
+// Next replaces process.env.NEXT_RUNTIME at build time. If not Edge, try to load file logger.
+if (typeof process !== 'undefined' && process.env && process.env.NEXT_RUNTIME !== 'edge') {
+  // Dynamic import to keep Edge bundle clean.
+  import("@/lib/fileLogger").then(mod => {
+    if (mod && mod.logger) logger = mod.logger;
+  }).catch(() => { /* keep console logger */ });
+}
 
 const originalFetch = global.fetch;
 
@@ -22,8 +36,8 @@ global.fetch = async function loggedFetch(resource, init = {}) {
   let requestBody = null;
   try {
     if (init && init.body) {
-      if (typeof init.body === 'string') requestBody = safeJsonParse(init.body);
-      else if (Buffer.isBuffer(init.body)) requestBody = init.body.toString('utf8');
+  if (typeof init.body === 'string') requestBody = safeJsonParse(init.body);
+  else if (typeof Buffer !== 'undefined' && Buffer.isBuffer && Buffer.isBuffer(init.body)) requestBody = init.body.toString('utf8');
       else requestBody = '[unserializable body]';
     }
   } catch {}

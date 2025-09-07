@@ -13,7 +13,7 @@ info:
 servers:
   - url: http://localhost:3000
     description: Local dev server
-  - url: https://api.nexrise.example.com
+  - url: https://api.devgoblin.me
     description: Production (placeholder)
 
 tags:

@@ -9,6 +9,9 @@ import Search from './pages/Search.jsx'
 import About from './pages/About.jsx'
 import NotFound from './pages/NotFound.jsx'
 import Login from './pages/Login.jsx'
+import StartupProfile from './pages/StartupProfile.jsx'
+import Opportunities from './pages/Opportunities.jsx'
+import Messaging from './pages/Messaging.jsx'
 
 function App() {
   return (
@@ -16,6 +19,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/startup" element={<StartupHome />} />
+        <Route path="/startup/profile" element={<StartupProfile />} />
+        <Route path="/startup/opportunities" element={<Opportunities />} />
+        <Route path="/startup/messaging" element={<Messaging />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/news" element={<News />} />
         <Route path="/events" element={<Events />} />

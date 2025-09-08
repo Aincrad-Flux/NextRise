@@ -1,0 +1,83 @@
+/* Messaging specific overrides */
+
+/* Ensure the left panel is a column with scrollable list and compact items */
+.messaging-conversations {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.messaging-conversations h3 {
+	margin-bottom: 0.5rem;
+}
+
+.messaging-conversations .conv-list {
+	flex: 1;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 5px; /* fixed space between items */
+}
+
+/* Conversation list items: full width, compact height */
+.conv-list li {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: 36px; /* fixed compact height */
+	padding: 0 0.6rem; /* only horizontal padding */
+	line-height: 1.2;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	box-sizing: border-box; /* keep total height stable incl. border */
+}
+
+/* Modal themed container */
+.messaging-modal {
+	position: relative;
+	background: var(--color-surface);
+	color: var(--color-text);
+	width: min(900px, 100%);
+	border-radius: 16px;
+	padding: 1.25rem 1rem 1rem 1rem;
+	box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+	border: 1px solid var(--color-border);
+}
+
+.messaging-modal .close-btn {
+	position: absolute;
+	top: 8px;
+	right: 10px;
+	background: none;
+	border: none;
+	font-size: 1.5rem;
+	cursor: pointer;
+	line-height: 1;
+	color: var(--color-text);
+}
+
+/* Investor list in modal follows theme colors */
+.investor-list {
+	max-height: 320px;
+	overflow-y: auto;
+	border: 1px solid var(--color-border);
+	border-radius: 10px;
+	background: var(--color-surface-alt);
+}
+
+.investor-list .conv-list {
+	margin: 0;
+}
+
+.investor-list .conv-list li {
+	color: var(--color-text);
+}
+
+/* New conversation button spacing */
+.new-conv-btn {
+	align-self: flex-start;
+	width: auto;
+	margin-top: 0.5rem;
+}
+

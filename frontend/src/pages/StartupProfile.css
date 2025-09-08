@@ -1,0 +1,107 @@
+/* StartupProfile page styles - dark theme aligned with site variables */
+
+.home-main { background: var(--color-bg); }
+
+.profile-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.profile-title {
+  margin: 0;
+  font-size: 22px;
+  color: var(--color-text);
+}
+
+.profile-subtitle {
+  margin: 0 0 20px;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+}
+
+.section {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+}
+
+.section-title {
+  margin: 8px 0 12px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* column spans */
+.col-6 { grid-column: span 6; }
+.col-4 { grid-column: span 4; }
+.col-8 { grid-column: span 8; }
+.col-3 { grid-column: span 3; }
+.col-12 { grid-column: 1 / -1; }
+
+label {
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="date"], textarea {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--color-text);
+  background: var(--color-surface-alt);
+}
+
+input::placeholder, textarea::placeholder { color: var(--color-text-muted); }
+
+textarea { min-height: 96px; resize: vertical; }
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+button.save-btn {
+  appearance: none;
+  border: 1px solid var(--color-border);
+  background: linear-gradient(135deg,var(--color-accent),#7dd3fc);
+  color: #0f172a;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px -4px rgba(56,189,248,.45);
+}
+
+button.save-btn:hover { filter: brightness(1.06); }
+button.save-btn:active { filter: brightness(.94); }
+
+/* responsive */
+@media (max-width: 900px) {
+  .col-6, .col-4, .col-8, .col-3 { grid-column: 1 / -1; }
+}

@@ -5,10 +5,8 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Keep lockfiles (recommended) – comment out to ignore if desired
-# package-lock.json
-# yarn.lock
-# pnpm-lock.yaml
+frontend/package-lock.json
+backend/package-lock.json
 
 # --- Environment files ---
 .env

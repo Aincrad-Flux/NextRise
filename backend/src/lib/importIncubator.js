@@ -58,29 +58,54 @@ function hasId(o) {
 	return o && (typeof o.id === 'string' || typeof o.id === 'number');
 }
 
+// Remove incubator-specific identifiers from objects before DB upsert
+const INCUBATOR_KEYS = new Set([
+	'incubatorId', 'incubator_id',
+	'groupId', 'group_id',
+	'incubator', 'group',
+	// common variants that might appear in nested payloads
+	'organisationId', 'organizationId', 'organization_id', 'organisation_id',
+]);
+
+function sanitizeRow(row) {
+	if (!row || typeof row !== 'object') return row;
+	const copy = { ...row };
+	for (const k of Object.keys(copy)) {
+		if (INCUBATOR_KEYS.has(k)) delete copy[k];
+	}
+	return copy;
+}
+
+function sanitizeRows(rows) {
+	return ensureArray(rows).map(sanitizeRow);
+}
+
 // Public imports
 export async function importEvents() {
 	requireApiConfig();
 	const items = ensureArray(await getAll('/events', { limit: 100 }));
 	const filtered = items.filter(hasId);
-	const res = await upsertTo('event', filtered);
-	return { count: filtered.length, upserted: res.inserted };
+	const cleaned = sanitizeRows(filtered);
+	const res = await upsertTo('event', cleaned);
+	return { count: cleaned.length, upserted: res.inserted };
 }
 
 export async function importInvestors() {
 	requireApiConfig();
 	const items = ensureArray(await getAll('/investors', { limit: 100 }));
 	const filtered = items.filter(hasId);
-	const res = await upsertTo('investors', filtered);
-	return { count: filtered.length, upserted: res.inserted };
+	const cleaned = sanitizeRows(filtered);
+	const res = await upsertTo('investors', cleaned);
+	return { count: cleaned.length, upserted: res.inserted };
 }
 
 export async function importPartners() {
 	requireApiConfig();
 	const items = ensureArray(await getAll('/partners', { limit: 100 }));
 	const filtered = items.filter(hasId);
-	const res = await upsertTo('partners', filtered);
-	return { count: filtered.length, upserted: res.inserted };
+	const cleaned = sanitizeRows(filtered);
+	const res = await upsertTo('partners', cleaned);
+	return { count: cleaned.length, upserted: res.inserted };
 }
 
 export async function importNews() {
@@ -102,17 +127,19 @@ export async function importNews() {
 	const newsRows = details.filter(hasId);
 
 	// Step 4: upsert detailed rows to Supabase
-	const res = await upsertTo('news', newsRows);
-	return { count: newsRows.length, upserted: res.inserted };
+	const cleaned = sanitizeRows(newsRows);
+	const res = await upsertTo('news', cleaned);
+	return { count: cleaned.length, upserted: res.inserted };
 }
 
 export async function importUsers() {
 	requireApiConfig();
 	const items = ensureArray(await getAll('/users', { limit: 100 }));
 	const filtered = items.filter(hasId);
+	const cleaned = sanitizeRows(filtered);
 	// Table name 'user' is singular in DB per convention above
-	const res = await upsertTo('user', filtered);
-	return { count: filtered.length, upserted: res.inserted };
+	const res = await upsertTo('user', cleaned);
+	return { count: cleaned.length, upserted: res.inserted };
 }
 
 export async function importStartups() {
@@ -143,11 +170,13 @@ export async function importStartups() {
 				: [];
 		for (const f of list) {
 			if (!hasId(f)) continue;
-			founderRows.push({ ...f, startup_id: sid });
+			// sanitize founder payload but keep the FK to startup
+			const sanitized = sanitizeRow(f);
+			founderRows.push({ ...sanitized, startup_id: sid });
 		}
 	}
 
-	const up1 = await upsertTo('startup', startupRows);
+	const up1 = await upsertTo('startup', sanitizeRows(startupRows));
 	let up2 = { inserted: 0 };
 	if (founderRows.length) {
 		// Try composite on_conflict if your DB has unique on (id) already, keep 'id'

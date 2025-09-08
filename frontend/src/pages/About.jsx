@@ -1,5 +1,5 @@
 import TopBar from '../components/TopBar.jsx'
-import './home.css'
+import './Home.css'
 
 export default function About() {
     return (

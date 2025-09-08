@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import TopBar from '../components/TopBar.jsx';
-import './home.css';
+import './Home.css';
 import './Projects.css';
 import { projectsData } from '../data/projectsData.js';
 import ProjectModal from '../components/ProjectModal.jsx';

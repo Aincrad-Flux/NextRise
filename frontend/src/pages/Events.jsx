@@ -3,6 +3,7 @@ import TopBar from '../components/TopBar.jsx'
 import './Home.css'
 import './Events.css'
 import eventsByDate from '../data/eventsData.js'
+import Footer from "../components/Footer.jsx";
 
 function formatISO(date) {
     const y = date.getFullYear()
@@ -142,6 +143,7 @@ export default function Events() {
                         <EventsListCard date={selectedDate} />
                     </div>
                 </main>
+                <Footer />
             </div>
         )
 }

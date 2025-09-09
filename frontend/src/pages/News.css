@@ -8,12 +8,13 @@
 .news-grid article {
     display: flex;
     flex-direction: column;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
     overflow: hidden;
-    background: white;
-    color: black;
-    transition: transform 0.2s ease-in-out;
+    background: var(--color-surface);
+    color: var(--color-text);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease-in-out, box-shadow .2s;
 }
 
 .news-grid article:hover {
@@ -41,16 +42,17 @@
     display: inline-block;
     margin-top: 1rem;
     text-decoration: none;
-    color: #0084d1;
-    border: 1px solid #0084d1;
-    padding: 0.3rem 0.6rem;
-    border-radius: 5px;
+    color: var(--violet-500);
+    border: 1px solid var(--violet-300);
+    padding: 0.35rem 0.65rem;
+    border-radius: 8px;
     transition: 0.2s;
+    box-shadow: var(--shadow-sm);
 }
 
 .news-grid a:hover {
-    background: #0084d1;
-    color: white;
+    background: linear-gradient(135deg, var(--violet-500), var(--rose-300));
+    color: #fff;
 }
 #News {
     width: 60%;

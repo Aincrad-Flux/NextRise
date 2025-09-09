@@ -24,6 +24,7 @@ export default function Footer() {
         </nav>
         <div className="footer-meta">
           © {year} JEB Incubator. All rights reserved.
+          <span className="footer-powered">Powered by Aincrad-Flux</span>
         </div>
       </div>
     </footer>

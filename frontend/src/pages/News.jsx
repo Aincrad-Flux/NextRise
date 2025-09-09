@@ -97,7 +97,7 @@ export default function News() {
                   {n.location ? ` • ${n.location}` : ''}
                   {n.category ? ` • ${n.category}` : ''}
                 </small>
-                <button className="button" style={{marginTop:'.6rem'}} onClick={(e)=>{e.stopPropagation(); setSelected(n)}}>Lire</button>
+                <button className="button" style={{marginTop:'.6rem'}} onClick={(e)=>{e.stopPropagation(); setSelected(n)}}>Read</button>
               </div>
             </article>
           ))}

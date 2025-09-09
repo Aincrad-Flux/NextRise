@@ -96,7 +96,7 @@ export default function Events() {
     const goToday = () => setViewDate(new Date(today.getFullYear(), today.getMonth(), 1))
 
         return (
-            <div className="home-container">
+            <div className="home-container events-rose">
                 <TopBar />
                 <main className="home-main constrained" style={{ padding: '2rem' }}>
                     <div className="events-layout">

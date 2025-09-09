@@ -13,31 +13,77 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* Palette sombre (inspirée 404) */
-  --color-bg: #0f172a; /* base page */
-  --color-bg-alt: #1e293b; /* surface secondaire */
-  --color-surface: #162132; /* surface cartes */
-  --color-surface-alt: #1f2d40; /* hover / elevated */
-  --color-border: #2c3b50;
-  --color-border-soft: #1d2937;
-  --color-text: #e2e8f0;
-  --color-text-muted: #94a3b8;
-  --color-accent: #38bdf8;
-  --color-accent-glow: #0ea5e9;
-  --color-danger: #ef5555;
-  --color-danger-hover: #dc2626;
-  --color-danger-active: #b91c1c;
-  --color-topbar: #0c1320; /* top bar uniforme plus sombre */
+  /* White theme palette (rose/violet) */
+  --rose-500: #F18585;
+  --rose-400: #F49C9C;
+  --rose-300: #F6AEAE;
+  --rose-200: #F8CACF;
+  --violet-100: #EED5FB;
+  --violet-200: #E4BEF8;
+  --violet-300: #D5A8F2;
+  --violet-400: #CB90F1;
+  --violet-500: #C174F2;
+
+  /* Core theme tokens (light) */
+  /* On éclaircit moins en gardant un fond pastel dégradé et des surfaces légèrement teintées */
+  --color-bg: #f3e8f8; /* base page light lavender */
+  --color-bg-alt: #f4eef9; /* alt section */
+  --color-surface: #fcfaff; /* cards subtle tint */
+  --color-surface-alt: #f3ecfa; /* elevated/hover */
+  --panel-bg: #f9f6fd; /* dashboard panels */
+  --color-border: #e3d6f1; /* soft lilac border */
+  --color-border-soft: #eee3f8; /* even softer */
+  --color-text: #2a2332; /* deep violet-gray for contrast */
+  --color-text-muted: #6d5f74; /* muted */
+  --color-accent: var(--violet-500);
+  --color-accent-2: var(--rose-400);
+  --color-accent-glow: var(--violet-400);
+  --color-danger: #e11d48; /* rose-600 */
+  --color-danger-hover: #be123c; /* rose-700 */
+  --color-danger-active: #9f1239; /* rose-800 */
+
+  /* Frosted translucent topbar */
+  --color-topbar: linear-gradient(135deg, rgba(238,213,251,0.65), rgba(255,255,255,0.65));
+
+  /* Radii & shadows tuned for light surfaces */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
-  --shadow-md: 0 4px 12px -2px rgba(0,0,0,.45);
+  --shadow-sm: 0 1px 2px rgba(17, 12, 46, 0.06), 0 1px 1px rgba(17, 12, 46, 0.04);
+  --shadow-md: 0 8px 24px rgba(17, 12, 46, 0.08), 0 4px 12px rgba(17, 12, 46, 0.06);
+
+  /* Brand gradient */
+  --brand-gradient: linear-gradient(135deg, var(--violet-500), var(--rose-300));
+  --brand-soft: radial-gradient(900px 380px at 15% -10%, rgba(193,116,242,0.20), transparent 65%),
+                 radial-gradient(800px 340px at 90% 0%, rgba(241,133,133,0.18), transparent 70%),
+                 linear-gradient(135deg, #faf5ff 0%, #fff7fa 60%);
 }
 
-body { background: var(--color-bg); color: var(--color-text); }
+/* Dark theme variant (opt-in via .theme-dark) */
+.theme-dark {
+  --color-bg: #141018;
+  --color-bg-alt: #1b1522;
+  --color-surface: #1f1827;
+  --color-surface-alt: #261e31;
+  --panel-bg: #201a28;
+  --color-border: #3a2d47;
+  --color-border-soft: #2c2331;
+  --color-text: #ece4f2;
+  --color-text-muted: #a592b3;
+  --color-accent: #C174F2;
+  --color-accent-2: #F49C9C;
+  --color-accent-glow: #D5A8F2;
+  --color-topbar: linear-gradient(135deg, rgba(39,28,53,0.6), rgba(31,24,40,0.6));
+  --brand-soft: radial-gradient(700px 320px at 20% -5%, rgba(193,116,242,0.18), transparent 65%),
+                radial-gradient(600px 300px at 85% -5%, rgba(241,133,133,0.16), transparent 70%),
+                linear-gradient(150deg, #191222, #1e1526 55%, #22162a);
+  color-scheme: dark;
+}
 
-.theme-dark { color-scheme: dark; }
+body { background: var(--color-bg); color: var(--color-text); background-image: var(--brand-soft); background-attachment: fixed; transition: background-color .4s, color .3s; }
+
+/* Keep color-scheme neutral for white theme */
+.theme-dark { color-scheme: light; }
 
 a { color: inherit; text-decoration: none; }
 

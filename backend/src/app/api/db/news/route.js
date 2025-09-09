@@ -1,13 +1,30 @@
 import { NextResponse } from 'next/server';
 import { sendRequest } from '@/lib/supabase';
 
+// CORS helper (duplicated like events route). Could be factored later.
+function attachCORS(res, req) {
+    try {
+        const origin = req.headers.get('origin');
+        const allowed = [
+            'http://localhost:5173',
+            'http://127.0.0.1:5173',
+        ];
+        if (origin && allowed.includes(origin)) {
+            res.headers.set('Access-Control-Allow-Origin', origin);
+            res.headers.set('Access-Control-Allow-Credentials', 'true');
+        }
+        res.headers.set('Vary', 'Origin');
+        res.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        res.headers.set('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+    } catch {}
+}
+
 export const dynamic = 'force-dynamic';
 
 export async function GET(req) {
     try {
         const url = new URL(req.url);
         const sp = url.searchParams;
-        // Construire l'objet query; select par défaut = "*" si absent
         const query = {};
         let hasSelect = false;
         for (const [k, v] of sp.entries()) {
@@ -17,12 +34,16 @@ export async function GET(req) {
         if (!hasSelect) query.select = '*';
 
         const meta = await sendRequest({ path: '/news', query });
-        return NextResponse.json({ tables: meta });
+        const res = NextResponse.json({ tables: meta });
+        attachCORS(res, req);
+        return res;
     } catch (err) {
-        return NextResponse.json(
+        const res = NextResponse.json(
             { error: err?.message ?? 'Erreur inconnue' },
             { status: 500 }
         );
+        attachCORS(res, req);
+        return res;
     }
 }
 
@@ -30,10 +51,12 @@ export async function POST(req) {
     try {
         const payload = await req.json().catch(() => null);
         if (!payload || (typeof payload !== 'object')) {
-            return NextResponse.json(
+            const res = NextResponse.json(
                 { error: 'Corps JSON invalide.' },
                 { status: 400 }
             );
+            attachCORS(res, req);
+            return res;
         }
 
         const created = await sendRequest({
@@ -42,11 +65,15 @@ export async function POST(req) {
             body: payload,
         });
 
-        return NextResponse.json(created, { status: 201 });
+        const res = NextResponse.json(created, { status: 201 });
+        attachCORS(res, req);
+        return res;
     } catch (err) {
-        return NextResponse.json(
+        const res = NextResponse.json(
             { error: err?.message ?? 'Erreur inconnue' },
             { status: 500 }
         );
+        attachCORS(res, req);
+        return res;
     }
 }

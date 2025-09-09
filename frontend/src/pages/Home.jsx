@@ -1,5 +1,6 @@
 import TopBar from '../components/TopBar.jsx'
 import './Home.css'
+import Footer from "../components/Footer.jsx";
 
 export default function Home() {
   return (
@@ -47,6 +48,7 @@ export default function Home() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   )
 }

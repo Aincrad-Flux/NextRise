@@ -1,13 +1,16 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import TopBar from '../components/TopBar.jsx'
 import Dashboard from '../components/Dashboard.jsx'
 import Sidebar from '../components/Sidebar.jsx'
 import StartupProjects from './StartupProjects.jsx'
 // NOTE: case fixed (Home.css) so styles apply on case-sensitive systems
 import './Home.css'
+import { logger } from '../utils/logger.js'
 
 export default function StartupHome() {
   const [section, setSection] = useState('general')
+  const navigate = useNavigate()
   // TODO: replace mock user with real auth context when available
   const user = {
     firstName: 'Jean',
@@ -15,10 +18,18 @@ export default function StartupHome() {
     role: 'Startup',
   }
 
-  function handleLogout() {
-    // Placeholder logout (clear tokens / redirect when auth implemented)
-    // eslint-disable-next-line no-alert
-    alert('Not implemented: logout action')
+  async function handleLogout() {
+    const API_BASE = import.meta?.env?.VITE_BACKEND_URL?.replace(/\/$/, '') || ''
+    const url = new URL('/api/auth/logout', API_BASE || window.location.origin)
+    logger.info('Logout start', { endpoint: String(url) })
+    try {
+      const res = await fetch(url, { method: 'POST', credentials: 'include' })
+      logger.info('Logout response', { status: res.status, ok: res.ok })
+    } catch (e) {
+      logger.warn('Logout request failed', e)
+    } finally {
+      navigate('/')
+    }
   }
 
   return (

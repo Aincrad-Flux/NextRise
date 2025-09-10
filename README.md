@@ -15,20 +15,22 @@ It connects startups, investors and partners through a central place for visibil
 
 ## 📖 Table of Contents
 
-1. [Overview](#-overview)
-2. [Features](#-features)
-  * Public
-  * Startup
-  * Admin
-3. [Tech Stack](#-tech-stack)
-4. [Quick Start](#-quick-start)
-5. [Environment Variables](#-environment-variables)
-6. [Project Structure](#-project-structure)
-7. [Development Guidelines](#-development-guidelines)
-8. [Design & UX](#-design--ux)
-9. [Deployment](#-deployment)
-10. [Contributing](#-contributing)
-11. [License](#-license)
+- [🚀 JEB Startup Incubator Platform](#-jeb-startup-incubator-platform)
+  - [📖 Table of Contents](#-table-of-contents)
+  - [🌍 Overview](#-overview)
+  - [✨ Features](#-features)
+    - [🔓 Public](#-public)
+    - [🏗️ Startup](#️-startup)
+    - [🛠️ Admin](#️-admin)
+  - [🛠 Tech Stack](#-tech-stack)
+  - [🚀 Quick Start](#-quick-start)
+  - [🔐 Environment Variables](#-environment-variables)
+  - [📂 Project Structure](#-project-structure)
+  - [👨‍💻 Development Guidelines](#-development-guidelines)
+  - [🎨 Design \& UX](#-design--ux)
+  - [☁️ Deployment](#️-deployment)
+  - [🤝 Contributing](#-contributing)
+  - [📜 License](#-license)
 
 ---
 

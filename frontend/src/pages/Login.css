@@ -26,6 +26,9 @@
 .secondary-link a { color: var(--color-accent); text-decoration:none; }
 .secondary-link a:hover { text-decoration:underline; }
 
+/* Error */
+.error-text { margin:.25rem 0 0; color: #ef4444; font-size:.72rem; text-align:center; }
+
 /* Divider */
 .divider { display:flex; align-items:center; gap:.75rem; font-size:.6rem; text-transform:uppercase; font-weight:600; letter-spacing:.8px; color: var(--color-text-muted); margin: .25rem 0 .35rem; }
 .divider:before, .divider:after { content:""; flex:1; height:1px; background: linear-gradient(90deg,transparent,var(--color-border),transparent); }

@@ -1,61 +1,74 @@
-import { promises as fs } from "fs";
-import path from "path";
-import crypto from "crypto";
+import { sendRequest } from "@/lib/supabase";
 
-const DATA_DIR = process.env.DATA_DIR || path.join(process.cwd(), ".data");
-const USERS_FILE = path.join(DATA_DIR, "users.json");
-
-async function ensureDataFile() {
-  await fs.mkdir(DATA_DIR, { recursive: true });
-  try {
-    await fs.access(USERS_FILE);
-  } catch {
-    await fs.writeFile(USERS_FILE, JSON.stringify({ users: [] }, null, 2));
-  }
+// Map a DB row to our internal user shape (expose passwordHash instead of password)
+function rowToInternalUser(row) {
+  if (!row) return null;
+  const { password, ...rest } = row;
+  return { ...rest, passwordHash: password };
 }
 
 export async function getUsers() {
-  await ensureDataFile();
-  const raw = await fs.readFile(USERS_FILE, "utf8");
-  const data = JSON.parse(raw || "{}");
-  return Array.isArray(data.users) ? data.users : [];
-}
-
-async function saveUsers(users) {
-  await ensureDataFile();
-  const data = { users };
-  await fs.writeFile(USERS_FILE, JSON.stringify(data, null, 2));
+  const rows = await sendRequest({ path: "/user", query: { select: "*" } });
+  return Array.isArray(rows) ? rows.map(rowToInternalUser) : [];
 }
 
 export async function findUserByEmail(email) {
-  const users = await getUsers();
-  return users.find((u) => u.email.toLowerCase() === String(email).toLowerCase()) || null;
+  if (!email) return null;
+  const e = String(email).trim().toLowerCase();
+  // We normalize emails to lowercase on insert; use exact match
+  const rows = await sendRequest({
+    path: "/user",
+    query: { select: "*", email: `eq.${e}` },
+  });
+  const row = Array.isArray(rows) ? rows[0] : null;
+  return rowToInternalUser(row);
 }
 
 export async function findUserById(id) {
-  const users = await getUsers();
-  return users.find((u) => u.id === id) || null;
+  if (id === undefined || id === null) return null;
+  const rows = await sendRequest({
+    path: "/user",
+    query: { select: "*", id: `eq.${encodeURIComponent(id)}` },
+  });
+  const row = Array.isArray(rows) ? rows[0] : null;
+  return rowToInternalUser(row);
 }
 
-export async function addUser({ email, passwordHash, name }) {
-  const users = await getUsers();
-  const exists = users.some((u) => u.email.toLowerCase() === email.toLowerCase());
-  if (exists) {
+export async function addUser({ email, passwordHash, name, role, founder_id, investor_id }) {
+  const e = String(email || "").trim().toLowerCase();
+  if (!e) {
+    const err = new Error("Email requis");
+    err.code = "BAD_REQUEST";
+    throw err;
+  }
+
+  // Prevent duplicates
+  const existing = await findUserByEmail(e);
+  if (existing) {
     const err = new Error("User already exists");
     err.code = "USER_EXISTS";
     throw err;
   }
-  const id = crypto.randomUUID();
-  const now = new Date().toISOString();
-  const user = { id, email, passwordHash, name: name || null, createdAt: now, updatedAt: now };
-  users.push(user);
-  await saveUsers(users);
-  return { ...user };
+
+  // Build payload WITHOUT id (DB must assign it)
+  const allowedRoles = ["admin", "investor", "founder", "user"];
+  const payload = {
+    email: e,
+    name: name ?? null,
+    role: allowedRoles.includes(role) ? role : "user",
+    founder_id: founder_id ?? null,
+    investor_id: investor_id ?? null,
+    password: passwordHash,
+  };
+
+  const created = await sendRequest({ path: "/user", method: "POST", body: payload });
+  const row = Array.isArray(created) ? created[0] : created;
+  return rowToInternalUser(row);
 }
 
 export function publicUser(user) {
   if (!user) return null;
-  const { passwordHash, ...rest } = user;
+  const { passwordHash, password, ...rest } = user;
   return rest;
 }
 

@@ -14,7 +14,7 @@ export async function GET(req) {
             query[k] = v;
             if (k.toLowerCase() === 'select') hasSelect = true;
         }
-        if (!hasSelect) query.select = '*';
+    if (!hasSelect) query.select = 'id,email,name,role,founder_id,investor_id';
 
         const meta = await sendRequest({ path: '/user', query });
         return NextResponse.json({ tables: meta });
@@ -34,6 +34,11 @@ export async function POST(req) {
                 { error: 'Corps JSON invalide.' },
                 { status: 400 }
             );
+        }
+
+        // Ne jamais accepter un id fourni par le client
+        if ('id' in payload) {
+            delete payload.id;
         }
 
         const created = await sendRequest({

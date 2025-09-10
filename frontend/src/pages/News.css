@@ -40,18 +40,44 @@
 .news-grid a {
     display: inline-block;
     margin-top: 1rem;
+    margin-right: 5px;
     text-decoration: none;
-    color: #0084d1;
-    border: 1px solid #0084d1;
+    border: 1px solid;
     padding: 0.3rem 0.6rem;
     border-radius: 5px;
     transition: 0.2s;
 }
 
-.news-grid a:hover {
+.aEdit {
+    color: rgb(33, 191, 33);
+    border-color: rgb(33, 191, 33);
+}
+
+.aReadMore {
+    color: #0084d1;
+    border-color: #0084d1;
+}
+
+.aDelete {
+    color: red;
+    border-color: red;
+}
+
+.aReadMore:hover {
     background: #0084d1;
     color: white;
 }
+
+.aEdit:hover {
+    background: rgb(33, 191, 33);
+    color: white;
+}
+
+.aDelete:hover {
+    background: red;
+    color: white;
+}
+
 #News {
     width: 60%;
 }

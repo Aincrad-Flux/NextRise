@@ -86,7 +86,7 @@ export default function StartupCard({ project, onEdit, onDelete, onSelect }) {
                 cursor: "pointer",
               }}
             >
-              Éditer
+              Edit
             </button>
             <button
               onClick={(e) => {
@@ -105,7 +105,7 @@ export default function StartupCard({ project, onEdit, onDelete, onSelect }) {
                 color: "red",
               }}
             >
-              Supprimer
+              Delete
             </button>
           </div>
         )}

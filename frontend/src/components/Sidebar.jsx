@@ -8,7 +8,7 @@ if (admin === true){
   navItems = [
     { key: 'general', label: 'General', icon: DashboardIcon, route: '/admin/general' },
     { key: 'projects', label: 'Projects', icon: FolderIcon, route: '/admin/projects' },
-    { key: 'news', label: 'News', icon: MessageIcon, route: '/startup/messaging' },
+    { key: 'news', label: 'News', icon: MessageIcon, route: '/admin/news' },
     { key: 'events', label: 'Events', icon: OpportunityIcon, route: '/admin/events' },
     { key: 'users', label: 'Users', icon: UserIcon, route: '/admin/users' },
   ]

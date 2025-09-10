@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import TopBar from '../components/TopBar.jsx'
+import { logger } from '../utils/logger.js'
 import './Login.css'
 
 export default function Login() {
@@ -7,6 +9,17 @@ export default function Login() {
   const [signinForm, setSigninForm] = useState({ email: '', password: '' })
   const [signupForm, setSignupForm] = useState({ email: '', password: '', name: '' })
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
+
+  // Base URL (from docker-compose .env -> VITE_BACKEND_URL)
+  const API_BASE = import.meta?.env?.VITE_BACKEND_URL?.replace(/\/$/, '') || ''
+
+  function redirectByRole(role) {
+    if (role === 'admin') return navigate('/admin/')
+    // investor, founder, user -> /startup (default)
+    return navigate('/startup')
+  }
 
   function handleChange(e, type) {
     const { name, value } = e.target
@@ -17,15 +30,58 @@ export default function Login() {
   async function handleSubmit(e) {
     e.preventDefault()
     setLoading(true)
+    setError('')
     try {
-      if (mode === 'signin') {
-        console.log('Sign in attempt', signinForm)
-        // TODO: call API /auth/login
-      } else {
-        console.log('Sign up attempt', signupForm)
-        // TODO: call API /auth/register
+      const endpoint = mode === 'signin' ? '/api/auth/login' : '/api/auth/register'
+      const body = mode === 'signin' ? signinForm : signupForm
+      const url = new URL(endpoint, API_BASE || window.location.origin)
+      const t0 = Date.now()
+
+      // Do not log passwords
+      const safe = { mode, endpoint, base: API_BASE || window.location.origin, email: body.email || undefined, name: body.name || undefined }
+      logger.info('Auth submit start', safe)
+
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // important: receive/set auth cookie
+        body: JSON.stringify(body)
+      })
+
+      const data = await res.json().catch(() => ({}))
+      logger.debug('Auth response received', { status: res.status, ok: res.ok, ms: Date.now() - t0 })
+      if (!res.ok) {
+        const msg = data?.error || (mode === 'signin' ? 'Échec de connexion' : "Échec de création du compte")
+        logger.warn('Auth error response', { status: res.status, body: data })
+        throw new Error(msg)
       }
-    } finally { setLoading(false) }
+
+      const user = data?.user
+      if (!user || !user.role) {
+        // Fallback: fetch current session if role missing
+        try {
+          const meUrl = new URL('/api/auth/me', API_BASE || window.location.origin)
+          const meRes = await fetch(meUrl, { credentials: 'include' })
+          const meData = await meRes.json().catch(() => ({}))
+          logger.info('Auth fallback /me', { status: meRes.status, hasUser: !!meData?.user, role: meData?.user?.role })
+          if (meRes.ok && meData?.user?.role) {
+            const to = meData.user.role === 'admin' ? '/admin/' : '/startup'
+            logger.info('Redirect by role', { role: meData.user.role, to })
+            return redirectByRole(meData.user.role)
+          }
+        } catch {}
+        logger.info('Redirect default to /startup')
+        return navigate('/startup')
+      }
+      logger.info('Redirect by role', { role: user.role, to: user.role === 'admin' ? '/admin/' : '/startup' })
+      return redirectByRole(user.role)
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Une erreur est survenue'
+      logger.error('Auth submit failed', err)
+      setError(msg)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const activeForm = mode === 'signin' ? (
@@ -40,8 +96,9 @@ export default function Login() {
       </div>
       <div className="actions">
         <button disabled={loading} type="submit" className="primary-btn">{loading ? 'Signing in...' : 'Sign In'}</button>
-        <p className="secondary-link">Pas de compte ? <a onClick={() => setMode('signup')}>Créer un compte</a></p>
+        <p className="secondary-link">Pas de compte ? <a onClick={() => { setMode('signup'); setError('') }}>Créer un compte</a></p>
       </div>
+      {error && <p className="error-text" role="alert">{error}</p>}
     </form>
   ) : (
     <form onSubmit={handleSubmit} className="auth-form fade-enter" autoComplete="on">
@@ -59,9 +116,10 @@ export default function Login() {
       </div>
       <div className="actions">
         <button disabled={loading} type="submit" className="primary-btn">{loading ? 'Création...' : 'Créer mon compte'}</button>
-        <p className="secondary-link">Déjà un compte ? <a onClick={() => setMode('signin')}>Se connecter</a></p>
+        <p className="secondary-link">Déjà un compte ? <a onClick={() => { setMode('signin'); setError('') }}>Se connecter</a></p>
       </div>
       <p className="terms">En créant un compte vous acceptez nos conditions d'utilisation et politique de confidentialité.</p>
+      {error && <p className="error-text" role="alert">{error}</p>}
     </form>
   )
 
@@ -76,8 +134,8 @@ export default function Login() {
               <p className="auth-sub">{mode === 'signin' ? 'Accédez à votre tableau de bord' : 'Rejoignez la plateforme en quelques secondes'}</p>
             </div>
             <div className="auth-tabs" role="tablist">
-              <button type="button" className={`auth-tab ${mode==='signin'?'active':''}`} onClick={() => setMode('signin')} role="tab" aria-selected={mode==='signin'}>Sign In</button>
-              <button type="button" className={`auth-tab ${mode==='signup'?'active':''}`} onClick={() => setMode('signup')} role="tab" aria-selected={mode==='signup'}>Sign Up</button>
+              <button type="button" className={`auth-tab ${mode==='signin'?'active':''}`} onClick={() => { setMode('signin'); setError('') }} role="tab" aria-selected={mode==='signin'}>Sign In</button>
+              <button type="button" className={`auth-tab ${mode==='signup'?'active':''}`} onClick={() => { setMode('signup'); setError('') }} role="tab" aria-selected={mode==='signup'}>Sign Up</button>
             </div>
             {activeForm}
             <div className="divider">ou</div>

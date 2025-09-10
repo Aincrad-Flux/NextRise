@@ -10,7 +10,11 @@ export async function hashPassword(password) {
 }
 
 export async function verifyPassword(password, hash) {
-  return bcrypt.compare(password, hash);
+  if (!hash) return false;
+  // Supporte les anciens mots de passe non hashés si la DB contient du texte en clair
+  const isBcrypt = typeof hash === 'string' && hash.startsWith('$2');
+  if (isBcrypt) return bcrypt.compare(password, hash);
+  return password === hash;
 }
 
 export function signToken(payload) {

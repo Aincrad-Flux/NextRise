@@ -25,7 +25,17 @@ export async function POST(req) {
       );
     }
 
-    const scope = dataParam || onlyParam; // data takes precedence if present
+    const scopeRaw = dataParam || onlyParam; // data takes precedence if present
+    // Accept singular aliases (e.g., user => users, event => events, etc.)
+    const aliases = {
+      user: 'users',
+      event: 'events',
+      investor: 'investors',
+      partner: 'partners',
+      startup: 'startups',
+      new: 'news',
+    };
+    const scope = aliases[scopeRaw] || scopeRaw;
     let result;
     switch (scope) {
       case 'events':

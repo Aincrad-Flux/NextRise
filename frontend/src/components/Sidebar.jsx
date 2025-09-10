@@ -1,13 +1,26 @@
 import { useNavigate } from 'react-router-dom'
 import UserCard from './UserCard.jsx'
 
-const navItems = [
-  { key: 'general', label: 'General', icon: DashboardIcon, route: '/startup' },
-  { key: 'projects', label: 'Projects', icon: FolderIcon, route: '/startup' },
-  { key: 'profile', label: 'Profil startup', icon: UserIcon, route: '/startup/profile' },
-  { key: 'opportunities', label: 'Opportunités', icon: OpportunityIcon, route: '/startup/opportunities' },
-  { key: 'messaging', label: 'Messagerie', icon: MessageIcon, route: '/startup/messaging' },
-]
+let navItems
+let admin = true
+
+if (admin === true){
+  navItems = [
+    { key: 'general', label: 'General', icon: DashboardIcon, route: '/admin/general' },
+    { key: 'projects', label: 'Projects', icon: FolderIcon, route: '/admin/projects' },
+    { key: 'news', label: 'News', icon: MessageIcon, route: '/startup/messaging' },
+    { key: 'events', label: 'Events', icon: OpportunityIcon, route: '/admin/events' },
+    { key: 'users', label: 'Users', icon: UserIcon, route: '/admin/users' },
+  ]
+} else {
+  navItems = [
+    { key: 'general', label: 'General', icon: DashboardIcon, route: '/startup' },
+    { key: 'projects', label: 'Projects', icon: FolderIcon, route: '/startup' },
+    { key: 'profile', label: 'Profil startup', icon: UserIcon, route: '/startup/profile' },
+    { key: 'opportunities', label: 'Opportunités', icon: OpportunityIcon, route: '/startup/opportunities' },
+    { key: 'messaging', label: 'Messagerie', icon: MessageIcon, route: '/startup/messaging' },
+  ]
+}
 
 export default function Sidebar({ active, onSelect, user, onLogout }) {
   const navigate = useNavigate()

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 
 export default function TopBar() {
   const { pathname } = useLocation()
-  const isStartup = pathname.startsWith('/startup')
+  const isStartup = pathname.startsWith('/startup') || pathname.startsWith('/admin')
   const [menuOpen, setMenuOpen] = useState(false)
 
   // Close menu on route change
@@ -51,7 +51,7 @@ export default function TopBar() {
         {!isStartup && (
           // TODO: replace with real auth links when available
           <div className="auth-buttons" aria-label="Authentication">
-            <a href="/startup" className="auth-btn sign-in" role="button">Sign in</a>
+            <a href="/admin/general" className="auth-btn sign-in" role="button">Sign in</a>
             <a href="/login" className="auth-btn sign-up" role="button">Sign up</a>
           </div>
         )}

@@ -1,6 +1,7 @@
 import TopBar from '../components/TopBar.jsx'
 import './Home.css'
 import './News.css'
+import Footer from "../components/Footer.jsx";
 
 export default function News() {
     return (
@@ -95,6 +96,7 @@ export default function News() {
 
                 </div>
             </main>
+            <Footer />
         </div>
     )
 }

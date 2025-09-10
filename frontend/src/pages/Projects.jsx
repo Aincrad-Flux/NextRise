@@ -6,6 +6,7 @@ import { projectsData } from '../data/projectsData.js';
 import ProjectModal from '../components/ProjectModal.jsx';
 import MultiSelect from '../components/MultiSelect.jsx';
 import '../components/MultiSelect.css';
+import Footer from "../components/Footer.jsx";
 
 export default function Projects() {
     const [activeProject, setActiveProject] = useState(null);
@@ -101,6 +102,7 @@ export default function Projects() {
                 </div>
                 <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />
             </main>
+            <Footer />
         </div>
     );
 }

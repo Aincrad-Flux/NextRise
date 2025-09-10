@@ -126,6 +126,7 @@ export default function News() {
           </div>
         )}
       </main>
+      <Footer />
     </div>
   )
 }

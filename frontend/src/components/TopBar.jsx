@@ -1,34 +1,55 @@
-import homeIcon from '../assets/home.svg'
-import './TopBar.css'
-import { useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+
+import homeIcon from '../assets/home.svg';
+import sunIcon from '../assets/sun.svg';
+import moonIcon from '../assets/moon.svg';
+import './TopBar.css';
+import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 export default function TopBar() {
-  const { pathname } = useLocation()
-  const isStartup = pathname.startsWith('/startup')
-  const [menuOpen, setMenuOpen] = useState(false)
+  const { pathname } = useLocation();
+  const isStartup = pathname.startsWith('/startup');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [dark, setDark] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return document.body.classList.contains('theme-dark');
+    }
+    return false;
+  });
 
   // Close menu on route change
   useEffect(() => {
-    setMenuOpen(false)
-  }, [pathname])
+    setMenuOpen(false);
+  }, [pathname]);
 
   // Lock scroll and close with ESC
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Escape') setMenuOpen(false)
-    }
+      if (e.key === 'Escape') setMenuOpen(false);
+    };
     if (menuOpen) {
-      document.documentElement.style.overflow = 'hidden'
-      window.addEventListener('keydown', onKey)
+      document.documentElement.style.overflow = 'hidden';
+      window.addEventListener('keydown', onKey);
     } else {
-      document.documentElement.style.overflow = ''
+      document.documentElement.style.overflow = '';
     }
     return () => {
-      document.documentElement.style.overflow = ''
-      window.removeEventListener('keydown', onKey)
+      document.documentElement.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (dark) {
+      document.body.classList.add('theme-dark');
+    } else {
+      document.body.classList.remove('theme-dark');
     }
-  }, [menuOpen])
+  }, [dark]);
+
+  const handleThemeToggle = () => {
+    setDark((prev) => !prev);
+  };
 
   return (
     <header className={`topbar${isStartup ? ' no-nav' : ''}`}>
@@ -37,6 +58,29 @@ export default function TopBar() {
         <a href="/" className="home-link" aria-label="Aller à l'accueil">
           <img src={homeIcon} alt="Accueil" className="home-icon" />
         </a>
+        <button
+          type="button"
+          className="theme-toggle-btn"
+          aria-label={dark ? 'Passer en mode clair' : 'Passer en mode sombre'}
+          onClick={handleThemeToggle}
+          style={{
+            marginLeft: '0.5rem',
+            background: 'var(--color-surface)',
+            border: '1px solid var(--color-border)',
+            borderRadius: '10px',
+            padding: '0.3rem 0.6rem',
+            display: 'flex',
+            alignItems: 'center',
+            cursor: 'pointer',
+            transition: 'background .2s, color .2s',
+          }}
+        >
+          <img
+            src={dark ? sunIcon : moonIcon}
+            alt={dark ? 'Icône soleil' : 'Icône lune'}
+            style={{ width: 20, height: 20 }}
+          />
+        </button>
       </div>
       {!isStartup && (
         <nav className="topbar-nav" aria-label="Principale">
@@ -45,7 +89,7 @@ export default function TopBar() {
           <a href="/events" className="nav-btn">Events</a>
         </nav>
       )}
-      <div className="topbar-right">
+  <div className="topbar-right">
         {!isStartup && (
           // TODO: replace with real auth links when available
           <div className="auth-buttons" aria-label="Authentication">

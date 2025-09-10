@@ -105,19 +105,21 @@ export default function News() {
         </div>
 
         {selected && (
-          <div className="modal-backdrop" onClick={()=> setSelected(null)}>
-            <div className="modal" onClick={e=>e.stopPropagation()} style={{maxWidth:'800px'}}>
-              <header style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-                <h2 style={{margin:0}}>{selected.title}</h2>
-                <button className="button" onClick={()=> setSelected(null)}>Fermer</button>
+          <div className="news-modal-backdrop" onClick={()=> setSelected(null)}>
+            <div className="news-modal" onClick={e=>e.stopPropagation()}>
+              <header className="news-modal-header">
+                <h2>{selected.title}</h2>
+                <button className="button" onClick={()=> setSelected(null)}>Close</button>
               </header>
-              <small style={{opacity:.7}}>
+              <small className="news-modal-meta">
                 {new Date(selected.news_date).toLocaleDateString(undefined,{year:'numeric', month:'long', day:'2-digit'})}
                 {selected.location ? ` • ${selected.location}` : ''}
                 {selected.category ? ` • ${selected.category}` : ''}
               </small>
-              <img src={DEFAULT_IMG} alt={selected.title} style={{width:'100%', marginTop:'1rem', borderRadius:'4px'}} />
-              <div style={{marginTop:'1rem', lineHeight:1.45, fontSize:'.95rem', whiteSpace:'pre-wrap'}}>
+              <div className="news-modal-img-wrap">
+                <img src={DEFAULT_IMG} alt={selected.title} />
+              </div>
+              <div className="news-modal-content">
                 {stripMarkdown(selected.description)}
               </div>
             </div>

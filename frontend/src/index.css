@@ -26,7 +26,7 @@
 
   /* Core theme tokens (light) */
   /* On éclaircit moins en gardant un fond pastel dégradé et des surfaces légèrement teintées */
-  --color-bg: #f3e8f8; /* base page light lavender */
+  --color-bg: #f6f1f8; /* base page light lavender */
   --color-bg-alt: #f4eef9; /* alt section */
   --color-surface: #fcfaff; /* cards subtle tint */
   --color-surface-alt: #f3ecfa; /* elevated/hover */

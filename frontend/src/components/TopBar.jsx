@@ -12,6 +12,8 @@ export default function TopBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dark, setDark] = useState(() => {
     if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('theme-dark');
+      if (stored !== null) return stored === 'true';
       return document.body.classList.contains('theme-dark');
     }
     return false;
@@ -45,6 +47,7 @@ export default function TopBar() {
     } else {
       document.body.classList.remove('theme-dark');
     }
+    localStorage.setItem('theme-dark', dark);
   }, [dark]);
 
   const handleThemeToggle = () => {

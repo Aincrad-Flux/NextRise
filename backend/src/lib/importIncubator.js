@@ -60,10 +60,9 @@ function hasId(o) {
 
 // Remove incubator-specific identifiers from objects before DB upsert
 const INCUBATOR_KEYS = new Set([
-	'incubatorId', 'incubator_id',
+	'incubatorId', 'incubator_id', 'id',
 	'groupId', 'group_id',
 	'incubator', 'group',
-	// common variants that might appear in nested payloads
 	'organisationId', 'organizationId', 'organization_id', 'organisation_id',
 ]);
 

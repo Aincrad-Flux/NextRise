@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from 'react'
 import TopBar from '../components/TopBar.jsx'
 import { logger } from '../utils/logger.js'
+import Footer from '../components/Footer.jsx'
 import './Home.css'
 import './Events.css'
 

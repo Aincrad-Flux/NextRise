@@ -96,7 +96,7 @@ export default function Login() {
       </div>
       <div className="actions">
         <button disabled={loading} type="submit" className="primary-btn">{loading ? 'Signing in...' : 'Sign In'}</button>
-        <p className="secondary-link">Pas de compte ? <a onClick={() => { setMode('signup'); setError('') }}>Créer un compte</a></p>
+        <p className="secondary-link">Don't have an account? <a onClick={() => { setMode('signup'); setError('') }}>Create one</a></p>
       </div>
       {error && <p className="error-text" role="alert">{error}</p>}
     </form>
@@ -130,19 +130,14 @@ export default function Login() {
         <div className="login-inner">
           <div className="auth-card">
             <div className="auth-header">
-              <h1>{mode === 'signin' ? 'Bienvenue' : 'Créer un compte'}</h1>
-              <p className="auth-sub">{mode === 'signin' ? 'Accédez à votre tableau de bord' : 'Rejoignez la plateforme en quelques secondes'}</p>
+              <h1>{mode === 'signin' ? 'Welcome' : 'Create an account'}</h1>
+              <p className="auth-sub">{mode === 'signin' ? 'Access your dashboard' : 'Join the platform in seconds'}</p>
             </div>
             <div className="auth-tabs" role="tablist">
               <button type="button" className={`auth-tab ${mode==='signin'?'active':''}`} onClick={() => { setMode('signin'); setError('') }} role="tab" aria-selected={mode==='signin'}>Sign In</button>
               <button type="button" className={`auth-tab ${mode==='signup'?'active':''}`} onClick={() => { setMode('signup'); setError('') }} role="tab" aria-selected={mode==='signup'}>Sign Up</button>
             </div>
             {activeForm}
-            <div className="divider">ou</div>
-            <div className="social-row">
-              <button className="social-btn" type="button">Google</button>
-              <button className="social-btn" type="button">GitHub</button>
-            </div>
           </div>
         </div>
       </div>

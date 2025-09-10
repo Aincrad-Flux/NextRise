@@ -49,7 +49,7 @@ export default function TopBar() {
         {!isStartup && (
           // TODO: replace with real auth links when available
           <div className="auth-buttons" aria-label="Authentication">
-            <a href="/startup" className="auth-btn sign-in" role="button">Sign in</a>
+            <a href="/login" className="auth-btn sign-in" role="button">Sign in</a>
             <a href="/login" className="auth-btn sign-up" role="button">Sign up</a>
           </div>
         )}
@@ -101,8 +101,6 @@ export default function TopBar() {
                 <a href="/projects" className="nav-btn" onClick={() => setMenuOpen(false)}>Projects</a>
                 <a href="/news" className="nav-btn" onClick={() => setMenuOpen(false)}>News</a>
                 <a href="/events" className="nav-btn" onClick={() => setMenuOpen(false)}>Events</a>
-                <a href="/advanced-search" className="nav-btn" onClick={() => setMenuOpen(false)}>Advanced Search</a>
-                <a href="/about" className="nav-btn" onClick={() => setMenuOpen(false)}>About</a>
               </nav>
             )}
 

@@ -3,9 +3,7 @@ import TopBar from '../components/TopBar.jsx'
 import { logger } from '../utils/logger.js'
 import './Home.css'
 import './Events.css'
-// Removed mock import; data now fetched from backend API
 
-// Backend base URL: prefer Vite env, fallback to window origin heuristic
 const API_BASE = import.meta?.env?.VITE_BACKEND_URL?.replace(/\/$/, '')
   || (typeof window !== 'undefined' ? `${window.location.protocol}//localhost:3000` : 'http://localhost:3000')
 
@@ -207,6 +205,7 @@ export default function Events() {
                         <EventsListCard date={selectedDate} eventsByDate={eventsByDate} loading={loading} error={error} />
                     </div>
                 </main>
+                <Footer />
             </div>
         )
 }

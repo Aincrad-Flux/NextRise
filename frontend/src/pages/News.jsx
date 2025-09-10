@@ -3,6 +3,7 @@ import TopBar from '../components/TopBar.jsx'
 import { logger } from '../utils/logger.js'
 import './Home.css'
 import './News.css'
+import Footer from "../components/Footer.jsx";
 
 // Backend base URL aligné avec Events page (fallback localhost:3000)
 const API_BASE = import.meta?.env?.VITE_BACKEND_URL?.replace(/\/$/, '')

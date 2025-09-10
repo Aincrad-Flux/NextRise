@@ -43,8 +43,6 @@ export default function TopBar() {
           <a href="/projects" className="nav-btn">Projects</a>
           <a href="/news" className="nav-btn">News</a>
           <a href="/events" className="nav-btn">Events</a>
-          <a href="/advanced-search" className="nav-btn">Advanced Search</a>
-          <a href="/about" className="nav-btn">About</a>
         </nav>
       )}
       <div className="topbar-right">

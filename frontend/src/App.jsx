@@ -12,6 +12,10 @@ import Login from './pages/Login.jsx'
 import StartupProfile from './pages/StartupProfile.jsx'
 import Opportunities from './pages/Opportunities.jsx'
 import Messaging from './pages/Messaging.jsx'
+import AdminGeneral from './pages/adminGeneral.jsx'
+import AdminProjects from './pages/adminProjects.jsx'
+import AdminNews from './pages/adminNews.jsx'
+import AdminEvents from './pages/adminEvents.jsx'
 //import Admin from './pages/Admin.jsx'
 
 function App() {
@@ -19,6 +23,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/admin/general" element={<AdminGeneral />} />
+        <Route path="/admin/projects" element={<AdminProjects />} />
+        <Route path="/admin/news" element={<AdminNews />} />
+        <Route path="/admin/events" element={<AdminEvents />} />
         <Route path="/startup" element={<StartupHome />} />
         <Route path="/startup/profile" element={<StartupProfile />} />
         <Route path="/startup/opportunities" element={<Opportunities />} />

@@ -134,6 +134,7 @@
 .news-grid a {
     display: inline-block;
     margin-top: 1rem;
+    margin-right: 5px;
     text-decoration: none;
     color: var(--violet-500);
     border: 1px solid var(--violet-300);
@@ -143,10 +144,40 @@
     box-shadow: var(--shadow-sm);
 }
 
+.aEdit {
+    color: rgb(33, 191, 33);
+    border-color: rgb(33, 191, 33);
+}
+
+.aReadMore {
+    color: #0084d1;
+    border-color: #0084d1;
+}
+
+.aDelete {
+    color: red;
+    border-color: red;
+}
+
+.aReadMore:hover {
+    background: #0084d1;
+    color: white;
+
 .news-grid a:hover {
     background: linear-gradient(135deg, var(--violet-500), var(--rose-300));
     color: #fff;
 }
+
+.aEdit:hover {
+    background: rgb(33, 191, 33);
+    color: white;
+}
+
+.aDelete:hover {
+    background: red;
+    color: white;
+}
+
 #News {
     width: 60%;
 }

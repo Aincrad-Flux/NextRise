@@ -35,12 +35,19 @@ export default function DataManager({ resource, idField = 'id', columns, pageSiz
       const res = await fetch(url, { credentials: 'include' })
       if (!res.ok) throw new Error(`List failed ${res.status}`)
       const data = await res.json()
-      if (!Array.isArray(data)) {
-        // Some handlers might wrap { items:[], ... }
-        if (data && Array.isArray(data.items)) setItems(data.items)
-        else setItems([])
-      } else {
+      if (Array.isArray(data)) {
         setItems(data)
+      } else if (data) {
+        if (Array.isArray(data.items)) setItems(data.items)
+        else if (Array.isArray(data.tables)) setItems(data.tables)
+        else {
+          // fallback: first array property
+            const firstArray = Object.values(data).find(v => Array.isArray(v))
+            if (Array.isArray(firstArray)) setItems(firstArray)
+            else setItems([])
+        }
+      } else {
+        setItems([])
       }
     } catch (e) {
       setError(e.message)

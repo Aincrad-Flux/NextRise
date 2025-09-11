@@ -1,5 +1,16 @@
 import React from 'react';
 
+/**
+ * ProjectCard component.
+ * Displays a concise summary of a project with tags, progress and actions.
+ * @component
+ * @param {Object} props
+ * @param {{ title:string, description?:string, progress?:number, investorsWanted?:number, amountNeeded?:number, tags?:string[] }} props.project Project data.
+ * @param {(project:Object)=>void} [props.onEdit] Optional edit handler.
+ * @param {(project:Object)=>void} [props.onDelete] Optional delete handler.
+ * @param {(project:Object)=>void} [props.onOpen] Optional open/details handler.
+ * @returns {JSX.Element}
+ */
 export default function ProjectCard({ project, onEdit, onDelete, onOpen }) {
   const { title, description, progress = 0, investorsWanted = 0, amountNeeded = 0, tags = [] } = project;
 
@@ -11,8 +22,8 @@ export default function ProjectCard({ project, onEdit, onDelete, onOpen }) {
       <header className="project-card__header">
         <h3 className="project-card__title" title={title}>{title}</h3>
         <div className="project-card__actions">
-          {onEdit && <button className="pc-btn" onClick={() => onEdit(project)} aria-label="Modifier">Éditer</button>}
-          {onDelete && <button className="pc-btn danger" onClick={() => onDelete(project)} aria-label="Supprimer">Supprimer</button>}
+          {onEdit && <button className="pc-btn" onClick={() => onEdit(project)} aria-label="Edit">Edit</button>}
+          {onDelete && <button className="pc-btn danger" onClick={() => onDelete(project)} aria-label="Delete">Delete</button>}
         </div>
       </header>
 
@@ -25,20 +36,20 @@ export default function ProjectCard({ project, onEdit, onDelete, onOpen }) {
         </div>
       )}
 
-      <p className="project-card__desc">{shortDesc || 'Aucune description.'}</p>
+  <p className="project-card__desc">{shortDesc || 'No description.'}</p>
 
       <div className="project-card__meta">
         <div className="pc-progress">
           <div className="pc-progress__bar"><span style={{ width: `${Math.max(0, Math.min(100, progress))}%` }} /></div>
-          <div className="pc-progress__label">Avancement: {Math.round(progress)}%</div>
+          <div className="pc-progress__label">Progress: {Math.round(progress)}%</div>
         </div>
         <div className="pc-stats">
-          <div className="pc-stat"><strong>{investorsWanted}</strong><span>Investisseurs recherchés</span></div>
-          <div className="pc-stat"><strong>{amountFmt}</strong><span>Montant nécessaire</span></div>
+          <div className="pc-stat"><strong>{investorsWanted}</strong><span>Investors wanted</span></div>
+          <div className="pc-stat"><strong>{amountFmt}</strong><span>Amount needed</span></div>
         </div>
       </div>
 
-      {onOpen && <button className="primary-btn" onClick={() => onOpen(project)} style={{ marginTop: '.5rem' }}>Détails</button>}
+  {onOpen && <button className="primary-btn" onClick={() => onOpen(project)} style={{ marginTop: '.5rem' }}>Details</button>}
     </article>
   );
 }

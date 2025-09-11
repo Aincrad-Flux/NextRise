@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { useSession } from '../components/SessionProvider.jsx'
 import TopBar from '../components/TopBar.jsx'
 import Dashboard from '../components/Dashboard.jsx'
-import Sidebar from '../components/Sidebar.jsx'
 import StartupProjects from './StartupProjects.jsx'
 import StartupProfile from './StartupProfile.jsx'
 import StartupMessager from './Messaging.jsx'
@@ -22,9 +21,8 @@ export default function StartupHome() {
 
   return (
     <div className="home-container">
-      <TopBar />
-      <div className="layout">
-        <Sidebar active={section} onSelect={setSection} onLogout={handleLogout} />
+  <TopBar startupSection={section} onStartupSectionChange={setSection} />
+      <div className="layout" style={{display:'block'}}>
         <main className="home-main">
           {section === 'general' && <Dashboard />}
           {section === 'projects' && <StartupProjects embedded />}

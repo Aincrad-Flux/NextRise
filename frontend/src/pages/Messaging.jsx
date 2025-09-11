@@ -72,10 +72,8 @@ export default function Messaging() {
 
   return (
     <div className="home-container">
-      <TopBar />
       <div className="layout">
-        <Sidebar active="messaging" user={user} onLogout={handleLogout} />
-  <main className="home-main messaging">
+        <main className="home-main messaging">
           <div className="messaging-layout">
             <div className="messaging-conversations">
               <h3>Conversations</h3>

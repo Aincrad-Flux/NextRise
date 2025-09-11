@@ -28,9 +28,7 @@ export default function Opportunities() {
 
   return (
     <div className="home-container">
-      <TopBar />
       <div className="layout">
-  <Sidebar active="opportunities" onLogout={handleLogout} />
         <main className="home-main">
           <h2>Opportunités</h2>
           <form className="project-form" onSubmit={handleAdd}>

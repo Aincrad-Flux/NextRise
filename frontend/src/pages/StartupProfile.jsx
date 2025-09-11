@@ -44,9 +44,7 @@ export default function StartupProfile() {
 
   return (
     <div className="home-container">
-      <TopBar />
       <div className="layout">
-  <Sidebar active="profile" onLogout={handleLogout} />
         <main className="home-main">
           <div className="profile-card">
             <div className="profile-header">

@@ -5,6 +5,8 @@ import Dashboard from '../components/Dashboard.jsx'
 import Sidebar from '../components/Sidebar.jsx'
 import StartupProjects from './StartupProjects.jsx'
 import StartupProfile from './StartupProfile.jsx'
+import StartupMessager from './Messaging.jsx'
+import StartupOpportunities from './Opportunities.jsx'
 
 import './Home.css'
 import { logger } from '../utils/logger.js'
@@ -37,8 +39,8 @@ export default function StartupHome() {
           {section === 'general' && <Dashboard />}
           {section === 'projects' && <StartupProjects embedded />}
           {section === 'profile' && <StartupProfile />}
-          {section === 'opportunities' && <div>Opportunités (à implémenter)</div>}
-          {section === 'messaging' && <div>Messagerie (à implémenter)</div>}
+          {section === 'opportunities' && <StartupOpportunities />}
+          {section === 'messaging' && <StartupMessager />}
         </main>
       </div>
     </div>

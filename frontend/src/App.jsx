@@ -13,10 +13,12 @@ import StartupProfile from './pages/StartupProfile.jsx'
 import Opportunities from './pages/Opportunities.jsx'
 import Messaging from './pages/Messaging.jsx'
 import AdminHome from './pages/AdminHome.jsx'
+import { SessionProvider } from './components/SessionProvider.jsx'
 
 function App() {
   return (
     <BrowserRouter>
+      <SessionProvider>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/startup" element={<StartupHome />} />
@@ -32,6 +34,7 @@ function App() {
         <Route path="/admin" element={<AdminHome />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </SessionProvider>
     </BrowserRouter>
   )
 }

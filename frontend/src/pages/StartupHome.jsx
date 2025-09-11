@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSession } from '../components/SessionProvider.jsx'
 import TopBar from '../components/TopBar.jsx'
 import Dashboard from '../components/Dashboard.jsx'
 import Sidebar from '../components/Sidebar.jsx'
@@ -14,21 +15,10 @@ import { logger } from '../utils/logger.js'
 export default function StartupHome() {
   const [section, setSection] = useState('general')
   const navigate = useNavigate()
+  const { logout } = useSession()
   // user removed: Sidebar/UserCard now fetch real user via /api/auth/me
 
-  async function handleLogout() {
-    const API_BASE = import.meta?.env?.VITE_BACKEND_URL?.replace(/\/$/, '') || ''
-    const url = new URL('/api/auth/logout', API_BASE || window.location.origin)
-    logger.info('Logout start', { endpoint: String(url) })
-    try {
-      const res = await fetch(url, { method: 'POST', credentials: 'include' })
-      logger.info('Logout response', { status: res.status, ok: res.ok })
-    } catch (e) {
-      logger.warn('Logout request failed', e)
-    } finally {
-      navigate('/')
-    }
-  }
+  async function handleLogout() { await logout(); navigate('/') }
 
   return (
     <div className="home-container">

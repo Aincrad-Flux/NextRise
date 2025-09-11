@@ -198,6 +198,25 @@ Generic steps:
 2. Branch: `feature/<name>`
 3. Conventional commits (example: feat(auth): add refresh token)
 4. Open PR to `dev` (include description & screenshots for UI changes)
+
+---
+
+### 🔐 Auth cookie persistence
+
+Le backend émet un cookie HttpOnly `auth_token` (JWT). Par défaut l'attribut `Secure` n'est appliqué qu'en production (`NODE_ENV=production`).
+
+Pourquoi ? Un cookie `Secure` est ignoré par le navigateur si vous servez le backend via `http://` en local, ce qui casserait la persistance de session (obligeant l'utilisateur à se reconnecter à chaque refresh / navigation).
+
+Variable d'environnement de contrôle :
+
+* `COOKIE_SECURE=true`  → toujours ajouter `Secure` (requiert HTTPS sinon le cookie est rejeté)
+* `COOKIE_SECURE=false` → ne jamais ajouter `Secure` (à éviter en prod)
+* non défini            → comportement automatique (Secure seulement en prod)
+
+Côté frontend assurez-vous d'utiliser `credentials: 'include'` dans `fetch` et de faire correspondre l'origine (http://localhost:5173) dans `ALLOWED_ORIGINS` pour que le cookie soit envoyé.
+
+Pour vérifier : ouvrez l'onglet Application > Cookies après un login réussi ; vous devez voir `auth_token` persistant (Max-Age ≈ 7 jours).
+
 5. Review & merge
 
 ---

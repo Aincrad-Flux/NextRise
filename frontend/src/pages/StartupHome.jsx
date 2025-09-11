@@ -4,19 +4,17 @@ import TopBar from '../components/TopBar.jsx'
 import Dashboard from '../components/Dashboard.jsx'
 import Sidebar from '../components/Sidebar.jsx'
 import StartupProjects from './StartupProjects.jsx'
-// NOTE: case fixed (Home.css) so styles apply on case-sensitive systems
+import StartupProfile from './StartupProfile.jsx'
+import StartupMessager from './Messaging.jsx'
+import StartupOpportunities from './Opportunities.jsx'
+
 import './Home.css'
 import { logger } from '../utils/logger.js'
 
 export default function StartupHome() {
   const [section, setSection] = useState('general')
   const navigate = useNavigate()
-  // TODO: replace mock user with real auth context when available
-  const user = {
-    firstName: 'Jean',
-    lastName: 'Dupont',
-    role: 'Startup',
-  }
+  // user removed: Sidebar/UserCard now fetch real user via /api/auth/me
 
   async function handleLogout() {
     const API_BASE = import.meta?.env?.VITE_BACKEND_URL?.replace(/\/$/, '') || ''
@@ -36,30 +34,15 @@ export default function StartupHome() {
     <div className="home-container">
       <TopBar />
       <div className="layout">
-  <Sidebar active={section} onSelect={setSection} user={user} onLogout={handleLogout} />
+        <Sidebar active={section} onSelect={setSection} onLogout={handleLogout} />
         <main className="home-main">
           {section === 'general' && <Dashboard />}
           {section === 'projects' && <StartupProjects embedded />}
-          {section !== 'general' && section !== 'projects' && (
-            <div className="placeholder panel">
-              <div className="panel-header"><h2>{labelFor(section)}</h2></div>
-              <div style={{ padding: '1rem' }}>
-                <p>Contenu pour la section {labelFor(section)} à venir.</p>
-              </div>
-            </div>
-          )}
+          {section === 'profile' && <StartupProfile />}
+          {section === 'opportunities' && <StartupOpportunities />}
+          {section === 'messaging' && <StartupMessager />}
         </main>
       </div>
     </div>
   )
-}
-
-function labelFor(key) {
-  switch (key) {
-    case 'startups': return 'Startups'
-    case 'projects': return 'Projets'
-    case 'investors': return 'Investisseurs'
-    case 'mentors': return 'Mentors'
-    default: return 'Général'
-  }
 }

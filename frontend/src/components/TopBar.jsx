@@ -5,10 +5,12 @@ import moonIcon from '../assets/moon.svg';
 import './TopBar.css';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import AvatarMenu from './AvatarMenu';
 
 export default function TopBar() {
   const { pathname } = useLocation();
   const isStartup = pathname.startsWith('/startup');
+  const isAdmin = pathname.startsWith('/admin');
   const [menuOpen, setMenuOpen] = useState(false);
   const [dark, setDark] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -55,7 +57,7 @@ export default function TopBar() {
   };
 
   return (
-    <header className={`topbar${isStartup ? ' no-nav' : ''}`}>
+  <header className={`topbar${(isStartup || isAdmin) ? ' no-nav' : ''}`}>
       <div className="topbar-left">
         <h1 className="brand">JEB Incubator</h1>
         <a href="/" className="home-link" aria-label="Aller à l'accueil">
@@ -85,7 +87,7 @@ export default function TopBar() {
           />
         </button>
       </div>
-      {!isStartup && (
+  {!(isStartup || isAdmin) && (
         <nav className="topbar-nav" aria-label="Principale">
           <a href="/projects" className="nav-btn">Projects</a>
           <a href="/news" className="nav-btn">News</a>
@@ -93,15 +95,15 @@ export default function TopBar() {
         </nav>
       )}
   <div className="topbar-right">
-        {!isStartup && (
+        {!(isStartup || isAdmin) && (
           // TODO: replace with real auth links when available
           <div className="auth-buttons" aria-label="Authentication">
             <a href="/login" className="auth-btn sign-in" role="button">Sign in</a>
             <a href="/login" className="auth-btn sign-up" role="button">Sign up</a>
           </div>
         )}
-        {isStartup && (
-          <div className="avatar" aria-label="profile" />
+        {(isStartup || isAdmin) && (
+          <AvatarMenu />
         )}
 
         {/* Mobile menu toggle */}
@@ -143,7 +145,7 @@ export default function TopBar() {
               </button>
             </div>
 
-            {!isStartup && (
+            {!(isStartup || isAdmin) && (
               <nav className="mobile-nav" aria-label="Navigation mobile">
                 <a href="/projects" className="nav-btn" onClick={() => setMenuOpen(false)}>Projects</a>
                 <a href="/news" className="nav-btn" onClick={() => setMenuOpen(false)}>News</a>
@@ -152,14 +154,16 @@ export default function TopBar() {
             )}
 
             <div className="mobile-actions">
-              {!isStartup ? (
+              {!(isStartup || isAdmin) ? (
                 <div className="auth-buttons">
                   <a href="/startup" className="auth-btn sign-in" role="button" onClick={() => setMenuOpen(false)}>Sign in</a>
                   <a href="/login" className="auth-btn sign-up" role="button" onClick={() => setMenuOpen(false)}>Sign up</a>
                 </div>
               ) : (
-                <div className="profile-row">
-                  <div className="avatar" aria-label="profile" />
+                <div className="profile-row" style={{alignItems:'flex-start'}}>
+                  <div style={{marginTop:2}}>
+                    <AvatarMenu />
+                  </div>
                   <div className="profile-meta">
                     <span>Mon espace</span>
                     <a href="/startup" className="nav-btn" onClick={() => setMenuOpen(false)}>Aller au dashboard</a>

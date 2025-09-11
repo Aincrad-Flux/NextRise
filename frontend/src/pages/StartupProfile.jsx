@@ -24,7 +24,6 @@ const initialData = {
 
 export default function StartupProfile() {
   const [formData, setFormData] = useState(initialData);
-  const user = { firstName: 'Jean', lastName: 'Dupont', role: 'Startup' };
   const handleLogout = () => alert('Déconnexion... (à implémenter)');
 
   useEffect(() => {
@@ -45,9 +44,7 @@ export default function StartupProfile() {
 
   return (
     <div className="home-container">
-      <TopBar />
       <div className="layout">
-        <Sidebar active="profile" user={user} onLogout={handleLogout} />
         <main className="home-main">
           <div className="profile-card">
             <div className="profile-header">

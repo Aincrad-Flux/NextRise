@@ -6,6 +6,7 @@ import { projectsData } from '../data/projectsData.js';
 import ProjectModal from '../components/ProjectModal.jsx';
 import MultiSelect from '../components/MultiSelect.jsx';
 import '../components/MultiSelect.css';
+import Footer from "../components/Footer.jsx";
 
 export default function Projects() {
     const [activeProject, setActiveProject] = useState(null);
@@ -62,7 +63,24 @@ export default function Projects() {
                         onChange={(vals)=>setFilters(f=>({ ...f, maturity: vals }))}
                         placeholder="All maturity levels"
                     />
-                    <button onClick={resetFilters} style={{ alignSelf:'flex-end', height:'42px', background:'#ffe8e8', border:'1px solid #ffb3b3', color:'#a20000', borderRadius:'10px', padding:'0 .9rem', fontSize:'.65rem', fontWeight:600, cursor:'pointer' }}>Reset</button>
+                                        <button
+                                            onClick={resetFilters}
+                                            style={{
+                                                alignSelf:'flex-end',
+                                                height:'42px',
+                                                background:'linear-gradient(135deg, var(--rose-200), #fff)',
+                                                border:'1px solid var(--color-border)',
+                                                color:'var(--color-text)',
+                                                borderRadius:'10px',
+                                                padding:'0 .9rem',
+                                                fontSize:'.65rem',
+                                                fontWeight:600,
+                                                cursor:'pointer',
+                                                boxShadow:'var(--shadow-sm)'
+                                            }}
+                                            onMouseOver={e=>{ e.currentTarget.style.filter='brightness(1.03)'; }}
+                                            onMouseOut={e=>{ e.currentTarget.style.filter=''; }}
+                                        >Reset</button>
                 </div>
 
                 <div className="projects-grid simple">
@@ -84,6 +102,7 @@ export default function Projects() {
                 </div>
                 <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />
             </main>
+            <Footer />
         </div>
     );
 }

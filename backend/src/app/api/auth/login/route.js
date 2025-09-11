@@ -17,9 +17,11 @@ export async function POST(req) {
     const body = await req.json().catch(() => ({}));
     const { email, password } = body || {};
 
-    if (!email || !password) return badRequest("Email et mot de passe requis");
+    if (typeof email !== "string" || typeof password !== "string" || !email.trim() || !password)
+      return badRequest("Email et mot de passe requis");
 
-    const user = await findUserByEmail(email);
+    const normalizedEmail = email.trim();
+    const user = await findUserByEmail(normalizedEmail);
     if (!user) return unauthorized();
 
     const ok = await verifyPassword(password, user.passwordHash);

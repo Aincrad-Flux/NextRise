@@ -70,25 +70,26 @@
 }
 
 .projects-grid .tag:hover {
-    background: var(--color-accent);
-    border-color: var(--color-accent);
-    color: #0f172a;
+    background: var(--violet-500);
+    border-color: var(--violet-300);
+    color: #fff;
 }
 
 .projects-grid a {
     display: inline-block;
     margin-top: 1rem;
     text-decoration: none;
-    color: var(--color-accent);
-    border: 1px solid var(--color-accent);
-    padding: 0.3rem 0.6rem;
-    border-radius: 5px;
+    color: var(--violet-500);
+    border: 1px solid var(--violet-300);
+    padding: 0.35rem 0.65rem;
+    border-radius: 8px;
     transition: 0.2s;
+    box-shadow: var(--shadow-sm);
 }
 
 .projects-grid a:hover {
-    background: var(--color-accent);
-    color: #0f172a;
+    background: linear-gradient(135deg, var(--violet-500), var(--rose-300));
+    color: #fff;
 }
 
 /* Replace anchor Read more with button style */
@@ -116,9 +117,9 @@
 }
 
 .filter-bar .tag.active {
-    background: #0084d1;
-    color: white;
-    border-color: #0084d1;
+    background: var(--violet-500);
+    color: #fff;
+    border-color: var(--violet-300);
 }
 
 /* (Old dropdown styles removed) */
@@ -144,11 +145,11 @@
 .filter-group { min-width: 190px; }
 .filter-title { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-bottom: .35rem; opacity: .75; }
 .filter-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
-.filter-chip { background: #f1f3f5; border: 1px solid #d0d5da; padding: .35rem .65rem; border-radius: 20px; font-size: .7rem; cursor: pointer; transition: .2s; }
-.filter-chip:hover { background: #e2e8ec; }
-.filter-chip.active { background:#0084d1; color:#fff; border-color:#0084d1; }
-.reset-filters { align-self: flex-start; background:#d10000; color:#fff; border:none; padding:.5rem .9rem; border-radius:8px; cursor:pointer; font-size:.75rem; font-weight:600; letter-spacing:.5px; box-shadow:0 2px 4px rgba(0,0,0,.15); }
-.reset-filters:hover { background:#a00000; }
+.filter-chip { background: var(--color-surface-alt); border: 1px solid var(--color-border); padding: .35rem .65rem; border-radius: 20px; font-size: .7rem; cursor: pointer; transition: .2s; }
+.filter-chip:hover { background: #f5f1ff; }
+.filter-chip.active { background: var(--violet-500); color:#fff; border-color: var(--violet-300); }
+.reset-filters { align-self: flex-start; background: linear-gradient(135deg, var(--rose-200), #fff); color: var(--color-text); border:1px solid var(--color-border); padding:.5rem .9rem; border-radius:8px; cursor:pointer; font-size:.75rem; font-weight:600; letter-spacing:.5px; box-shadow: var(--shadow-sm); }
+.reset-filters:hover { filter: brightness(1.04); }
 
 /* New dropdown selects replacing chips */
 .filter-select {
@@ -156,7 +157,7 @@
     min-width: 180px;
     height: 110px; /* to show several options */
     padding: .4rem .5rem;
-    border: 1px solid #d0d5da;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
     background: #fff;
     font-size: .75rem;
@@ -164,8 +165,8 @@
     resize: vertical;
 }
 .filter-select:focus {
-    outline: 2px solid #0084d1;
-    border-color: #0084d1;
+    outline: 2px solid var(--violet-300);
+    border-color: var(--violet-300);
 }
 .filter-select option { padding: .2rem .3rem; }
 
@@ -212,16 +213,16 @@
     position: absolute;
     top: 10px;
     left: 10px;
-    background: linear-gradient(135deg, var(--color-accent), #7dd3fc);
-    color: #0f172a;
-    border: 1px solid #38bdf8;
+    background: linear-gradient(135deg, var(--violet-500), var(--rose-300));
+    color: #fff;
+    border: 1px solid var(--violet-300);
     padding: 0.45rem 0.9rem;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 0.8rem;
     cursor: pointer;
     font-weight: 600;
     letter-spacing: 0.5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    box-shadow: 0 8px 18px -6px rgba(193, 116, 242, .35);
     transition: filter 0.2s;
 }
 
@@ -267,7 +268,7 @@
 .project-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; margin-top: 0.5rem; }
 .project-form input, .project-form select, .project-form textarea { width: 100%; appearance: none; background: var(--color-surface-alt); color: var(--color-text); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 0.55rem 0.65rem; box-shadow: var(--shadow-sm) inset; }
 .project-form textarea { min-height: 100px; resize: vertical; }
-.project-form button, .primary-btn { background: linear-gradient(135deg, var(--color-accent), #7dd3fc); color: #0f172a; border: 1px solid #38bdf8; padding: 0.55rem 0.9rem; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px -4px rgba(56,189,248,.5); transition: filter .15s; }
+.project-form button, .primary-btn { background: linear-gradient(135deg, var(--violet-500), var(--rose-300)); color: #fff; border: 1px solid var(--violet-300); padding: 0.55rem 0.9rem; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px -4px rgba(193,116,242,.35); transition: filter .15s; }
 .project-form button:hover, .primary-btn:hover { filter: brightness(1.07); }
 .project-form button:active, .primary-btn:active { filter: brightness(.93); }
 
@@ -292,8 +293,8 @@
 .message-row.in { justify-content: flex-start; }
 .message-row.out { justify-content: flex-end; }
 .message-bubble { display: inline-block; max-width: 70%; padding: 0.5rem 0.8rem; border-radius: 18px; line-height: 1.25; font-size: 0.9rem; box-shadow: var(--shadow-sm); }
-.message-row.in .message-bubble { background: #2a3a52; color: var(--color-text); border: 1px solid var(--color-border); }
-.message-row.out .message-bubble { background: #0ea5e9; color: #0f172a; border: 1px solid #38bdf8; }
+.message-row.in .message-bubble { background: var(--color-surface); color: var(--color-text); border: 1px solid var(--color-border); }
+.message-row.out .message-bubble { background: var(--violet-500); color: #fff; border: 1px solid var(--violet-300); }
 .message-composer { display: flex; gap: 0.7rem; }
 .message-input { flex: 1; background: var(--color-surface-alt); color: var(--color-text); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 0.55rem 0.7rem; }
 

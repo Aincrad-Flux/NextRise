@@ -11,14 +11,24 @@ function badRequest(message) {
 export async function POST(req) {
   try {
     const body = await req.json().catch(() => ({}));
-    const { email, password, name } = body || {};
+    const { email, password, name, role } = body || {};
 
     if (!email || typeof email !== "string") return badRequest("Email requis");
     if (!password || typeof password !== "string" || password.length < 6)
       return badRequest("Mot de passe (>=6) requis");
 
+    // Rôle optionnel avec liste blanche
+    const allowedRoles = ["admin", "investor", "founder", "user"];
+    let finalRole = "user";
+    if (role !== undefined) {
+      if (typeof role !== "string" || !allowedRoles.includes(role)) {
+        return badRequest("Rôle invalide");
+      }
+      finalRole = role;
+    }
+
     const passwordHash = await hashPassword(password);
-    const user = await addUser({ email: email.trim(), passwordHash, name });
+    const user = await addUser({ email: email.trim(), passwordHash, name, role: finalRole });
 
     const token = signToken({ sub: user.id, email: user.email });
     const res = NextResponse.json({ user: publicUser(user) }, { status: 201 });

@@ -3,14 +3,37 @@ import { useEffect, useState } from 'react'
 import UserCard from './UserCard.jsx'
 import { getAvatarImageCookie } from '../utils/avatarImage.js'
 
-const navItems = [
-  { key: 'general', label: 'General', icon: DashboardIcon, route: '/startup' }, // interne (state)
-  { key: 'projects', label: 'Projects', icon: FolderIcon, route: '/startup' },   // interne (state)
-  { key: 'profile', label: 'Profil startup', icon: UserIcon, route: '/startup/profile' },
-  { key: 'opportunities', label: 'Opportunités', icon: OpportunityIcon, route: '/startup/opportunities' },
-  { key: 'messaging', label: 'Messagerie', icon: MessageIcon, route: '/startup/messaging' },
-]
+let navItems
+let admin = true
 
+if (admin === true){
+  navItems = [
+    { key: 'general', label: 'General', icon: DashboardIcon, route: '/admin/general' },
+    { key: 'projects', label: 'Projects', icon: FolderIcon, route: '/admin/projects' },
+    { key: 'news', label: 'News', icon: MessageIcon, route: '/admin/news' },
+    { key: 'events', label: 'Events', icon: OpportunityIcon, route: '/admin/events' },
+    { key: 'users', label: 'Users', icon: UserIcon, route: '/admin/users' },
+  ]
+} else {
+  navItems = [
+    { key: 'general', label: 'General', icon: DashboardIcon, route: '/startup' },
+    { key: 'projects', label: 'Projects', icon: FolderIcon, route: '/startup' },
+    { key: 'profile', label: 'Profil startup', icon: UserIcon, route: '/startup/profile' },
+    { key: 'opportunities', label: 'Opportunités', icon: OpportunityIcon, route: '/startup/opportunities' },
+    { key: 'messaging', label: 'Messagerie', icon: MessageIcon, route: '/startup/messaging' },
+  ]
+}
+
+/**
+ * Sidebar component.
+ * Startup dashboard navigation with profile card.
+ * @component
+ * @param {Object} props
+ * @param {string} props.active Current active key.
+ * @param {(key:string)=>void} [props.onSelect] Optional internal section selection.
+ * @param {Object} props.user Current user object.
+ * @param {Function} props.onLogout Logout handler.
+ */
 export default function Sidebar({ active, onSelect, user, onLogout }) {
   const navigate = useNavigate()
   const [avatarImage, setAvatarImage] = useState(() => getAvatarImageCookie())
@@ -49,6 +72,10 @@ export default function Sidebar({ active, onSelect, user, onLogout }) {
 }
 
 // --- Icons (inline SVG for simplicity) ---
+/**
+ * Base icon wrapper.
+ * @private
+ */
 function baseIcon(props, path) {
   return (
     <svg

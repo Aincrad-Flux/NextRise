@@ -2,6 +2,11 @@ import { cookies } from "next/headers";
 import { verifyToken } from "@/lib/auth";
 import { findUserById, publicUser } from "@/lib/db";
 
+/**
+ * Read the auth token from cookies, verify it and resolve the public user.
+ * @async
+ * @returns {Promise<{token:string,user:Object}|null>} Session data or null when unauthenticated.
+ */
 export async function getSessionUser() {
   const jar = cookies();
   const token = jar.get("auth_token")?.value;

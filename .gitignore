@@ -50,3 +50,4 @@ pg_data/
 
 # --- Misc cache ---
 .eslintcache
+doxygen/

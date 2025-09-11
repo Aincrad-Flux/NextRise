@@ -2,14 +2,28 @@ import 'dotenv/config';
 import { getAll, getDetail, requireApiConfig } from '@/lib/incubatorApi';
 import { sendRequest } from '@/lib/supabase';
 
-// Small helper: chunk an array
+/**
+ * Split an array into equally sized chunks (last chunk may be smaller).
+ * @param {Array<any>} arr Source array.
+ * @param {number} size Desired chunk size (>0).
+ * @returns {Array<Array<any>>} Array of chunk arrays.
+ * @private
+ */
 function chunk(arr, size) {
 	const out = [];
 	for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
 	return out;
 }
 
-// Map with concurrency control
+/**
+ * Map items with a concurrency limit.
+ * @template T,R
+ * @param {T[]} items Items to process.
+ * @param {number} limit Max parallel operations.
+ * @param {(item:T,index:number)=>Promise<R>} mapper Async mapper.
+ * @returns {Promise<R[]>} Array of mapped results (errors captured as objects with error key).
+ * @private
+ */
 async function mapWithConcurrency(items, limit, mapper) {
 	const results = new Array(items.length);
 	let i = 0;
@@ -28,7 +42,16 @@ async function mapWithConcurrency(items, limit, mapper) {
 	return results;
 }
 
-// Upsert helper to Supabase via PostgREST
+/**
+ * Bulk upsert helper using Supabase PostgREST interface with optional conflict target.
+ * @param {string} table Table name.
+ * @param {Array<Object>} rows Rows to upsert.
+ * @param {Object} [options]
+ * @param {string} [options.onConflict=id] Column used for conflict resolution.
+ * @param {number} [options.batchSize=500] Batch size for splitting payloads.
+ * @returns {Promise<{inserted:number,returned:Array<Object>}>}
+ * @private
+ */
 async function upsertTo(table, rows, { onConflict = 'id', batchSize = 500 } = {}) {
 	if (!Array.isArray(rows) || rows.length === 0) return { inserted: 0, returned: [] };
 
@@ -50,15 +73,30 @@ async function upsertTo(table, rows, { onConflict = 'id', batchSize = 500 } = {}
 	return { inserted, returned };
 }
 
+/**
+ * Ensure a value is an array (return empty array otherwise).
+ * @param {any} data Value to normalize.
+ * @returns {Array<any>} Normalized array.
+ * @private
+ */
 function ensureArray(data) {
 	return Array.isArray(data) ? data : [];
 }
 
+/**
+ * Check whether an object has a valid id (string or number).
+ * @param {any} o Candidate object.
+ * @returns {boolean}
+ * @private
+ */
 function hasId(o) {
 	return o && (typeof o.id === 'string' || typeof o.id === 'number');
 }
 
-// Remove incubator-specific identifiers from objects before DB upsert
+/**
+ * Keys to strip from upstream incubator API before persisting.
+ * @private
+ */
 const INCUBATOR_KEYS = new Set([
 	'incubatorId', 'incubator_id', 'id',
 	'groupId', 'group_id',
@@ -66,6 +104,12 @@ const INCUBATOR_KEYS = new Set([
 	'organisationId', 'organizationId', 'organization_id', 'organisation_id',
 ]);
 
+/**
+ * Remove incubator-owned identifiers from a single row.
+ * @param {Object} row Source row.
+ * @returns {Object} Sanitized clone.
+ * @private
+ */
 function sanitizeRow(row) {
 	if (!row || typeof row !== 'object') return row;
 	const copy = { ...row };
@@ -75,11 +119,20 @@ function sanitizeRow(row) {
 	return copy;
 }
 
+/**
+ * Apply {@link sanitizeRow} to a list of rows.
+ * @param {Array<Object>} rows Input rows.
+ * @returns {Array<Object>} Sanitized rows.
+ * @private
+ */
 function sanitizeRows(rows) {
 	return ensureArray(rows).map(sanitizeRow);
 }
 
-// Public imports
+/**
+ * Import events from remote API and upsert into the `event` table.
+ * @returns {Promise<{count:number,upserted:number}>}
+ */
 export async function importEvents() {
 	requireApiConfig();
 	const items = ensureArray(await getAll('/events', { limit: 100 }));
@@ -89,6 +142,10 @@ export async function importEvents() {
 	return { count: cleaned.length, upserted: res.inserted };
 }
 
+/**
+ * Import investors into the `investors` table.
+ * @returns {Promise<{count:number,upserted:number}>}
+ */
 export async function importInvestors() {
 	requireApiConfig();
 	const items = ensureArray(await getAll('/investors', { limit: 100 }));
@@ -98,6 +155,10 @@ export async function importInvestors() {
 	return { count: cleaned.length, upserted: res.inserted };
 }
 
+/**
+ * Import partners into the `partners` table.
+ * @returns {Promise<{count:number,upserted:number}>}
+ */
 export async function importPartners() {
 	requireApiConfig();
 	const items = ensureArray(await getAll('/partners', { limit: 100 }));
@@ -107,13 +168,15 @@ export async function importPartners() {
 	return { count: cleaned.length, upserted: res.inserted };
 }
 
+/**
+ * Import news with detail expansion (two-phase fetch) into the `news` table.
+ * @returns {Promise<{count:number,upserted:number}>}
+ */
 export async function importNews() {
 	requireApiConfig();
-	// Step 1: fetch a lightweight list (only IDs are guaranteed to be used)
 	const list = ensureArray(await getAll('/news', { limit: 100 }));
 	const ids = list.map((n) => n?.id).filter((v) => v !== undefined && v !== null);
 
-	// Step 2: fetch each news item detail individually (respect remote API with small concurrency)
 	const details = await mapWithConcurrency(ids, 5, async (id) => {
 		try {
 			return await getDetail(`/news/${id}`);
@@ -122,31 +185,35 @@ export async function importNews() {
 		}
 	});
 
-	// Step 3: keep only valid rows (with id)
 	const newsRows = details.filter(hasId);
-
-	// Step 4: upsert detailed rows to Supabase
 	const cleaned = sanitizeRows(newsRows);
 	const res = await upsertTo('news', cleaned);
 	return { count: cleaned.length, upserted: res.inserted };
 }
 
+/**
+ * Import users into the singular `user` table.
+ * @returns {Promise<{count:number,upserted:number}>}
+ */
 export async function importUsers() {
 	requireApiConfig();
 	const items = ensureArray(await getAll('/users', { limit: 100 }));
 	const filtered = items.filter(hasId);
 	const cleaned = sanitizeRows(filtered);
-	// Table name 'user' is singular in DB per convention above
 	const res = await upsertTo('user', cleaned);
 	return { count: cleaned.length, upserted: res.inserted };
 }
 
+/**
+ * Import startups and related founders. Founders are derived from either `founders` or
+ * `team` arrays in detail payloads. Two tables written: `startup` and `founders`.
+ * @returns {Promise<{startups:{count:number,upserted:number},founders:{count:number,upserted:number}}>} Summary.
+ */
 export async function importStartups() {
 	requireApiConfig();
 	const base = ensureArray(await getAll('/startups', { limit: 100 }));
 	const ids = base.map((s) => s?.id).filter((v) => v !== undefined && v !== null);
 
-	// Fetch details with small concurrency to respect remote API
 	const details = await mapWithConcurrency(ids, 5, async (id) => {
 		try {
 			return await getDetail(`/startups/${id}`);
@@ -157,7 +224,6 @@ export async function importStartups() {
 
 	const startupRows = details.filter(hasId);
 
-	// Extract founders when present in details (support multiple shapes)
 	const founderRows = [];
 	for (const d of details) {
 		if (!d || !hasId(d)) continue;
@@ -169,7 +235,6 @@ export async function importStartups() {
 				: [];
 		for (const f of list) {
 			if (!hasId(f)) continue;
-			// sanitize founder payload but keep the FK to startup
 			const sanitized = sanitizeRow(f);
 			founderRows.push({ ...sanitized, startup_id: sid });
 		}
@@ -178,7 +243,6 @@ export async function importStartups() {
 	const up1 = await upsertTo('startup', sanitizeRows(startupRows));
 	let up2 = { inserted: 0 };
 	if (founderRows.length) {
-		// Try composite on_conflict if your DB has unique on (id) already, keep 'id'
 		up2 = await upsertTo('founders', founderRows);
 	}
 
@@ -188,6 +252,10 @@ export async function importStartups() {
 	};
 }
 
+/**
+ * Orchestrate all import tasks sequentially, capturing individual errors.
+ * @returns {Promise<Object>} Map of task names to result objects or error descriptors.
+ */
 export async function importAll() {
 	const results = {};
 	results.events = await importEvents().catch((e) => ({ error: e?.message || String(e) }));

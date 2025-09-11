@@ -2,8 +2,12 @@ import './Footer.css';
 import { Link } from 'react-router-dom';
 import logoSrc from '../../public/logo.png';
 
+import { useState, useEffect } from 'react';
+
 export default function Footer() {
   const year = new Date().getFullYear();
+
+
   return (
     <footer className="site-footer">
       <div className="footer-inner">

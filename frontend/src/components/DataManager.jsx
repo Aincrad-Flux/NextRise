@@ -141,13 +141,20 @@ export default function DataManager({ resource, idField = 'id', columns, pageSiz
       </div>
       {showForm && (
         <div className="dm-modal" style={modalStyle}>
-          <div className="dm-dialog" style={dialogStyle}>
-            <h3 style={{marginTop:0}}>{editItem ? 'Edit' : 'Create'} {resource}</h3>
-            <form onSubmit={handleSubmit} style={{display:'flex',flexDirection:'column',gap:8}}>
-              {renderFormFields(editItem, effectiveColumns, idField)}
-              <div style={{display:'flex',gap:8,marginTop:8}}>
-                <button type="submit">Save</button>
-                <button type="button" onClick={closeForm}>Cancel</button>
+          <div className="dm-dialog wide" style={dialogStyle}>
+            <div className="dm-form-header">
+              <h3 className="dm-form-title">{editItem ? 'Edit' : 'Create'} {resource}</h3>
+              <button type="button" className="dm-close-btn" onClick={closeForm} aria-label="Close form">
+                <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+              </button>
+            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="dm-form-grid">
+                {renderFormFields(editItem, effectiveColumns, idField)}
+              </div>
+              <div className="dm-form-actions">
+                <button type="button" className="exit" onClick={closeForm}>Exit</button>
+                <button type="submit" className="save">Save</button>
               </div>
             </form>
           </div>

@@ -22,10 +22,23 @@
 /* Modal overrides */
 .dm-modal { backdrop-filter: blur(4px); }
 .dm-dialog { max-height:80vh; overflow-y:auto; }
-.dm-dialog form label { font-size:.6rem; text-transform:uppercase; letter-spacing:.7px; }
-.dm-dialog form input, .dm-dialog form textarea, .dm-dialog form select { font-size:.75rem; padding:.45rem .55rem; border:1px solid var(--color-border); border-radius:8px; background:var(--color-surface-alt); }
-.dm-dialog form textarea { resize:vertical; }
+/* New wider modal adjustments */
+.dm-dialog.wide { width:80%; max-width:1000px; min-width:700px; }
+.dm-form-header { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem; }
+.dm-form-title { margin:0; font-size:1.05rem; letter-spacing:.4px; }
+.dm-close-btn { background:transparent; border:1px solid var(--color-border); width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:8px; cursor:pointer; }
+.dm-close-btn:hover { background:var(--color-surface-alt); }
+.dm-form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem .85rem; }
+.dm-form-actions { display:flex; justify-content:flex-end; gap:.75rem; margin-top:1rem; }
+.dm-form-actions button { padding:.6rem 1.1rem; font-size:.75rem; font-weight:600; letter-spacing:.5px; border-radius:9px; cursor:pointer; border:1px solid var(--color-border); background:var(--color-surface-alt); }
+.dm-form-actions button.save { background:linear-gradient(90deg,var(--violet-500),var(--rose-300)); color:#fff; border:1px solid var(--violet-400); }
+.dm-form-actions button.save:hover { filter:brightness(1.07); }
+.dm-form-actions button.exit:hover { background:var(--color-surface); }
+.dm-dialog form label { font-size:.55rem; text-transform:uppercase; letter-spacing:.7px; font-weight:600; }
+.dm-dialog form input, .dm-dialog form textarea, .dm-dialog form select { font-size:.75rem; padding:.55rem .65rem; border:1px solid var(--color-border); border-radius:8px; background:var(--color-surface-alt); }
+.dm-dialog form textarea { resize:vertical; min-height:120px; }
 
 @media (max-width:600px){
   .dm-cards-grid { grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); }
 }
+@media (max-width:860px){ .dm-dialog.wide { width:92%; min-width:0; } .dm-form-grid { grid-template-columns:1fr; } }

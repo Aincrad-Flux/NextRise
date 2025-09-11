@@ -119,9 +119,10 @@ export default function ProjectModal({ project, onClose }) {
         <button className="close-btn" onClick={onClose} aria-label="Close">×</button>
         <button className="export-btn" onClick={handleExport}>Export</button>
         <div ref={contentRef} className="modal-content" style={{ color: '#000' }}>
-          <h2 style={{marginBottom:'.5rem', textAlign:'left'}}>{project.name}</h2>
+          {/* Added extra top margin to push text below the Export/Close buttons */}
+          <h2 style={{margin:'1.6rem 0 .6rem 0', textAlign:'left'}}>{project.name}</h2>
           {getEntry('description') && (
-            <p style={{ marginBottom: '1.2rem', whiteSpace: 'pre-line', fontSize:'1.05rem', color:'#444', textAlign:'justify' }}>{getEntry('description')[1]}</p>
+            <p style={{ marginBottom: '1.2rem', whiteSpace: 'pre-line', fontSize:'1.05rem', color:'#444', textAlign:'left' }}>{getEntry('description')[1]}</p>
           )}
           <div className="modal-categories-grid" style={{
             display:'grid',
@@ -148,10 +149,17 @@ export default function ProjectModal({ project, onClose }) {
                         value = new Date(entry[1]).toLocaleDateString();
                       }
                       if (!value) return null;
+
+                      // Detect URL fields and render as hyperlink
+                      const isUrlField = ['website_url','social_media_url'].includes(key) && /^https?:\/\//i.test(value);
+                      const renderedValue = isUrlField ? (
+                        <a href={value} target="_blank" rel="noopener noreferrer" style={{color:'var(--violet-600,#7c3aed)', textDecoration:'underline'}}>{value}</a>
+                      ) : value;
+
                       return (
-                        <li key={key} style={{marginBottom:'.3rem', textAlign:'justify'}}>
+                        <li key={key} style={{marginBottom:'.3rem', textAlign:'left'}}>
                           <span style={{fontWeight:600, opacity:.7}}>{formatLabel(key)}: </span>
-                          <span>{value}</span>
+                          <span>{renderedValue}</span>
                         </li>
                       );
                     })}

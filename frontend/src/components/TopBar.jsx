@@ -104,9 +104,9 @@ export default function TopBar({ startupSection, onStartupSectionChange }) {
       </div>
   {!(isStartup || isAdmin) && (
     <nav className="topbar-nav" aria-label="Primary">
-          <a href="/catalog" className="nav-btn">Startup</a>
-          <a href="/news" className="nav-btn">News</a>
-          <a href="/events" className="nav-btn">Events</a>
+          <a href="/catalog" className={`nav-btn ${pathname.startsWith('/catalog')?'active':''}`}>Startup</a>
+          <a href="/news" className={`nav-btn ${pathname.startsWith('/news')?'active':''}`}>News</a>
+          <a href="/events" className={`nav-btn ${pathname.startsWith('/events')?'active':''}`}>Events</a>
         </nav>
       )}
   {(isStartup && onStartupSectionChange) && (

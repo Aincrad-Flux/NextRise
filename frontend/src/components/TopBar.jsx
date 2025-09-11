@@ -13,7 +13,7 @@ import AvatarMenu from './AvatarMenu';
  * Shows auth buttons on public pages and profile menu on startup/admin sections.
  * @component
  */
-export default function TopBar() {
+export default function TopBar({ startupSection, onStartupSectionChange }) {
   const { pathname } = useLocation();
   const isStartup = pathname.startsWith('/startup');
   const isAdmin = pathname.startsWith('/admin');
@@ -63,6 +63,14 @@ export default function TopBar() {
     setDark((prev) => !prev);
   };
 
+  const startupNav = [
+    ['general','General'],
+    ['projects','Projects'],
+    ['profile','Profile'],
+    ['opportunities','Opportunities'],
+    ['messaging','Messaging']
+  ];
+
   return (
   <header className={`topbar${(isStartup || isAdmin) ? ' no-nav' : ''}`}>
       <div className="topbar-left">
@@ -101,6 +109,18 @@ export default function TopBar() {
           <a href="/events" className="nav-btn">Events</a>
         </nav>
       )}
+  {(isStartup && onStartupSectionChange) && (
+    <nav className="startup-inline-nav" aria-label="Startup sections">
+      {startupNav.map(([k,l]) => (
+        <button
+          key={k}
+          type="button"
+          className={`startup-pill ${startupSection===k?'active':''}`}
+          onClick={()=>onStartupSectionChange(k)}
+        >{l}</button>
+      ))}
+    </nav>
+  )}
   <div className="topbar-right">
     {!(isStartup || isAdmin) && !user && !loading && (
           <div className="auth-buttons" aria-label="Authentication">
@@ -160,6 +180,18 @@ export default function TopBar() {
                 <a href="/catalog" className="nav-btn" onClick={() => setMenuOpen(false)}>Projects</a>
                 <a href="/news" className="nav-btn" onClick={() => setMenuOpen(false)}>News</a>
                 <a href="/events" className="nav-btn" onClick={() => setMenuOpen(false)}>Events</a>
+              </nav>
+            )}
+            {(isStartup && onStartupSectionChange) && (
+              <nav className="mobile-nav" aria-label="Startup sections">
+                {startupNav.map(([k,l]) => (
+                  <button
+                    key={k}
+                    type="button"
+                    className={`nav-btn ${startupSection===k?'active':''}`}
+                    onClick={()=>{onStartupSectionChange(k); setMenuOpen(false);}}
+                  >{l}</button>
+                ))}
               </nav>
             )}
 

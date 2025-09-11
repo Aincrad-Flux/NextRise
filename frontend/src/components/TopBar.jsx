@@ -100,9 +100,6 @@ export default function TopBar() {
           <a href="/projects" className="nav-btn">Projects</a>
           <a href="/news" className="nav-btn">News</a>
           <a href="/events" className="nav-btn">Events</a>
-          {user && !loading && (
-            <a href={user.role === 'admin' ? '/admin' : '/startup'} className="nav-btn" style={{fontWeight:600}}>Dashboard</a>
-          )}
         </nav>
       )}
   <div className="topbar-right">

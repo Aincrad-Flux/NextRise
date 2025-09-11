@@ -5,7 +5,7 @@ import './Home.css'
 import './News.css'
 import Footer from "../components/Footer.jsx";
 
-// Backend base URL aligné avec Events page (fallback localhost:3000)
+// Backend base URL aligned with Events page (fallback localhost:3000)
 const API_BASE = import.meta?.env?.VITE_BACKEND_URL?.replace(/\/$/, '')
   || (typeof window !== 'undefined' ? `${window.location.protocol}//localhost:3000` : 'http://localhost:3000')
 
@@ -82,9 +82,9 @@ export default function News() {
       <main id="News" className="home-main constrained" style={{ padding: '2rem' }}>
         <h1>News</h1>
 
-        {loading && <p style={{opacity:.7}}>Chargement…</p>}
-        {!loading && error && <p style={{color:'var(--danger,crimson)'}}>Erreur: {error}</p>}
-        {!loading && !error && grid.length === 0 && <p>Aucune news.</p>}
+  {loading && <p style={{opacity:.7}}>Loading…</p>}
+  {!loading && error && <p style={{color:'var(--danger,crimson)'}}>Error: {error}</p>}
+  {!loading && !error && grid.length === 0 && <p>No news.</p>}
 
         <div className="news-grid">
           {grid.map(n => (

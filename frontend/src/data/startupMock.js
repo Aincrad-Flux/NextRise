@@ -7,14 +7,14 @@ export const startupMock = {
   phone: "+33 1 23 45 67 89",
   created_at: "2021-04-15",
   description:
-    "NovaWave développe une plateforme SaaS d'optimisation énergétique pour bâtiments tertiaires, combinant IoT et IA pour réduire jusqu'à 25% la consommation.",
+    "NovaWave is developing a SaaS energy optimization platform for commercial buildings, combining IoT and AI to reduce consumption by up to 25%.",
   website_url: "https://www.novawave.io",
   social_media_url: "https://www.linkedin.com/company/novawave",
   project_status: "Seed",
   sector: "Greentech",
   maturity: "MVP",
   founders: "Alice Martin (CEO); Karim Benali (CTO)",
-  needs: "Levée de fonds seed; Accès à des sites pilotes; Recrutement d'un Data Engineer"
+  needs: "Seed fundraising; Access to pilot sites; Hiring a Data Engineer"
 };
 
 export default startupMock;

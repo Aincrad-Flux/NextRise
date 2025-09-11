@@ -67,12 +67,12 @@ function EventsListCard({ date, eventsByDate, loading, error }) {
     return (
         <aside className="events-card">
             <header>
-                <h3>Événements — {readable}</h3>
+                <h3>Events — {readable}</h3>
             </header>
-            {loading && <p className="event-empty">Chargement…</p>}
-            {!loading && error && <p className="event-empty" style={{color:'var(--danger,crimson)'}}>Erreur: {error}</p>}
+            {loading && <p className="event-empty">Loading…</p>}
+            {!loading && error && <p className="event-empty" style={{color:'var(--danger,crimson)'}}>Error: {error}</p>}
             {!loading && !error && items.length === 0 && (
-                <p className="event-empty">Aucun événement ce jour.</p>
+                <p className="event-empty">No events today.</p>
             )}
             {!loading && !error && items.length > 0 && (
                 <div className="events-list">
@@ -148,7 +148,7 @@ export default function Events() {
             } catch (e) {
                 if (e.name !== 'AbortError') {
                     logger.error('[Events] Fetch error', { message: e.message, stack: e.stack })
-                    setError(e.message === 'Failed to fetch' ? 'Network/connexion échouée. Vérifiez que le backend tourne.' : e.message)
+                    setError(e.message === 'Failed to fetch' ? 'Network connection failed. Check that the backend is running.' : e.message)
                 }
             } finally {
                 setLoading(false)
@@ -168,9 +168,9 @@ export default function Events() {
                             <div className="calendar-container">
                                 <div className="calendar-header">
                                     <div className="nav">
-                                        <button className="button" onClick={goPrev} aria-label="Mois précédent">◀</button>
-                                        <button className="button" onClick={goToday}>Aujourd'hui</button>
-                                        <button className="button" onClick={goNext} aria-label="Mois suivant">▶</button>
+                                        <button className="button" onClick={goPrev} aria-label="Previous month">◀</button>
+                                        <button className="button" onClick={goToday}>Today</button>
+                                        <button className="button" onClick={goNext} aria-label="Next month">▶</button>
                                     </div>
                                     <h2>{monthLabel}</h2>
                                     <div style={{ width: 100 }} />
@@ -189,7 +189,7 @@ export default function Events() {
                                                 key={idx}
                                                 className={`day-cell ${currentMonth ? '' : 'outside'}`}
                                                 onClick={() => { setSelectedDate(date) }}
-                                                title={dayEvents.length ? `${dayEvents.length} événement(s)` : 'Aucun événement'}
+                                                title={dayEvents.length ? `${dayEvents.length} event(s)` : 'No event'}
                                             >
                                                 <div className="day-number" style={{ fontWeight: isToday ? 700 : 500 }}>
                                                     {date.getDate()}

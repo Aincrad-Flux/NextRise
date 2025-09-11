@@ -90,7 +90,7 @@ export default function Projects() {
 
                 <div className="projects-grid simple">
                     {filtered.map(p => {
-                        const desc = (p.description && p.description.trim()) || 'Aucune description.';
+                        const desc = (p.description && p.description.trim()) || 'No description.';
                         return (
                             <article key={p.id || p.name} onClick={() => setActiveProject(p)} className="startup-card">
                                 <h2>{p.name}</h2>
@@ -102,7 +102,7 @@ export default function Projects() {
                         );
                     })}
                     {filtered.length === 0 && (
-                        <p style={{ gridColumn: '1/-1', opacity: 0.7 }}>Aucun résultat avec ces filtres.</p>
+                        <p style={{ gridColumn: '1/-1', opacity: 0.7 }}>No results with these filters.</p>
                     )}
                 </div>
                 <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />

@@ -24,10 +24,10 @@ const initialData = {
 
 export default function StartupProfile() {
   const [formData, setFormData] = useState(initialData);
-  const handleLogout = () => alert('Déconnexion... (à implémenter)');
+  const handleLogout = () => alert('Logout... (to implement)');
 
   useEffect(() => {
-    // Prefill with mock data for now
+  // Prefill with mock data for now
     setFormData(prev => ({ ...prev, ...startupMock }));
   }, []);
 
@@ -38,8 +38,8 @@ export default function StartupProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Appel API pour sauvegarder les données
-    alert('Modifications enregistrées !');
+  // TODO: API call to persist the data
+  alert('Changes saved!');
   };
 
   return (
@@ -48,26 +48,26 @@ export default function StartupProfile() {
         <main className="home-main">
           <div className="profile-card">
             <div className="profile-header">
-              <h2 className="profile-title">Profil de la startup</h2>
+              <h2 className="profile-title">Startup profile</h2>
             </div>
-            <p className="profile-subtitle">Mettez à jour les informations principales de votre projet.</p>
+            <p className="profile-subtitle">Update your project's main information.</p>
 
             <form onSubmit={handleSubmit}>
               <div className="profile-grid">
                 <div className="section">
-                  <div className="section-title">Général</div>
+                  <div className="section-title">General</div>
                 </div>
 
                 <div className="form-field col-6">
-                  <label htmlFor="name">Nom</label>
+                  <label htmlFor="name">Name</label>
                   <input id="name" name="name" type="text" value={formData.name} onChange={handleChange} />
                 </div>
                 <div className="form-field col-3">
-                  <label htmlFor="legal_status">Statut légal</label>
+                  <label htmlFor="legal_status">Legal status</label>
                   <input id="legal_status" name="legal_status" type="text" value={formData.legal_status} onChange={handleChange} />
                 </div>
                 <div className="form-field col-3">
-                  <label htmlFor="created_at">Date de création</label>
+                  <label htmlFor="created_at">Creation date</label>
                   <input id="created_at" name="created_at" type="date" value={formData.created_at} onChange={handleChange} />
                 </div>
 
@@ -77,14 +77,14 @@ export default function StartupProfile() {
                 </div>
 
                 <div className="section">
-                  <div className="section-title">Coordonnées</div>
+                  <div className="section-title">Contact</div>
                 </div>
                 <div className="form-field col-8">
-                  <label htmlFor="address">Adresse</label>
+                  <label htmlFor="address">Address</label>
                   <input id="address" name="address" type="text" value={formData.address} onChange={handleChange} />
                 </div>
                 <div className="form-field col-4">
-                  <label htmlFor="phone">Téléphone</label>
+                  <label htmlFor="phone">Phone</label>
                   <input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} />
                 </div>
                 <div className="form-field col-6">
@@ -92,41 +92,41 @@ export default function StartupProfile() {
                   <input id="email" name="email" type="email" value={formData.email} onChange={handleChange} />
                 </div>
                 <div className="form-field col-6">
-                  <label htmlFor="website_url">Site web</label>
+                  <label htmlFor="website_url">Website</label>
                   <input id="website_url" name="website_url" type="url" value={formData.website_url} onChange={handleChange} />
                 </div>
                 <div className="form-field col-12">
-                  <label htmlFor="social_media_url">Réseaux sociaux (URL)</label>
+                  <label htmlFor="social_media_url">Social media (URL)</label>
                   <input id="social_media_url" name="social_media_url" type="url" value={formData.social_media_url} onChange={handleChange} />
                 </div>
 
                 <div className="section">
-                  <div className="section-title">Projet</div>
+                  <div className="section-title">Project</div>
                 </div>
                 <div className="form-field col-4">
-                  <label htmlFor="project_status">Statut du projet</label>
+                  <label htmlFor="project_status">Project status</label>
                   <input id="project_status" name="project_status" type="text" value={formData.project_status} onChange={handleChange} />
                 </div>
                 <div className="form-field col-4">
-                  <label htmlFor="sector">Secteur</label>
+                  <label htmlFor="sector">Sector</label>
                   <input id="sector" name="sector" type="text" value={formData.sector} onChange={handleChange} />
                 </div>
                 <div className="form-field col-4">
-                  <label htmlFor="maturity">Maturité</label>
+                  <label htmlFor="maturity">Maturity</label>
                   <input id="maturity" name="maturity" type="text" value={formData.maturity} onChange={handleChange} />
                 </div>
 
                 <div className="form-field col-12">
-                  <label htmlFor="founders">Fondateur(s)</label>
+                  <label htmlFor="founders">Founder(s)</label>
                   <textarea id="founders" name="founders" value={formData.founders} onChange={handleChange} />
                 </div>
                 <div className="form-field col-12">
-                  <label htmlFor="needs">Besoins</label>
+                  <label htmlFor="needs">Needs</label>
                   <textarea id="needs" name="needs" value={formData.needs} onChange={handleChange} />
                 </div>
 
                 <div className="form-actions col-12">
-                  <button className="save-btn" type="submit">Enregistrer</button>
+                  <button className="save-btn" type="submit">Save</button>
                 </div>
               </div>
             </form>

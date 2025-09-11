@@ -1,4 +1,3 @@
-
 import homeIcon from '../assets/home.svg';
 import sunIcon from '../assets/sun.svg';
 import moonIcon from '../assets/moon.svg';
@@ -97,7 +96,7 @@ export default function TopBar() {
       </div>
   {!(isStartup || isAdmin) && (
     <nav className="topbar-nav" aria-label="Primary">
-          <a href="/projects" className="nav-btn">Projects</a>
+          <a href="/catalog" className="nav-btn">Startup</a>
           <a href="/news" className="nav-btn">News</a>
           <a href="/events" className="nav-btn">Events</a>
         </nav>
@@ -158,7 +157,7 @@ export default function TopBar() {
 
             {!(isStartup || isAdmin) && (
               <nav className="mobile-nav" aria-label="Mobile navigation">
-                <a href="/projects" className="nav-btn" onClick={() => setMenuOpen(false)}>Projects</a>
+                <a href="/catalog" className="nav-btn" onClick={() => setMenuOpen(false)}>Projects</a>
                 <a href="/news" className="nav-btn" onClick={() => setMenuOpen(false)}>News</a>
                 <a href="/events" className="nav-btn" onClick={() => setMenuOpen(false)}>Events</a>
               </nav>

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import TopBar from '../components/TopBar.jsx'
 import AdminSidebar from '../components/AdminSidebar.jsx'
 import DataManager from '../components/DataManager.jsx'
+import AdminDashboard from '../components/AdminDashboard.jsx'
 import './AdminHome.css'
 import { logger } from '../utils/logger.js'
 
@@ -28,18 +29,11 @@ export default function AdminHome() {
       <div className="admin-layout">
         <AdminSidebar active={section} onSelect={setSection} onLogout={handleLogout} />
         <main className="admin-main">
-          {section === 'dashboard' && (
-            <div className="admin-panel">
-              <div className="admin-panel__header"><h2 className="admin-panel__title">Admin dashboard</h2></div>
-              <div style={{padding:'1rem'}}>
-                <p>Welcome. Select a collection on the left to manage data.</p>
-              </div>
-            </div>
-          )}
+          {section === 'dashboard' && <AdminDashboard />}
           {section === 'projects' && <DataManager resource="startup" />}
           {section === 'news' && <DataManager resource="news" />}
           {section === 'events' && <DataManager resource="events" />}
-          {section === 'users' && <DataManager resource="user" />}
+          {section === 'users' && <DataManager resource="user" textAlign="left" />}
         </main>
       </div>
     </div>

@@ -166,7 +166,16 @@ export default function TopBar({ startupSection, onStartupSectionChange, investo
         )}
   {!(isStartup || isAdmin || isInvestor) && user && !loading && (
           <div style={{display:'flex',alignItems:'center',gap:'.6rem'}}>
-            <a href={user.role === 'admin' ? '/admin' : '/startup'} className="auth-btn sign-in" role="button">Dashboard</a>
+            <a
+              href={
+                user.role === 'admin'
+                  ? '/admin'
+                  : user.role === 'investor'
+                  ? '/investor'
+                  : '/startup'
+              }
+              className="auth-btn sign-in" role="button"
+            >Dashboard</a>
             <a href="/profile" className="auth-btn sign-in" role="button">Profile</a>
             <button type="button" className="auth-btn sign-up" onClick={handleLogout} style={{minWidth:'auto'}}>Logout</button>
             <AvatarMenu />
@@ -262,7 +271,16 @@ export default function TopBar({ startupSection, onStartupSectionChange, investo
                   )}
                   {user && !loading && (
                     <>
-                      <a href={user.role === 'admin' ? '/admin' : '/startup'} className="auth-btn sign-in" role="button" onClick={() => setMenuOpen(false)}>Dashboard</a>
+                      <a
+                        href={
+                          user.role === 'admin'
+                            ? '/admin'
+                            : user.role === 'investor'
+                            ? '/investor'
+                            : '/startup'
+                        }
+                        className="auth-btn sign-in" role="button" onClick={() => setMenuOpen(false)}
+                      >Dashboard</a>
                       <a href="/profile" className="auth-btn sign-in" role="button" onClick={() => setMenuOpen(false)}>Profile</a>
                       <button type="button" className="auth-btn sign-up" onClick={() => { handleLogout(); setMenuOpen(false); }} style={{minWidth:'auto'}}>Logout</button>
                     </>
@@ -275,7 +293,16 @@ export default function TopBar({ startupSection, onStartupSectionChange, investo
                   </div>
                   <div className="profile-meta">
                     <span>My space</span>
-        <a href={isInvestor?'/investor':'/startup'} className="nav-btn" onClick={() => setMenuOpen(false)}>Go to dashboard</a>
+        <a
+          href={
+            isAdmin
+              ? '/admin'
+              : isInvestor
+              ? '/investor'
+              : '/startup'
+          }
+          className="nav-btn" onClick={() => setMenuOpen(false)}
+        >Go to dashboard</a>
                   </div>
                 </div>
               )}

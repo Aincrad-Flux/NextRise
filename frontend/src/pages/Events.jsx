@@ -4,20 +4,7 @@ import { logger } from '../utils/logger.js'
 import Footer from '../components/Footer.jsx'
 import './Home.css'
 import './Events.css'
-
-const API_BASE = import.meta?.env?.VITE_BACKEND_URL?.replace(/\/$/, '')
-  || (typeof window !== 'undefined' ? `${window.location.protocol}//localhost:3000` : 'http://localhost:3000')
-
-// Helper to build full endpoint
-function api(path, query) {
-  const url = new URL(path.startsWith('/') ? path : `/${path}`, API_BASE)
-  if (query && typeof query === 'object') {
-    for (const [k, v] of Object.entries(query)) {
-      if (v !== undefined && v !== null) url.searchParams.append(k, v)
-    }
-  }
-  return url.toString()
-}
+// NOTE: Utilisation du proxy Vite: appels directs sur '/api/...'. Suppression API_BASE pour éviter HTTPS/CORS en dev.
 
 function formatISO(date) {
   const y = date.getFullYear()
@@ -120,7 +107,7 @@ export default function Events() {
             setLoading(true)
             setError(null)
             try {
-                const url = api('/api/db/events', { select: '*' })
+                const url = '/api/db/events?select=*'
                 logger.info('[Events] Fetch start', { url })
                 const res = await fetch(url, { signal: controller.signal })
                 if (!res.ok) {

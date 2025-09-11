@@ -3,7 +3,7 @@ import './UserCard.css'
 
 // UserCard will fetch /api/auth/me itself if no user prop passed.
 // Expected backend shape: { user: { firstName, lastName, role, ... } }
-export default function UserCard({ user: userProp, onLogout }) {
+export default function UserCard({ user: userProp, onLogout, avatarImage }) {
   const [user, setUser] = useState(userProp || null)
   const [loading, setLoading] = useState(!userProp)
   const [error, setError] = useState(null)
@@ -72,7 +72,13 @@ export default function UserCard({ user: userProp, onLogout }) {
 
   return (
     <div className="user-card" aria-label="Profil utilisateur">
-      <div className="user-avatar" aria-hidden="true">{initials}</div>
+      <div className="user-avatar" aria-hidden="true">
+        {avatarImage ? (
+          <img src={avatarImage} alt="Avatar utilisateur" style={{width:'100%',height:'100%',objectFit:'cover',borderRadius:'50%'}} />
+        ) : (
+          initials
+        )}
+      </div>
       <div className="user-info">
   <div className="user-name">{firstName} {lastName}</div>
   {displayRole && <div className="user-role">{displayRole}</div>}

@@ -1,4 +1,4 @@
-/* Page Home - thème sombre */
+/* Page Home - thème clair */
 
 .home-container { background: var(--color-bg); min-height: 100vh; color: var(--color-text); }
 
@@ -47,7 +47,7 @@
 /* Sidebar */
 .sidebar { width: 240px; flex-shrink: 0; padding: 1rem 0.75rem 1.5rem 1rem; display: flex; }
 /* Stick within viewport: max-height = 100vh - sticky top - outer paddings */
-.sidebar-inner { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 16px; padding: 0.75rem 0.5rem; display: flex; flex-direction: column; gap: 0.25rem; width: 100%; max-height: calc(100vh - 4.25rem - 1rem - 1.5rem); position: sticky; top: 4.25rem; overflow-y: auto; box-sizing: border-box; box-shadow: var(--shadow-sm); }
+.sidebar-inner { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 16px; padding: 0.75rem 0.5rem; display: flex; flex-direction: column; gap: 0.25rem; width: 100%; max-height: calc(100vh - 4.25rem - 1rem - 1.5rem); position: sticky; top: 4.25rem; overflow-y: auto; box-sizing: border-box; box-shadow: var(--shadow-sm); backdrop-filter: blur(6px); }
 .sidebar-nav { display: flex; flex-direction: column; gap: 0.25rem; }
 .nav-item { display: flex; align-items: center; gap: 0.75rem; background: transparent; border: 1px solid transparent; border-radius: 10px; padding: 0.55rem 0.75rem; font-size: 0.9rem; text-align: left; cursor: pointer; color: var(--color-text); transition: background .15s, border-color .15s, color .15s; }
 .nav-item:hover { background: var(--color-surface-alt); }
@@ -70,9 +70,9 @@
 
 /* Progress bar */
 .progress-bar { position:relative; width:100%; height:8px; background: var(--color-surface-alt); border-radius:4px; overflow:hidden; }
-.progress-bar span { position:absolute; left:0; top:0; bottom:0; background: linear-gradient(90deg,var(--color-accent),#7dd3fc); border-radius:4px; }
+.progress-bar span { position:absolute; left:0; top:0; bottom:0; background: linear-gradient(90deg,var(--violet-500), var(--rose-300)); border-radius:4px; }
 .card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 1rem; box-shadow: var(--shadow-sm); }
-.card-value { font-size: 2rem; font-weight: 700; background: linear-gradient(90deg,var(--color-accent),#7dd3fc); -webkit-background-clip:text; background-clip:text; color: transparent; }
+.card-value { font-size: 2rem; font-weight: 700; background: linear-gradient(90deg,var(--violet-500), var(--rose-300)); -webkit-background-clip:text; background-clip:text; color: transparent; }
 .card-label { color: var(--color-text-muted); }
 
 .panel { margin-top: 1.25rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm); }

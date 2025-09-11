@@ -16,6 +16,7 @@ import AdminGeneral from './pages/adminGeneral.jsx'
 import AdminProjects from './pages/adminProjects.jsx'
 import AdminNews from './pages/adminNews.jsx'
 import AdminEvents from './pages/adminEvents.jsx'
+//import Admin from './pages/Admin.jsx'
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/advanced-search" element={<Search />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
+        {/* <Route path="/admin/*" element={<Admin />} /> */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

@@ -1,6 +1,12 @@
 import TopBar from '../components/TopBar.jsx'
 import './Home.css'
+import Footer from "../components/Footer.jsx";
 
+/**
+ * Home page.
+ * Static marketing content with sections and images.
+ * @component
+ */
 export default function Home() {
   return (
     <div className="home-container">
@@ -47,6 +53,7 @@ export default function Home() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   )
 }

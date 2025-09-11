@@ -4,6 +4,7 @@ import './Home.css';
 import './StartupProjects.css';
 import ProjectCard from '../components/ProjectCard.jsx';
 import ProjectFormModal from '../components/ProjectFormModal.jsx';
+import ProjectModal from '../components/ProjectModal.jsx';
 import { projectMock, projectTagSuggestions } from '../data/projectMock.js';
 
 export default function StartupProjects({ embedded = false }) {
@@ -13,6 +14,7 @@ export default function StartupProjects({ embedded = false }) {
     // removed tag filters
     const [modalOpen, setModalOpen] = useState(false);
     const [editing, setEditing] = useState(null); // project being edited
+    const [viewing, setViewing] = useState(null); // project being viewed (read-only)
 
     // allTags removed
 
@@ -20,7 +22,9 @@ export default function StartupProjects({ embedded = false }) {
 
     const openCreate = () => { setEditing(null); setModalOpen(true); };
     const openEdit = (p) => { setEditing(p); setModalOpen(true); };
+    const openView = (p) => { setViewing(p); };
     const closeModal = () => setModalOpen(false);
+    const closeView = () => setViewing(null);
 
     const handleSave = (payload) => {
         if (payload.id) {
@@ -54,7 +58,7 @@ export default function StartupProjects({ embedded = false }) {
                     <ProjectCard
                         key={p.id}
                         project={p}
-                        onOpen={openEdit}
+                        onOpen={openView}
                         onEdit={openEdit}
                         onDelete={handleDelete}
                     />
@@ -71,6 +75,9 @@ export default function StartupProjects({ embedded = false }) {
                 onCancel={closeModal}
                 onSave={handleSave}
             />
+            {viewing && (
+                <ProjectModal project={viewing} onClose={closeView} />
+            )}
         </div>
     );
 

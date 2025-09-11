@@ -10,10 +10,10 @@ export async function GET(_req, { params }) {
             return NextResponse.json({ error: 'Paramètre id manquant.' }, { status: 400 });
         }
 
-        const rows = await sendRequest(`/user?select=*&id=eq.${encodeURIComponent(id)}`);
+    const rows = await sendRequest(`/user?select=id,email,name,role,founder_id,investor_id&id=eq.${encodeURIComponent(id)}`);
         const item = Array.isArray(rows) ? rows[0] : null;
         if (!item) {
-            return NextResponse.json({ error: 'Événement introuvable.' }, { status: 404 });
+            return NextResponse.json({ error: 'Utilisateur introuvable.' }, { status: 404 });
         }
         return NextResponse.json(item);
     } catch (err) {
@@ -44,7 +44,7 @@ export async function PATCH(req, { params }) {
 
         const item = Array.isArray(updated) ? updated[0] : null;
         if (!item) {
-            return NextResponse.json({ error: 'Événement introuvable.' }, { status: 404 });
+            return NextResponse.json({ error: 'Utilisateur introuvable.' }, { status: 404 });
         }
         return NextResponse.json(item);
     } catch (err) {
@@ -70,7 +70,7 @@ export async function DELETE(_req, { params }) {
         // Avec Prefer: return=representation, PostgREST renvoie les lignes supprimées
         const item = Array.isArray(deleted) ? deleted[0] : null;
         if (!item) {
-            return NextResponse.json({ error: 'Événement introuvable.' }, { status: 404 });
+            return NextResponse.json({ error: 'Utilisateur introuvable.' }, { status: 404 });
         }
         return NextResponse.json(item);
     } catch (err) {

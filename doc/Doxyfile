@@ -1,0 +1,86 @@
+# Doxyfile for NextRise project
+# -------------------------------------------------------------
+# Invoke with:  doxygen doc/Doxyfile
+# Output will be generated in doc/doxygen/
+
+# Project --------------------------------------------------------------------
+PROJECT_NAME           = "JEB Incubator"
+PROJECT_BRIEF          = "Incubator platform (Next.js backend + React/Vite frontend)"
+# Optionally keep in sync manually with package.json versions
+PROJECT_NUMBER         = 0.1.0
+OUTPUT_DIRECTORY       = doc/doxygen
+CREATE_SUBDIRS         = YES
+
+# Build behavior -------------------------------------------------------------
+QUIET                  = NO
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = NO
+WARN_IF_DOC_ERROR      = YES
+WARN_NO_PARAMDOC       = NO
+WARN_LOGFILE           = doc/doxygen/doxygen-warnings.log
+
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+EXTRACT_PACKAGE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+HIDE_UNDOC_MEMBERS     = NO
+HIDE_UNDOC_CLASSES     = NO
+
+# Input ----------------------------------------------------------------------
+INPUT                  = backend/src frontend/src doc/DOXYGEN_GUIDE.md
+FILE_PATTERNS          = *.js *.jsx *.mjs *.md
+RECURSIVE              = YES
+
+# Ignore build and dependency folders
+EXCLUDE                = backend/.next frontend/dist node_modules backend/node_modules frontend/node_modules backend/logs frontend/logs
+EXCLUDE_SYMLINKS       = YES
+
+# Source browsing ------------------------------------------------------------
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+STRIP_CODE_COMMENTS    = NO
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+FULL_PATH_NAMES        = NO
+
+# Documentation formatting ---------------------------------------------------
+JAVADOC_AUTOBRIEF      = YES
+MULTILINE_CPP_IS_BRIEF = NO
+ALIASES                += component="\par Component:\n"
+ALIASES                += hook="\par React Hook:\n"
+MARKDOWN_SUPPORT       = YES
+USE_MDFILE_AS_MAINPAGE = doc/DOXYGEN_GUIDE.md
+
+# Output formats -------------------------------------------------------------
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+GENERATE_TREEVIEW      = YES
+DISABLE_INDEX          = NO
+GENERATE_LATEX         = NO
+GENERATE_RTF           = NO
+GENERATE_MAN           = NO
+GENERATE_XML           = YES
+XML_OUTPUT             = xml
+GENERATE_JSON          = YES
+JSON_OUTPUT            = json
+
+# Diagrams (set HAVE_DOT=YES only if graphviz installed) ---------------------
+HAVE_DOT               = NO
+CALL_GRAPH             = NO
+CALLER_GRAPH           = NO
+CLASS_DIAGRAMS         = NO
+
+# Misc -----------------------------------------------------------------------
+OPTIMIZE_OUTPUT_JAVA   = YES   # Works better for JS style
+EXTENSION_MAPPING      = js=JavaScript mjs=JavaScript jsx=JavaScript
+TAB_SIZE               = 2
+GENERATE_SHORT_NAMES   = NO
+
+# Internal indexing tweaks ---------------------------------------------------
+SORT_MEMBER_DOCS       = YES
+SORT_BRIEF_DOCS        = YES
+SORT_GROUP_NAMES       = YES
+SORT_BY_SCOPE_NAME     = YES
+
+# Logs directory will be created automatically on first run

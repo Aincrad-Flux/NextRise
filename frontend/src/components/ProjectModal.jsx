@@ -1,6 +1,8 @@
 import { useRef } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import ProjectCard from './ProjectCard.jsx';
+import { projectMock } from '../data/projectMock.js';
 import './TopBar.css';
 
 // Helper: readable labels
@@ -24,6 +26,9 @@ function formatValue(val) {
 export default function ProjectModal({ project, onClose }) {
   const contentRef = useRef(null);
   if (!project) return null;
+
+  // For demo: assign 1-2 mock projects to each startup
+  const relatedProjects = projectMock.filter((p, i) => (project.id % 2 === 0 ? i % 2 === 0 : i % 2 === 1));
 
   const handleExport = async () => {
     if (!contentRef.current) return;
@@ -74,34 +79,96 @@ export default function ProjectModal({ project, onClose }) {
     pdf.save(`${(project.name || 'projet').replace(/[^a-z0-9]/gi,'_')}.pdf`);
   };
 
-  // Prepare ordered entries: name, description first
-  const entries = Object.entries(project).filter(([k,v]) => v != null && v !== '')
-    .sort(([a],[b]) => a.localeCompare(b));
-  const nameEntry = entries.find(e => e[0] === 'name');
-  const descriptionEntry = entries.find(e => e[0] === 'description');
-  const rest = entries.filter(([k]) => !['name','description'].includes(k));
+  // Group info by category
+  const categories = [
+    {
+      label: 'General',
+      keys: ['name', 'description', 'sector', 'maturity', 'project_status', 'needs']
+    },
+    {
+      label: 'Contact',
+      keys: ['email', 'phone', 'website_url', 'social_media_url', 'address']
+    },
+    {
+      label: 'Legal',
+      keys: ['legal_status', 'created_at', 'founders']
+    },
+    {
+      label: 'Team',
+      keys: ['founders']
+    },
+    {
+      label: 'Status',
+      keys: ['project_status', 'maturity', 'needs']
+    },
+    {
+      label: 'Online Presence',
+      keys: ['website_url', 'social_media_url']
+    },
+    {
+      label: 'Location',
+      keys: ['address']
+    }
+  ];
+  const entries = Object.entries(project).filter(([k,v]) => v != null && v !== '');
+  const getEntry = key => entries.find(([k]) => k === key);
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" onClick={e => e.stopPropagation()}>
-        <button className="close-btn" onClick={onClose} aria-label="Fermer">×</button>
+      <div className="modal" onClick={e => e.stopPropagation()} style={{maxWidth:'700px'}}>
+        <button className="close-btn" onClick={onClose} aria-label="Close">×</button>
         <button className="export-btn" onClick={handleExport}>Export</button>
         <div ref={contentRef} className="modal-content" style={{ color: '#000' }}>
-          {nameEntry && <h2>{nameEntry[1]}</h2>}
-          {descriptionEntry && (
-            <p style={{ marginBottom: '1rem', whiteSpace: 'pre-line' }}>{descriptionEntry[1]}</p>
+          <h2 style={{marginBottom:'.5rem', textAlign:'left'}}>{project.name}</h2>
+          {getEntry('description') && (
+            <p style={{ marginBottom: '1.2rem', whiteSpace: 'pre-line', fontSize:'1.05rem', color:'#444', textAlign:'justify' }}>{getEntry('description')[1]}</p>
           )}
-          <div className="details-grid" style={{ display: 'grid', gap: '0.6rem 1.25rem', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', marginTop: '0.5rem' }}>
-            {rest.map(([k,v]) => {
-              const formatted = formatValue(v);
-              if (!formatted) return null;
+          <div className="modal-categories-grid" style={{
+            display:'grid',
+            gridTemplateColumns:'repeat(2, minmax(180px, 1fr))',
+            gap:'1.5rem',
+            marginBottom:'2rem'
+          }}>
+            {categories.map(cat => {
+              // Only show category if at least one key is present
+              const hasAny = cat.keys.some(key => getEntry(key));
+              if (!hasAny) return null;
               return (
-                <div key={k} style={{ fontSize: '.8rem', lineHeight: '1.25' }}>
-                  <strong style={{ display: 'block', fontSize: '.7rem', letterSpacing: '.5px', textTransform: 'uppercase', opacity: .7 }}>{formatLabel(k)}</strong>
-                  <span>{formatted}</span>
+                <div key={cat.label} style={{minWidth:'180px'}}>
+                  <h4 style={{margin:'0 0 .4rem 0', fontSize:'.98rem', color:'var(--violet-700,#7c3aed)', textAlign:'left'}}>{cat.label}</h4>
+                  <ul style={{listStyle:'none', padding:0, margin:0, fontSize:'.92rem'}}>
+                    {cat.keys.map(key => {
+                      const entry = getEntry(key);
+                      if (!entry) return null;
+                      let value = formatValue(entry[1]);
+                      if (key === 'founders' && Array.isArray(entry[1])) {
+                        value = entry[1].map(f => f.name).join(', ');
+                      }
+                      if (key === 'created_at') {
+                        value = new Date(entry[1]).toLocaleDateString();
+                      }
+                      if (!value) return null;
+                      return (
+                        <li key={key} style={{marginBottom:'.3rem', textAlign:'justify'}}>
+                          <span style={{fontWeight:600, opacity:.7}}>{formatLabel(key)}: </span>
+                          <span>{value}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
               );
             })}
+          </div>
+          <div style={{marginTop:'1.5rem'}}>
+            <h3 style={{marginBottom:'.7rem', fontSize:'1.1rem', color:'var(--violet-700,#7c3aed)'}}>Projects by this startup</h3>
+            <div style={{display:'flex', flexWrap:'wrap', gap:'1.2rem'}}>
+              {relatedProjects.map(proj => (
+                <div key={proj.id} style={{flex:'1 1 260px', minWidth:'220px', maxWidth:'320px'}}>
+                  <ProjectCard project={proj} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

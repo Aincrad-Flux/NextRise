@@ -11,8 +11,8 @@ export default function NotFound() {
       alignItems: 'center',
       justifyContent: 'center',
       gap: '1.5rem',
-      background: 'linear-gradient(135deg,#0f172a,#1e293b)',
-      color: '#e2e8f0',
+       background: 'linear-gradient(135deg,#ffffff,#fbf8ff)',
+       color: 'var(--color-text)',
       textAlign: 'center',
       padding: '2rem'
     }}>
@@ -21,8 +21,8 @@ export default function NotFound() {
       <p style={{maxWidth: '520px', lineHeight: 1.5, margin: 0}}>La page que vous cherchez n'existe pas ou a été déplacée. Vérifiez l'URL ou revenez à l'accueil.</p>
       <Link to='/' style={{
         textDecoration: 'none',
-        background: '#38bdf8',
-        color: '#0f172a',
+         background: 'linear-gradient(135deg, var(--violet-500), var(--rose-300))',
+         color: '#fff',
         padding: '0.9rem 1.5rem',
         borderRadius: '0.75rem',
         fontWeight: 600,

@@ -1,100 +1,132 @@
+import { useEffect, useState, useMemo } from 'react'
 import TopBar from '../components/TopBar.jsx'
+import { logger } from '../utils/logger.js'
 import './Home.css'
 import './News.css'
+import Footer from "../components/Footer.jsx";
+
+// Backend base URL aligné avec Events page (fallback localhost:3000)
+const API_BASE = import.meta?.env?.VITE_BACKEND_URL?.replace(/\/$/, '')
+  || (typeof window !== 'undefined' ? `${window.location.protocol}//localhost:3000` : 'http://localhost:3000')
+
+function api(path, query) {
+  const url = new URL(path.startsWith('/') ? path : `/${path}`, API_BASE)
+  if (query) {
+    for (const [k, v] of Object.entries(query)) {
+      if (v !== undefined && v !== null) url.searchParams.append(k, v)
+    }
+  }
+  return url.toString()
+}
+
+const DEFAULT_IMG = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2344&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+
+function stripMarkdown(md = '') {
+  return md
+    .replace(/```[\s\S]*?```/g, '') // code blocks
+    .replace(/`[^`]*`/g, '')
+    .replace(/^#+\s+/gm, '')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/_([^_]+)_/g, '$1')
+    .replace(/>\s?/g, '')
+    .replace(/\r/g, '')
+    .trim()
+}
 
 export default function News() {
-    return (
-        <div className="home-container">
-            <TopBar />
-            <main id="News" className="home-main constrained" style={{ padding: '2rem' }}>
-                <h1>News</h1>
-                <div className="news-grid">
+  const [items, setItems] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [selected, setSelected] = useState(null) // For modal / expansion future
 
-                    <article>
-                        <img
-                            src="https://imgs.search.brave.com/ZGW2uDpyFx5Jju9d0kIr_odMNtU66_WkIeXu9QmpWnA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/eW91dHViZS5jb20v/dmkvNlhHZUp3c1VQ/OWMvbWF4cmVzZGVm/YXVsdC5qcGc"
-                            alt="Silksong"
-                        />
-                        <h2>Hollow Knight: Silksong</h2>
-                        <div>
-                            <p>Hollow Knight: Silksong has officially launched Thursday, September 4, 2025, concluding a seven-year development cycle and a six-year wait for fans.
-                                The game is now available on PC, PlayStation 4, PlayStation 5, Xbox One, Xbox Series X|S, Nintendo Switch, and Nintendo Switch 2, with a price point of €19.99.
-                            </p>
-                            <a href="#">Read more</a>
-                        </div>
-                    </article>
+  useEffect(() => {
+    const controller = new AbortController()
+    async function load() {
+      setLoading(true)
+      setError(null)
+      try {
+        const url = api('/api/db/news', { select: '*' })
+        logger.info('[News] Fetch start', { url })
+        const res = await fetch(url, { signal: controller.signal })
+        if (!res.ok) {
+          const txt = await res.text().catch(() => '')
+            throw new Error(`HTTP ${res.status} ${res.statusText} ${txt}`.trim())
+        }
+        const data = await res.json()
+        const table = data.tables || []
+        logger.info(`[News] Fetched news count=${table.length}`)
+        setItems(table.sort((a,b)=> new Date(b.news_date||0) - new Date(a.news_date||0)))
+      } catch (e) {
+        if (e.name !== 'AbortError') {
+          logger.error('[News] Fetch error', { message: e.message })
+          setError(e.message === 'Failed to fetch' ? 'Réseau indisponible. Backend?' : e.message)
+        }
+      } finally {
+        setLoading(false)
+        logger.info('[News] Fetch end')
+      }
+    }
+    load()
+    return () => controller.abort()
+  }, [])
 
-                    <article>
-                        <img
-                            src="https://images.pexels.com/photos/7168798/pexels-photo-7168798.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                            alt="easter eggs"
-                        />
-                        <h2>Easter Eggs</h2>
-                        <div>
-                            <p>Easter eggs are a colorful symbol of new life and rebirth, often decorated and hidden for
-                                festive hunts. The tradition comes from ancient spring rituals and was later adopted
-                                into Easter celebrations to represent the resurrection.</p>
-                            <a href="#">Read more</a>
-                        </div>
-                    </article>
+  const grid = useMemo(() => items.map(n => {
+    const preview = stripMarkdown(n.description || '').slice(0, 320) + ( (n.description||'').length > 320 ? '…' : '')
+    return { ...n, preview }
+  }), [items])
 
-                    <article>
-                        <img
-                            src="https://images.pexels.com/photos/4099179/pexels-photo-4099179.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                            alt="hot cross buns"
-                        />
-                        <h2>Hot Cross Buns</h2>
-                        <div>
-                            <p>Hot cross buns are sweet, spiced buns marked with a cross on top, traditionally eaten on
-                                Good Friday. They originated in England and symbolize the crucifixion, with the cross
-                                representing Jesus and the spices recalling burial traditions.</p>
-                            <a href="#">Read more</a>
-                        </div>
-                    </article>
+  return (
+    <div className="home-container">
+      <TopBar />
+      <main id="News" className="home-main constrained" style={{ padding: '2rem' }}>
+        <h1>News</h1>
 
-                    <article>
-                        <img
-                            src="https://images.pexels.com/photos/5145/animal-easter-chick-chicken.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                            alt="easter chick"
-                        />
-                        <h2>Easter Chick</h2>
-                        <div>
-                            <p>Easter chicks are a cheerful symbol of new life and beginnings, often seen alongside eggs
-                                in spring decorations. They represent birth and renewal, tying into the themes of Easter
-                                and the arrival of spring.</p>
-                            <a href="#">Read more</a>
-                        </div>
-                    </article>
+        {loading && <p style={{opacity:.7}}>Chargement…</p>}
+        {!loading && error && <p style={{color:'var(--danger,crimson)'}}>Erreur: {error}</p>}
+        {!loading && !error && grid.length === 0 && <p>Aucune news.</p>}
 
-                    <article>
-                        <img
-                            src="https://images.pexels.com/photos/2072158/pexels-photo-2072158.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                            alt="easter bunny"
-                        />
-                        <h2>Easter Bunnies</h2>
-                        <div>
-                            <p>Easter bunnies are a popular symbol of spring and new life, often seen delivering
-                                colorful eggs to children.</p>
-                            <a href="#">Read more</a>
-                        </div>
-                    </article>
-
-                    <article>
-                        <img
-                            src="https://images.pexels.com/photos/12787666/pexels-photo-12787666.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                            alt="crown of thorns"
-                        />
-                        <h2>Crown of Thorns</h2>
-                        <div>
-                            <p>The Crown of Thorns symbolizes the suffering of Jesus before his crucifixion. It
-                                represents the pain he endured for humanity’s salvation and is a reminder of his
-                                sacrifice during Easter.</p>
-                            <a href="#">Read more</a>
-                        </div>
-                    </article>
-
-                </div>
-            </main>
+        <div className="news-grid">
+          {grid.map(n => (
+            <article key={n.id} onClick={()=> setSelected(n)} style={{cursor:'pointer'}}>
+              <img src={DEFAULT_IMG} alt={n.title} />
+              <h2>{n.title}</h2>
+              <div>
+                <p style={{whiteSpace:'pre-wrap'}}>{n.preview}</p>
+                <small style={{display:'block', marginTop:'.4rem', opacity:.7}}>
+                  {new Date(n.news_date).toLocaleDateString(undefined,{year:'numeric', month:'short', day:'2-digit'})}
+                  {n.location ? ` • ${n.location}` : ''}
+                  {n.category ? ` • ${n.category}` : ''}
+                </small>
+                <button className="button" style={{marginTop:'.6rem'}} onClick={(e)=>{e.stopPropagation(); setSelected(n)}}>Read</button>
+              </div>
+            </article>
+          ))}
         </div>
-    )
+
+        {selected && (
+          <div className="news-modal-backdrop" onClick={()=> setSelected(null)}>
+            <div className="news-modal" onClick={e=>e.stopPropagation()}>
+              <header className="news-modal-header">
+                <h2>{selected.title}</h2>
+                <button className="button" onClick={()=> setSelected(null)}>Close</button>
+              </header>
+              <small className="news-modal-meta">
+                {new Date(selected.news_date).toLocaleDateString(undefined,{year:'numeric', month:'long', day:'2-digit'})}
+                {selected.location ? ` • ${selected.location}` : ''}
+                {selected.category ? ` • ${selected.category}` : ''}
+              </small>
+              <div className="news-modal-img-wrap">
+                <img src={DEFAULT_IMG} alt={selected.title} />
+              </div>
+              <div className="news-modal-content">
+                {stripMarkdown(selected.description)}
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+      <Footer />
+    </div>
+  )
 }

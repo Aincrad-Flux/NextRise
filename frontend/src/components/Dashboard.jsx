@@ -114,7 +114,7 @@ export default function Dashboard() {
         <div className="panel">
           <div className="panel-header"><h2>Creations in the Last 12 Months</h2></div>
           <LineChartMini data={withColors(monthlySeries)} />
-        </div>
+  </div>
 
         <div className="panel">
           <div className="panel-header"><h2>Sector Distribution</h2></div>
@@ -238,11 +238,11 @@ function LineChartMini({ data, width = 560, height = 220 }) {
   return (
     <svg className="chart-line" width="100%" height={height} viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet">
       <g transform={`translate(${padding.l},${padding.t})`}>
-        <polyline fill="rgba(59,130,246,0.15)" stroke="none" points={area} />
-        <polyline fill="none" stroke="var(--color-accent, #3b82f6)" strokeWidth="2" points={points} />
+  <polyline fill="rgba(193,116,242,0.12)" stroke="none" points={area} />
+  <polyline fill="none" stroke="var(--color-accent, var(--violet-500))" strokeWidth="2" points={points} />
         {xs.map((x, i) => (
           <g key={i}>
-            <circle cx={x} cy={ys[i]} r={3} fill="var(--color-accent, #3b82f6)" />
+            <circle cx={x} cy={ys[i]} r={3} fill="var(--color-accent, var(--violet-500))" />
             {i % 2 === 0 && (
               <text x={x} y={innerH + 16} textAnchor="middle" className="chart-axis">{shortMonth(data[i].label)}</text>
             )}
@@ -274,7 +274,7 @@ function EmptyState({ text }) {
 }
 
 function withColors(arr) {
-  const palette = ['#3b82f6', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#84cc16', '#eab308', '#f97316', '#10b981']
+  const palette = ['var(--violet-500)', 'var(--rose-400)', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#84cc16', '#eab308', '#f97316', '#10b981']
   return arr.map((d, i) => ({ ...d, color: d.color || palette[i % palette.length] }))
 }
 

@@ -1,45 +1,16 @@
-import { useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import TopBar from '../components/TopBar.jsx'
 import { logger } from '../utils/logger.js'
 import './Login.css'
 
 export default function Login() {
-  const location = useLocation()
-  // derive initial mode from hash or query (?mode=signup or #signup)
-  const deriveMode = () => {
-    try {
-      const hash = location.hash?.replace('#','').toLowerCase()
-      if (hash === 'signup' || hash === 'signin') return hash
-      const params = new URLSearchParams(location.search)
-      const qMode = params.get('mode')?.toLowerCase()
-      if (qMode === 'signup' || qMode === 'signin') return qMode
-    } catch {}
-    return 'signin'
-  }
-  const [mode, setMode] = useState(deriveMode()) // 'signin' | 'signup'
+  const [mode, setMode] = useState('signin') // 'signin' | 'signup'
   const [signinForm, setSigninForm] = useState({ email: '', password: '' })
   const [signupForm, setSignupForm] = useState({ email: '', password: '', name: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
-  // update mode when hash/query changes (navigation inside SPA)
-  useEffect(() => {
-    const newMode = deriveMode()
-    setMode(m => (m === newMode ? m : newMode))
-  }, [location.hash, location.search])
-
-  // when toggling tabs manually, also push hash for deep-linking
-  const setModeWithHash = (next) => {
-    setMode(next)
-    setError('')
-    const url = new URL(window.location.href)
-    url.hash = next
-    // don't duplicate history entries if already same
-    if (window.location.hash.replace('#','') !== next) {
-      window.history.replaceState(null, '', url.toString())
-    }
-  }
 
   // Base URL (from docker-compose .env -> VITE_BACKEND_URL)
   const API_BASE = import.meta?.env?.VITE_BACKEND_URL?.replace(/\/$/, '') || ''
@@ -125,7 +96,7 @@ export default function Login() {
       </div>
       <div className="actions">
         <button disabled={loading} type="submit" className="primary-btn">{loading ? 'Signing in...' : 'Sign In'}</button>
-  <p className="secondary-link">Don't have an account? <a onClick={() => { setModeWithHash('signup') }}>Create one</a></p>
+        <p className="secondary-link">Don't have an account? <a onClick={() => { setMode('signup'); setError('') }}>Create one</a></p>
       </div>
       {error && <p className="error-text" role="alert">{error}</p>}
     </form>
@@ -145,7 +116,7 @@ export default function Login() {
       </div>
       <div className="actions">
         <button disabled={loading} type="submit" className="primary-btn">{loading ? 'Creating...' : 'Create my account'}</button>
-  <p className="secondary-link">Already have an account? <a onClick={() => { setModeWithHash('signin') }}>Sign in</a></p>
+        <p className="secondary-link">Already have an account? <a onClick={() => { setMode('signin'); setError('') }}>Sign in</a></p>
       </div>
       <p className="terms">By creating an account you accept our terms of use and privacy policy.</p>
       {error && <p className="error-text" role="alert">{error}</p>}
@@ -163,8 +134,8 @@ export default function Login() {
               <p className="auth-sub">{mode === 'signin' ? 'Access your dashboard' : 'Join the platform in seconds'}</p>
             </div>
             <div className="auth-tabs" role="tablist">
-              <button type="button" className={`auth-tab ${mode==='signin'?'active':''}`} onClick={() => setModeWithHash('signin')} role="tab" aria-selected={mode==='signin'}>Sign In</button>
-              <button type="button" className={`auth-tab ${mode==='signup'?'active':''}`} onClick={() => setModeWithHash('signup')} role="tab" aria-selected={mode==='signup'}>Sign Up</button>
+              <button type="button" className={`auth-tab ${mode==='signin'?'active':''}`} onClick={() => { setMode('signin'); setError('') }} role="tab" aria-selected={mode==='signin'}>Sign In</button>
+              <button type="button" className={`auth-tab ${mode==='signup'?'active':''}`} onClick={() => { setMode('signup'); setError('') }} role="tab" aria-selected={mode==='signup'}>Sign Up</button>
             </div>
             {activeForm}
           </div>

@@ -104,7 +104,7 @@ export default function TopBar() {
     {!(isStartup || isAdmin) && (
           <div className="auth-buttons" aria-label="Authentication">
             <a href="/login" className="auth-btn sign-in" role="button">Sign in</a>
-            <a href="/login#signup" className="auth-btn sign-up" role="button">Sign up</a>
+            <a href="/login" className="auth-btn sign-up" role="button">Sign up</a>
           </div>
         )}
         {(isStartup || isAdmin) && (
@@ -161,8 +161,8 @@ export default function TopBar() {
             <div className="mobile-actions">
               {!(isStartup || isAdmin) ? (
                 <div className="auth-buttons">
-                  <a href="/login" className="auth-btn sign-in" role="button" onClick={() => setMenuOpen(false)}>Sign in</a>
-                  <a href="/login#signup" className="auth-btn sign-up" role="button" onClick={() => setMenuOpen(false)}>Sign up</a>
+                  <a href="/startup" className="auth-btn sign-in" role="button" onClick={() => setMenuOpen(false)}>Sign in</a>
+                  <a href="/login" className="auth-btn sign-up" role="button" onClick={() => setMenuOpen(false)}>Sign up</a>
                 </div>
               ) : (
                 <div className="profile-row" style={{alignItems:'flex-start'}}>

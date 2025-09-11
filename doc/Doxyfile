@@ -4,7 +4,7 @@
 # Output will be generated in doc/doxygen/
 
 # Project --------------------------------------------------------------------
-PROJECT_NAME           = "NextRise"
+PROJECT_NAME           = "JEB Incubator"
 PROJECT_BRIEF          = "Incubator platform (Next.js backend + React/Vite frontend)"
 # Optionally keep in sync manually with package.json versions
 PROJECT_NUMBER         = 0.1.0

@@ -1,158 +1,158 @@
-## NextRise – Guide de Style (Palette Pastel & Thème Sombre)
+## NextRise – Style Guide (Pastel Palette & Dark Theme)
 
-Document de référence unique pour maintenir cohérence visuelle (designers + dev). Version révisée avec palette rose/violet pastel (thème clair) + variante sombre, nouvelles fontes et tokens CSS.
-
----
-### 1. ADN de la Marque
-Mots‑clés: moderne, calme, sobre, analytique, chaleureux sans être infantile.
-
-Intention: un univers doux (pastels lavande/rose) en clair, et profond/velouté en sombre. Les accents servent l’information (actions, éléments interactifs, chiffres clés) – jamais de décoration gratuite.
+Single source of truth to keep visual consistency (design + dev). Revised version with pink/violet pastel palette (light theme) + dark variant, new fonts and CSS tokens.
 
 ---
-### 2. Typographie
-Polices chargées via Google Fonts.
-• Titres / headings: Montserrat (600–700). Ligne serrée (line-height ~1.1).
-• Corps / paragraphes: Open Sans 400–600 (line-height 1.5).
-• Labels petits / META: uppercase, tracking léger (letter-spacing +4–6%).
-• Ne pas multiplier les variations de poids: (400 / 600 / 700 suffisent).
-• Texte en dégradé: uniquement pour un nombre clé / logo interne (max 1 par écran).
+### 1. Brand DNA
+Keywords: modern, calm, restrained, analytical, warm but not childish.
 
-Accessibilité: viser contraste AA (ratio ≥ 4.5:1 pour corps). Vérifier si on change une couleur de texte.
+Intent: a soft universe (lavender / rose pastels) in light mode, and deep / velvety in dark. Accents serve information (actions, interactive elements, key metrics) – never decorative fluff.
 
 ---
-### 3. Système de Couleurs (Tokens CSS)
-Les variables sont définies dans `frontend/src/index.css` sur `:root` (clair) puis sur `.theme-dark`.
+### 2. Typography
+Fonts loaded via Google Fonts.
+• Titles / headings: Montserrat (600–700). Tight leading (line-height ~1.1).
+• Body / paragraphs: Open Sans 400–600 (line-height 1.5).
+• Small labels / META: uppercase, subtle tracking (letter-spacing +4–6%).
+• Don’t multiply weight variants: (400 / 600 / 700 are enough).
+• Gradient text: only for one key number / internal logo (max 1 per screen).
 
-#### Palette de base (nuanciers)
-| Token | Hex | Usage principal |
-|-------|-----|-----------------|
-| --violet-500 | #C174F2 | Accent principal, boutons primaires (clair + sombre) |
-| --violet-400 | #CB90F1 | Glow / hover accent, dégradés |
-| --violet-300 | #D5A8F2 | Fonds tintés subtils (badges légers) |
-| --violet-200 | #E4BEF8 | Arrière-plans très doux / survol léger |
-| --violet-100 | #EED5FB | Background décoratif subtil |
-| --rose-500 | #F18585 | Accent secondaire ponctuel (graphes, chips) |
-| --rose-400 | #F49C9C | Accent secondaire (variante douce) |
-| --rose-300 | #F6AEAE | Dégradés / surlignage doux |
-| --rose-200 | #F8CACF | Fonds pastel de mise en avant faible |
-
-#### Thème Clair (valeurs dérivées)
-| Rôle | Token | Valeur | Notes |
-|------|-------|--------|-------|
-| Fond page | --color-bg | #f6f1f8 | Base lavande diffuse |
-| Section alternative | --color-bg-alt | #f4eef9 | Légère différenciation |
-| Surface carte | --color-surface | #fcfaff | Cartes par défaut |
-| Surface élevée / hover | --color-surface-alt | #f3ecfa | Hover / élévation douce |
-| Panel dashboard | --panel-bg | #f9f6fd | Groupes fonctionnels |
-| Bordure | --color-border | #e3d6f1 | Séparation discrète |
-| Bordure soft | --color-border-soft | #eee3f8 | Diviseurs internes |
-| Texte primaire | --color-text | #2a2332 | Forte lisibilité |
-| Texte secondaire | --color-text-muted | #6d5f74 | Labels / hints |
-| Accent principal | --color-accent | #C174F2 | Action primaire |
-| Accent secondaire | --color-accent-2 | #F49C9C | Action secondaire légère |
-| Accent glow | --color-accent-glow | #CB90F1 | Anneaux focus / halo |
-| Danger base | --color-danger | #e11d48 | Supprimer / erreurs |
-| Danger hover | --color-danger-hover | #be123c | État survol |
-| Danger active | --color-danger-active | #9f1239 | Pressé |
-| Topbar | --color-topbar | gradient | Transparence givrée |
-
-#### Thème Sombre (`.theme-dark`)
-| Rôle | Token | Valeur | Notes |
-|------|-------|--------|-------|
-| Fond page | --color-bg | #141018 | Base profonde |
-| Section alt | --color-bg-alt | #1b1522 | Variation douce |
-| Surface carte | --color-surface | #1f1827 | Cartes |
-| Surface élevée / hover | --color-surface-alt | #261e31 | Hover |
-| Panel | --panel-bg | #201a28 | Groupes |
-| Bordure | --color-border | #3a2d47 | Contraste modéré |
-| Bordure soft | --color-border-soft | #2c2331 | Diviseurs |
-| Texte primaire | --color-text | #ece4f2 | Haute lisibilité |
-| Texte secondaire | --color-text-muted | #a592b3 | Labels |
-| Accents | --color-accent / 2 | #C174F2 / #F49C9C | Cohérence palette |
-| Accent glow | --color-accent-glow | #D5A8F2 | Effets focus |
-| Danger (x3) | même que clair | | Constance feedback |
-| Topbar | --color-topbar | gradient sombre | Légère translucidité |
-
-Règles d’usage:
-1. Accent principal ≤ ~12% de surface visuelle (éviter la saturation).
-2. N’utiliser qu’UN niveau d’élévation par zone (pas d’empilement d’ombres).
-3. Rouge exclusivement pour erreurs / actions destructrices.
-4. Les états (hover/focus/active) modulent luminosité ou bordure, pas changer totalement la couleur.
-5. Le thème sombre ne doit pas inverser la hiérarchie (mêmes rôles, autres valeurs).
+Accessibility: target AA contrast (ratio ≥ 4.5:1 for body). Re‑check when changing a text color.
 
 ---
-### 4. Espacement & Rondeurs
-Rythme simple (échelle interne: 4 / 8 / 12 / 16 / 24). Choisir le plus petit suffisant.
-• Padding carte: 16–20px.
-• Gap entre sections majeures: 32px.
-• Rondeurs: `--radius-sm:6px`, `--radius-md:10px`, `--radius-lg:14px`. Utiliser md pour cartes, sm pour champs, lg pour sections héro / modales.
-• Ombres: privilégier `--shadow-sm` (par défaut) et `--shadow-md` seulement pour overlays / modale.
+### 3. Color System (CSS Tokens)
+Variables are defined in `frontend/src/index.css` on `:root` (light) then overridden in `.theme-dark`.
+
+#### Base Palette (Swatches)
+| Token | Hex | Primary Usage |
+|-------|-----|---------------|
+| --violet-500 | #C174F2 | Primary accent, primary buttons (light + dark) |
+| --violet-400 | #CB90F1 | Glow / hover accent, gradients |
+| --violet-300 | #D5A8F2 | Subtle tinted backgrounds (light badges) |
+| --violet-200 | #E4BEF8 | Very soft backgrounds / light hover |
+| --violet-100 | #EED5FB | Decorative subtle background |
+| --rose-500 | #F18585 | Secondary accent (graphs, chips) |
+| --rose-400 | #F49C9C | Secondary accent (soft variant) |
+| --rose-300 | #F6AEAE | Gradients / soft highlight |
+| --rose-200 | #F8CACF | Low-emphasis pastel highlight backgrounds |
+
+#### Light Theme (Derived Values)
+| Role | Token | Value | Notes |
+|------|-------|-------|-------|
+| Page background | --color-bg | #f6f1f8 | Diffuse lavender base |
+| Alt section | --color-bg-alt | #f4eef9 | Subtle differentiation |
+| Card surface | --color-surface | #fcfaff | Default cards |
+| Raised / hover surface | --color-surface-alt | #f3ecfa | Hover / gentle elevation |
+| Dashboard panel | --panel-bg | #f9f6fd | Functional group panels |
+| Border | --color-border | #e3d6f1 | Discreet separation |
+| Soft border | --color-border-soft | #eee3f8 | Internal dividers |
+| Primary text | --color-text | #2a2332 | Strong readability |
+| Secondary text | --color-text-muted | #6d5f74 | Labels / hints |
+| Primary accent | --color-accent | #C174F2 | Primary action |
+| Secondary accent | --color-accent-2 | #F49C9C | Light secondary action |
+| Accent glow | --color-accent-glow | #CB90F1 | Focus rings / halo |
+| Danger base | --color-danger | #e11d48 | Delete / errors |
+| Danger hover | --color-danger-hover | #be123c | Hover state |
+| Danger active | --color-danger-active | #9f1239 | Pressed |
+| Topbar | --color-topbar | gradient | Frosted transparency |
+
+#### Dark Theme (`.theme-dark`)
+| Role | Token | Value | Notes |
+|------|-------|-------|-------|
+| Page background | --color-bg | #141018 | Deep base |
+| Alt section | --color-bg-alt | #1b1522 | Gentle variation |
+| Card surface | --color-surface | #1f1827 | Cards |
+| Raised / hover surface | --color-surface-alt | #261e31 | Hover |
+| Panel | --panel-bg | #201a28 | Groups |
+| Border | --color-border | #3a2d47 | Moderate contrast |
+| Soft border | --color-border-soft | #2c2331 | Dividers |
+| Primary text | --color-text | #ece4f2 | High legibility |
+| Secondary text | --color-text-muted | #a592b3 | Labels |
+| Accents | --color-accent / 2 | #C174F2 / #F49C9C | Palette consistency |
+| Accent glow | --color-accent-glow | #D5A8F2 | Focus effects |
+| Danger (x3) | same as light | | Consistent feedback |
+| Topbar | --color-topbar | dark gradient | Slight translucency |
+
+Usage Rules:
+1. Primary accent ≤ ~12% of visual surface (avoid saturation).
+2. Use only ONE elevation level per zone (no stacked shadows).
+3. Red exclusively for errors / destructive actions.
+4. States (hover/focus/active) adjust luminance or border—not a total hue swap.
+5. Dark theme must not invert hierarchy (same roles, different values).
 
 ---
-### 5. Composants (Description Fonctionnelle)
-Boutons:
-• Primaire: fond violet dégradé ou plein (`--color-accent`), texte contrasté (#fff ou `--color-text`).
-• Secondaire: surface neutre (`--color-surface` clair / `--color-surface-alt` sombre) + bordure soft.
-• Danger: rouge (token danger).
-États: hover = légère élévation + intensification 4–6%; active = légère obscurcissement + translation 1px; disabled = opacité ~0.5 + curseur interdit.
+### 4. Spacing & Radii
+Simple rhythm (internal scale: 4 / 8 / 12 / 16 / 24). Choose the smallest sufficient.
+• Card padding: 16–20px.
+• Gap between major sections: 32px.
+• Radii: `--radius-sm:6px`, `--radius-md:10px`, `--radius-lg:14px`. Use md for cards, sm for inputs, lg for hero sections / modals.
+• Shadows: prefer `--shadow-sm` (default) and `--shadow-md` only for overlays / modal.
+
+---
+### 5. Components (Functional Description)
+Buttons:
+• Primary: violet gradient or solid (`--color-accent`), contrasting text (#fff or `--color-text`).
+• Secondary: neutral surface (`--color-surface` light / `--color-surface-alt` dark) + soft border.
+• Danger: red (danger token).
+States: hover = slight elevation + 4–6% intensification; active = slight darkening + 1px translation; disabled = ~0.5 opacity + not-allowed cursor.
 
 Cards / Panels:
-• Contenu cohérent (titre optionnel en haut, actions groupées à droite).
-• Pas d’ombre lourde + gradient simultané.
-• Espacement interne homogène.
+• Coherent content (optional title at top, grouped actions right).
+• No heavy shadow + gradient simultaneously.
+• Consistent internal spacing.
 
-Formulaires:
-• Label toujours au-dessus du champ.
-• Erreur: bordure danger + message court (1 phrase).
-• Focus: anneau / glow via `--color-accent-glow` (ombre portée externe douce).
-• N’afficher une validation succès que si utile (ex: sauvegarde distante).
+Forms:
+• Label always above the field.
+• Error: danger border + short message (1 sentence).
+• Focus: ring / glow via `--color-accent-glow` (soft outer drop shadow).
+• Show success validation only when meaningful (e.g., remote save confirmed).
 
-Listes & Tableaux:
-• Ligne header: légère variation de surface (`--color-surface-alt` clair / assombrie sombre).
-• Hover ligne: fond subtil (pas d’inversion totale).
-• Densité verticale régulière (ligne ~40–48px selon contenu).
+Lists & Tables:
+• Header row: slight surface variation (`--color-surface-alt` light / darkened in dark mode).
+• Row hover: subtle background (no full inversion).
+• Consistent vertical density (row height ~40–48px depending on content).
 
-Badges / Status (futur): utiliser teintures très légères (transparence 12–18%) + texte contrasté.
-
----
-### 6. Thèmes & Implémentation
-Activation du sombre: ajouter `.theme-dark` sur l’élément racine (ex: `<body>`). Les composants ne doivent pas surcharger les couleurs en dur mais consommer les tokens. Toute nouvelle couleur = nouvelle variable documentée ici avant usage.
-
-Checklist dev avant merge:
-1. Variables utilisées ? (pas d’hex inline sauf cas exception décoratif discret)
-2. Contraste accessible vérifié ?
-3. État focus visible clavier ?
-4. Responsive (≥320px) sans rupture ?
+Badges / Status (future): use very light tints (12–18% transparency) + contrasting text.
 
 ---
-### 7. Accessibilité
-• Focus: contour ou halo accent clair/sombre visible.
-• Ne pas transmettre l’info uniquement par couleur (ajouter icône/texte).
-• Taille cible interactive ≥ 40px haut (mobile).
-• Réduire animations futures si `prefers-reduced-motion` (TODO).
+### 6. Themes & Implementation
+Dark activation: add `.theme-dark` on the root element (e.g., `<body>`). Components must not hardcode hex colors—consume tokens. Any new color = add a new variable documented here before usage.
+
+Dev checklist before merge:
+1. Using tokens? (no inline hex except small decorative exceptions)
+2. Accessible contrast verified?
+3. Visible keyboard focus state?
+4. Responsive (≥320px) without breakage?
+
+---
+### 7. Accessibility
+• Focus: visible outline or halo (accent) in both themes.
+• Don’t convey info by color alone (add icon/text).
+• Interactive target height ≥ 40px (mobile).
+• Respect `prefers-reduced-motion` (future TODO) to reduce animations.
 
 ---
 ### 8. Motion
-Micro transitions (150–220ms, easing cubic-bezier standard: `ease-out`). Fades, translations ≤ 8px. Aucune animation décorative en boucle.
+Micro transitions (150–220ms, standard easing: `ease-out`). Fades, translations ≤ 8px. No endlessly looping decorative animations.
 
 ---
-### 9. Roadmap d’Amélioration
-1. Pack composants (Button, Badge, Input, Modal) unifiés.
-2. Système de status (success / warning / info) avec tokens dédiés.
-3. Page vitrine /storybook interne.
-4. Mode contraste renforcé.
-5. Règles d’illustrations & pictogrammes.
-6. Tokens spacing codifiés (`--space-…`).
-7. Animation d’apparition standardisée (util class).
+### 9. Improvement Roadmap
+1. Unified component pack (Button, Badge, Input, Modal).
+2. Status system (success / warning / info) with dedicated tokens.
+3. Showcase / internal Storybook page.
+4. Enhanced contrast mode.
+5. Illustration & pictogram guidelines.
+6. Codified spacing tokens (`--space-…`).
+7. Standardized entrance animation (utility class).
 
 ---
-### 10. Gouvernance
-Toute nouvelle variation de couleur / style passe revue design. Les modifications de tokens sont versionnées et annoncées (CHANGELOG UI).
+### 10. Governance
+Every new color / style variation goes through design review. Token changes are versioned and announced (UI CHANGELOG).
 
 ---
-### 11. Résumé Express
-Palette pastel contrôlée, accents mesurés, hiérarchie lisible, même structure en clair & sombre, sobriété avant effet. Cohérence > originalité ponctuelle.
+### 11. Quick Summary
+Controlled pastel palette, measured accents, readable hierarchy, same structure across light & dark, restraint before effect. Consistency > occasional originality.
 
 ---
-NOTE: Mettre à jour ce document à chaque ajout de variable CSS ou pattern réutilisable.
+NOTE: Update this document whenever a CSS variable or **reusable** pattern is added.
 

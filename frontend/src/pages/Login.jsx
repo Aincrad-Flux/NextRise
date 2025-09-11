@@ -16,7 +16,7 @@ export default function Login() {
   const API_BASE = import.meta?.env?.VITE_BACKEND_URL?.replace(/\/$/, '') || ''
 
   function redirectByRole(role) {
-    if (role === 'admin') return navigate('/admin/')
+    if (role === 'admin') return navigate('/admin')
     // investor, founder, user -> /startup (default)
     return navigate('/startup')
   }
@@ -65,7 +65,7 @@ export default function Login() {
           const meData = await meRes.json().catch(() => ({}))
           logger.info('Auth fallback /me', { status: meRes.status, hasUser: !!meData?.user, role: meData?.user?.role })
           if (meRes.ok && meData?.user?.role) {
-            const to = meData.user.role === 'admin' ? '/admin/' : '/startup'
+            const to = meData.user.role === 'admin' ? '/admin' : '/startup'
             logger.info('Redirect by role', { role: meData.user.role, to })
             return redirectByRole(meData.user.role)
           }
@@ -73,7 +73,7 @@ export default function Login() {
         logger.info('Redirect default to /startup')
         return navigate('/startup')
       }
-      logger.info('Redirect by role', { role: user.role, to: user.role === 'admin' ? '/admin/' : '/startup' })
+      logger.info('Redirect by role', { role: user.role, to: user.role === 'admin' ? '/admin' : '/startup' })
       return redirectByRole(user.role)
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'An error occurred'

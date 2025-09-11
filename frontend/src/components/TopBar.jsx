@@ -143,10 +143,16 @@ export default function TopBar({ startupSection, onStartupSectionChange }) {
             <a href="/login#signup" className="auth-btn sign-up" role="button">Sign up</a>
           </div>
         )}
-        {(isStartup || isAdmin) && <AvatarMenu />}
         {!(isStartup || isAdmin) && user && !loading && (
           <div style={{display:'flex',alignItems:'center',gap:'.6rem'}}>
             <a href={user.role === 'admin' ? '/admin' : '/startup'} className="auth-btn sign-in" role="button">Dashboard</a>
+            <a href="/profile" className="auth-btn sign-in" role="button">Profile</a>
+            <button type="button" className="auth-btn sign-up" onClick={handleLogout} style={{minWidth:'auto'}}>Logout</button>
+            <AvatarMenu />
+          </div>
+        )}
+        {(isStartup || isAdmin) && user && !loading && (
+          <div style={{display:'flex',alignItems:'center',gap:'.6rem'}}>
             <a href="/profile" className="auth-btn sign-in" role="button">Profile</a>
             <button type="button" className="auth-btn sign-up" onClick={handleLogout} style={{minWidth:'auto'}}>Logout</button>
             <AvatarMenu />

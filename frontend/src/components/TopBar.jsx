@@ -14,9 +14,10 @@ import AvatarMenu from './AvatarMenu';
  * Shows auth buttons on public pages and profile menu on startup/admin sections.
  * @component
  */
-export default function TopBar({ startupSection, onStartupSectionChange }) {
+export default function TopBar({ startupSection, onStartupSectionChange, investorSection, onInvestorSectionChange }) {
   const { pathname } = useLocation();
   const isStartup = pathname.startsWith('/startup');
+  const isInvestor = pathname.startsWith('/investor');
   const isAdmin = pathname.startsWith('/admin');
   const { user, loading, logout } = useSession();
   const navigate = useNavigate();
@@ -72,13 +73,21 @@ export default function TopBar({ startupSection, onStartupSectionChange }) {
     ['messaging','Messaging']
   ];
 
+  const investorNav = [
+  ['general','Dashboard'],
+  ['all-projects','All Projects'],
+  ['investments','My Investments'],
+  ['opportunities','Opportunities'],
+  ['messaging','Messaging']
+  ];
+
   async function handleLogout() {
     await logout();
     navigate('/');
   }
 
   return (
-  <header className={`topbar${(isStartup || isAdmin) ? ' no-nav' : ''}`}>
+  <header className={`topbar${(isStartup || isAdmin || isInvestor) ? ' no-nav' : ''}`}>
       <div className="topbar-left">
         <h1 className="brand">JEB Incubator</h1>
         <a href="/" className="home-link" aria-label="Go to home">
@@ -108,7 +117,7 @@ export default function TopBar({ startupSection, onStartupSectionChange }) {
           />
         </button>
       </div>
-  {!(isStartup || isAdmin) && (
+  {!(isStartup || isAdmin || isInvestor) && (
     <nav className="topbar-nav" aria-label="Primary">
           <a href="/catalog" className={`nav-btn ${pathname.startsWith('/catalog')?'active':''}`}>Startup</a>
           <a href="/news" className={`nav-btn ${pathname.startsWith('/news')?'active':''}`}>News</a>
@@ -127,9 +136,21 @@ export default function TopBar({ startupSection, onStartupSectionChange }) {
       ))}
     </nav>
   )}
+  {(isInvestor && onInvestorSectionChange) && (
+    <nav className="startup-inline-nav" aria-label="Investor sections">
+      {investorNav.map(([k,l]) => (
+        <button
+          key={k}
+          type="button"
+          className={`startup-pill ${investorSection===k?'active':''}`}
+          onClick={()=>onInvestorSectionChange(k)}
+        >{l}</button>
+      ))}
+    </nav>
+  )}
   <div className="topbar-right">
     {/* Loading skeleton to avoid layout shift on public pages while session resolves */}
-    {!(isStartup || isAdmin) && loading && (
+  {!(isStartup || isAdmin || isInvestor) && loading && (
       <div className="auth-skeleton" aria-hidden="true">
         <span className="sk-btn sk-wide" />
         <span className="sk-btn sk-mid" />
@@ -137,13 +158,13 @@ export default function TopBar({ startupSection, onStartupSectionChange }) {
         <span className="sk-avatar" />
       </div>
     )}
-    {!(isStartup || isAdmin) && !user && !loading && (
+  {!(isStartup || isAdmin || isInvestor) && !user && !loading && (
           <div className="auth-buttons" aria-label="Authentication">
             <a href="/login" className="auth-btn sign-in" role="button">Sign in</a>
             <a href="/login#signup" className="auth-btn sign-up" role="button">Sign up</a>
           </div>
         )}
-        {!(isStartup || isAdmin) && user && !loading && (
+  {!(isStartup || isAdmin || isInvestor) && user && !loading && (
           <div style={{display:'flex',alignItems:'center',gap:'.6rem'}}>
             <a href={user.role === 'admin' ? '/admin' : '/startup'} className="auth-btn sign-in" role="button">Dashboard</a>
             <a href="/profile" className="auth-btn sign-in" role="button">Profile</a>
@@ -151,7 +172,7 @@ export default function TopBar({ startupSection, onStartupSectionChange }) {
             <AvatarMenu />
           </div>
         )}
-        {(isStartup || isAdmin) && user && !loading && (
+  {(isStartup || isAdmin || isInvestor) && user && !loading && (
           <div style={{display:'flex',alignItems:'center',gap:'.6rem'}}>
             <a href="/profile" className="auth-btn sign-in" role="button">Profile</a>
             <button type="button" className="auth-btn sign-up" onClick={handleLogout} style={{minWidth:'auto'}}>Logout</button>
@@ -198,7 +219,7 @@ export default function TopBar({ startupSection, onStartupSectionChange }) {
               </button>
             </div>
 
-            {!(isStartup || isAdmin) && (
+            {!(isStartup || isAdmin || isInvestor) && (
               <nav className="mobile-nav" aria-label="Mobile navigation">
                 <a href="/catalog" className="nav-btn" onClick={() => setMenuOpen(false)}>Projects</a>
                 <a href="/news" className="nav-btn" onClick={() => setMenuOpen(false)}>News</a>
@@ -217,9 +238,21 @@ export default function TopBar({ startupSection, onStartupSectionChange }) {
                 ))}
               </nav>
             )}
+            {(isInvestor && onInvestorSectionChange) && (
+              <nav className="mobile-nav" aria-label="Investor sections">
+                {investorNav.map(([k,l]) => (
+                  <button
+                    key={k}
+                    type="button"
+                    className={`nav-btn ${investorSection===k?'active':''}`}
+                    onClick={()=>{onInvestorSectionChange(k); setMenuOpen(false);}}
+                  >{l}</button>
+                ))}
+              </nav>
+            )}
 
             <div className="mobile-actions">
-              {!(isStartup || isAdmin) ? (
+      {!(isStartup || isAdmin || isInvestor) ? (
                 <div className="auth-buttons">
                   {!user && !loading && (
                     <>
@@ -242,7 +275,7 @@ export default function TopBar({ startupSection, onStartupSectionChange }) {
                   </div>
                   <div className="profile-meta">
                     <span>My space</span>
-                    <a href="/startup" className="nav-btn" onClick={() => setMenuOpen(false)}>Go to dashboard</a>
+        <a href={isInvestor?'/investor':'/startup'} className="nav-btn" onClick={() => setMenuOpen(false)}>Go to dashboard</a>
                   </div>
                 </div>
               )}

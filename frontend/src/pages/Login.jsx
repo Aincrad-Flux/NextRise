@@ -46,9 +46,10 @@ export default function Login() {
   const API_BASE = ''
 
   function redirectByRole(role) {
-    if (role === 'admin') return navigate('/admin')
-    // investor, founder, user -> /startup (default)
-    return navigate('/startup')
+  if (role === 'admin') return navigate('/admin')
+  if (role === 'investor') return navigate('/investor')
+  // founder, user -> /startup (default)
+  return navigate('/startup')
   }
 
   function handleChange(e, type) {

@@ -15,6 +15,7 @@ import Messaging from './pages/Messaging.jsx'
 import AdminHome from './pages/AdminHome.jsx'
 import { SessionProvider } from './components/SessionProvider.jsx'
 import UserProfile from './pages/UserProfile.jsx'
+import InvestorHome from './pages/InvestorHome.jsx'
 
 function App() {
   return (
@@ -26,6 +27,11 @@ function App() {
         <Route path="/startup/profile" element={<StartupProfile />} />
         <Route path="/startup/opportunities" element={<Opportunities />} />
         <Route path="/startup/messaging" element={<Messaging />} />
+  {/* Investor area */}
+  <Route path="/investor" element={<InvestorHome />} />
+  <Route path="/investor/opportunities" element={<Opportunities />} />
+  <Route path="/investor/messaging" element={<Messaging />} />
+  <Route path="/investor/profile" element={<UserProfile />} />
         {/* Renamed projects to catalog */}
         <Route path="/catalog" element={<Projects />} />
         {/* Legacy redirect */}

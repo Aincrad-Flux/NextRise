@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { getAvatarImageCookie, setAvatarImageCookie, clearAvatarImageCookie, downscaleToDataUrl } from '../utils/avatarImage.js'
 import UserCard from './UserCard'
 import './AvatarMenu.css'
 
@@ -9,7 +10,7 @@ import './AvatarMenu.css'
  */
 export default function AvatarMenu() {
   const [open, setOpen] = useState(false)
-  const [preview, setPreview] = useState(null) // data URL of selected image
+  const [preview, setPreview] = useState(() => getAvatarImageCookie() || null) // data URL of selected image
   const btnRef = useRef(null)
   const popRef = useRef(null)
 
@@ -34,12 +35,25 @@ export default function AvatarMenu() {
     }
   }, [open])
 
-  const handleFile = (e) => {
+  const handleFile = async (e) => {
     const file = e.target.files?.[0]
     if (!file) return
-    const reader = new FileReader()
-    reader.onload = () => setPreview(reader.result)
-    reader.readAsDataURL(file)
+    try {
+      const scaled = await downscaleToDataUrl(file, 96)
+      if (scaled) {
+        setPreview(scaled)
+        setAvatarImageCookie(scaled)
+        window.dispatchEvent(new CustomEvent('avatar-updated', { detail: { image: scaled } }))
+      }
+    } catch (err) {
+      console.error('avatar scale error', err)
+    }
+  }
+
+  const clearImage = () => {
+    setPreview(null)
+    clearAvatarImageCookie()
+    window.dispatchEvent(new CustomEvent('avatar-updated', { detail: { image: null } }))
   }
 
   return (
@@ -61,7 +75,7 @@ export default function AvatarMenu() {
       </button>
       {open && (
         <div ref={popRef} className="avatar-popover" role="dialog" aria-label="Menu utilisateur">
-          <UserCard />
+          <UserCard avatarImage={preview} />
           <div className="avatar-pop-divider" />
           <div className="avatar-upload-block">
             <label className="upload-label">
@@ -69,7 +83,7 @@ export default function AvatarMenu() {
               <span>Changer l'image (local)</span>
             </label>
             {preview && (
-              <button type="button" className="clear-btn" onClick={() => setPreview(null)}>Retirer</button>
+              <button type="button" className="clear-btn" onClick={clearImage}>Retirer</button>
             )}
           </div>
           <div className="avatar-hint">L'image n'est pas envoyée au serveur.</div>

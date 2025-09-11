@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import UserCard from './UserCard.jsx'
+import { getAvatarImageCookie } from '../utils/avatarImage.js'
 
 const navItems = [
   { key: 'general', label: 'General', icon: DashboardIcon, route: '/startup' }, // interne (state)
@@ -11,11 +13,17 @@ const navItems = [
 
 export default function Sidebar({ active, onSelect, user, onLogout }) {
   const navigate = useNavigate()
+  const [avatarImage, setAvatarImage] = useState(() => getAvatarImageCookie())
+  useEffect(() => {
+    function handler(e) { setAvatarImage(e.detail?.image || getAvatarImageCookie()) }
+    window.addEventListener('avatar-updated', handler)
+    return () => window.removeEventListener('avatar-updated', handler)
+  }, [])
   const internalKeys = new Set(['general','projects', 'profile', 'opportunities', 'messaging'])
   return (
     <aside className="sidebar">
       <div className="sidebar-inner">
-  <UserCard user={user} onLogout={onLogout} />
+  <UserCard user={user} onLogout={onLogout} avatarImage={avatarImage} />
         <div className="sidebar-nav">
           {navItems.map(item => {
             const Icon = item.icon

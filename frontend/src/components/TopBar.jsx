@@ -5,6 +5,7 @@ import moonIcon from '../assets/moon.svg';
 import './TopBar.css';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useSession } from './SessionProvider.jsx';
 import AvatarMenu from './AvatarMenu';
 
 /**
@@ -17,6 +18,7 @@ export default function TopBar() {
   const { pathname } = useLocation();
   const isStartup = pathname.startsWith('/startup');
   const isAdmin = pathname.startsWith('/admin');
+  const { user, loading } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
   const [dark, setDark] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -98,17 +100,24 @@ export default function TopBar() {
           <a href="/projects" className="nav-btn">Projects</a>
           <a href="/news" className="nav-btn">News</a>
           <a href="/events" className="nav-btn">Events</a>
+          {user && !loading && (
+            <a href={user.role === 'admin' ? '/admin' : '/startup'} className="nav-btn" style={{fontWeight:600}}>Dashboard</a>
+          )}
         </nav>
       )}
   <div className="topbar-right">
-    {!(isStartup || isAdmin) && (
+    {!(isStartup || isAdmin) && !user && !loading && (
           <div className="auth-buttons" aria-label="Authentication">
             <a href="/login" className="auth-btn sign-in" role="button">Sign in</a>
             <a href="/login#signup" className="auth-btn sign-up" role="button">Sign up</a>
           </div>
         )}
-        {(isStartup || isAdmin) && (
-          <AvatarMenu />
+        {(isStartup || isAdmin) && <AvatarMenu />}
+        {!(isStartup || isAdmin) && user && !loading && (
+          <div style={{display:'flex',alignItems:'center',gap:'.6rem'}}>
+            <a href={user.role === 'admin' ? '/admin' : '/startup'} className="auth-btn sign-in" role="button">Dashboard</a>
+            <AvatarMenu />
+          </div>
         )}
 
         {/* Mobile menu toggle */}

@@ -15,9 +15,7 @@ export default function Sidebar({ active, onSelect, user, onLogout }) {
   return (
     <aside className="sidebar">
       <div className="sidebar-inner">
-        {user && (
-          <UserCard user={user} onLogout={onLogout} />
-        )}
+  <UserCard user={user} onLogout={onLogout} />
         <div className="sidebar-nav">
           {navItems.map(item => {
             const Icon = item.icon

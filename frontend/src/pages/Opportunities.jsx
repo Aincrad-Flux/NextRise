@@ -9,7 +9,6 @@ const initialOpportunities = [];
 export default function Opportunities() {
   const [opportunities, setOpportunities] = useState(initialOpportunities);
   const [newOpp, setNewOpp] = useState({ title: '', description: '', type: 'investissement' });
-  const user = { firstName: 'Jean', lastName: 'Dupont', role: 'Startup' };
   const handleLogout = () => alert('Déconnexion... (à implémenter)');
 
   const handleChange = (e) => {
@@ -31,7 +30,7 @@ export default function Opportunities() {
     <div className="home-container">
       <TopBar />
       <div className="layout">
-        <Sidebar active="opportunities" user={user} onLogout={handleLogout} />
+  <Sidebar active="opportunities" onLogout={handleLogout} />
         <main className="home-main">
           <h2>Opportunités</h2>
           <form className="project-form" onSubmit={handleAdd}>

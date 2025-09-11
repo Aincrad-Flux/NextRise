@@ -11,12 +11,7 @@ import { logger } from '../utils/logger.js'
 export default function StartupHome() {
   const [section, setSection] = useState('general')
   const navigate = useNavigate()
-  // TODO: replace mock user with real auth context when available
-  const user = {
-    firstName: 'Jean',
-    lastName: 'Dupont',
-    role: 'Startup',
-  }
+  // user removed: Sidebar/UserCard now fetch real user via /api/auth/me
 
   async function handleLogout() {
     const API_BASE = import.meta?.env?.VITE_BACKEND_URL?.replace(/\/$/, '') || ''
@@ -36,7 +31,7 @@ export default function StartupHome() {
     <div className="home-container">
       <TopBar />
       <div className="layout">
-  <Sidebar active={section} onSelect={setSection} user={user} onLogout={handleLogout} />
+  <Sidebar active={section} onSelect={setSection} onLogout={handleLogout} />
         <main className="home-main">
           {section === 'general' && <Dashboard />}
           {section === 'projects' && <StartupProjects embedded />}

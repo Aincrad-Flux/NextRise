@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router-dom'
 import UserCard from './UserCard.jsx'
 
 const navItems = [
-  { key: 'general', label: 'General', icon: DashboardIcon, route: '/startup' },
-  { key: 'projects', label: 'Projects', icon: FolderIcon, route: '/startup' },
+  { key: 'general', label: 'General', icon: DashboardIcon, route: '/startup' }, // interne (state)
+  { key: 'projects', label: 'Projects', icon: FolderIcon, route: '/startup' },   // interne (state)
   { key: 'profile', label: 'Profil startup', icon: UserIcon, route: '/startup/profile' },
   { key: 'opportunities', label: 'Opportunités', icon: OpportunityIcon, route: '/startup/opportunities' },
   { key: 'messaging', label: 'Messagerie', icon: MessageIcon, route: '/startup/messaging' },
@@ -11,7 +11,7 @@ const navItems = [
 
 export default function Sidebar({ active, onSelect, user, onLogout }) {
   const navigate = useNavigate()
-  const internalKeys = new Set(['general','projects'])
+  const internalKeys = new Set(['general','projects', 'profile', 'opportunities', 'messaging'])
   return (
     <aside className="sidebar">
       <div className="sidebar-inner">

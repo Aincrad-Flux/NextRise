@@ -4,7 +4,8 @@ import TopBar from '../components/TopBar.jsx'
 import Dashboard from '../components/Dashboard.jsx'
 import Sidebar from '../components/Sidebar.jsx'
 import StartupProjects from './StartupProjects.jsx'
-// NOTE: case fixed (Home.css) so styles apply on case-sensitive systems
+import StartupProfile from './StartupProfile.jsx'
+
 import './Home.css'
 import { logger } from '../utils/logger.js'
 
@@ -31,30 +32,15 @@ export default function StartupHome() {
     <div className="home-container">
       <TopBar />
       <div className="layout">
-  <Sidebar active={section} onSelect={setSection} onLogout={handleLogout} />
+        <Sidebar active={section} onSelect={setSection} onLogout={handleLogout} />
         <main className="home-main">
           {section === 'general' && <Dashboard />}
           {section === 'projects' && <StartupProjects embedded />}
-          {section !== 'general' && section !== 'projects' && (
-            <div className="placeholder panel">
-              <div className="panel-header"><h2>{labelFor(section)}</h2></div>
-              <div style={{ padding: '1rem' }}>
-                <p>Contenu pour la section {labelFor(section)} à venir.</p>
-              </div>
-            </div>
-          )}
+          {section === 'profile' && <StartupProfile />}
+          {section === 'opportunities' && <div>Opportunités (à implémenter)</div>}
+          {section === 'messaging' && <div>Messagerie (à implémenter)</div>}
         </main>
       </div>
     </div>
   )
-}
-
-function labelFor(key) {
-  switch (key) {
-    case 'startups': return 'Startups'
-    case 'projects': return 'Projets'
-    case 'investors': return 'Investisseurs'
-    case 'mentors': return 'Mentors'
-    default: return 'Général'
-  }
 }

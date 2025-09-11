@@ -2,10 +2,39 @@ import TopBar from '../components/TopBar.jsx'
 import './Home.css'
 import './News.css'
 import Sidebar from '../components/Sidebar.jsx';
+import React, { useState } from 'react'
+
+function DeleteLink( { onDelete } ) {
+  const [hidden, setHidden] = React.useState(false);
+
+  if (hidden) return null;
+
+  return (
+    <a
+      className="aDelete"
+      href="#"
+      onClick={(e) => {
+        e.preventDefault();
+        if (onDelete) {
+          onDelete();
+        }
+      }}
+    >
+      Delete
+    </a>
+  );
+}
 
 export default function News() {
     const user = { firstName: 'John', lastName: 'Doe', role: 'admin' };
     const handleLogout = () => alert('Logout... (to implement)');
+
+    const [showArticle1, setShowArticle1] = useState(true);
+    const [showArticle2, setShowArticle2] = useState(true);
+    const [showArticle3, setShowArticle3] = useState(true);
+    const [showArticle4, setShowArticle4] = useState(true);
+    const [showArticle5, setShowArticle5] = useState(true);
+    const [showArticle6, setShowArticle6] = useState(true);
 
     return (
         <div className="home-container">
@@ -16,6 +45,7 @@ export default function News() {
                     <h1>News</h1>
                     <div className="news-grid">
 
+                        {showArticle1 && (
                         <article>
                             <img
                                 src="https://imgs.search.brave.com/ZGW2uDpyFx5Jju9d0kIr_odMNtU66_WkIeXu9QmpWnA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/eW91dHViZS5jb20v/dmkvNlhHZUp3c1VQ/OWMvbWF4cmVzZGVm/YXVsdC5qcGc"
@@ -29,11 +59,12 @@ export default function News() {
                                 <div className='aButton'>
                                     <a className='aEdit' href="#">Edit</a>
                                     <a className='aReadMore' href="#">Read more</a>
-                                    <a className='aDelete' href="#">Delete</a>
+                                    <DeleteLink onDelete={() => setShowArticle1(false)} />
                                 </div>
                             </div>
-                        </article>
+                        </article> )}
 
+                        {showArticle2 && (
                         <article>
                             <img
                                 src="https://images.pexels.com/photos/7168798/pexels-photo-7168798.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -47,11 +78,12 @@ export default function News() {
                                 <div className='aButton'>
                                     <a className='aEdit' href="#">Edit</a>
                                     <a className='aReadMore' href="#">Read more</a>
-                                    <a className='aDelete' href="#">Delete</a>
+                                    <DeleteLink onDelete={() => setShowArticle2(false)} />
                                 </div>
                             </div>
-                        </article>
+                        </article> )}
 
+                        {showArticle3 && (
                         <article>
                             <img
                                 src="https://images.pexels.com/photos/4099179/pexels-photo-4099179.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -65,11 +97,12 @@ export default function News() {
                                 <div className='aButton'>
                                     <a className='aEdit' href="#">Edit</a>
                                     <a className='aReadMore' href="#">Read more</a>
-                                    <a className='aDelete' href="#">Delete</a>
+                                    <DeleteLink onDelete={() => setShowArticle3(false)} />
                                 </div>
                             </div>
-                        </article>
+                        </article> )}
 
+                        {showArticle4 && (
                         <article>
                             <img
                                 src="https://images.pexels.com/photos/5145/animal-easter-chick-chicken.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -83,11 +116,12 @@ export default function News() {
                                 <div className='aButton'>
                                     <a className='aEdit' href="#">Edit</a>
                                     <a className='aReadMore' href="#">Read more</a>
-                                    <a className='aDelete' href="#">Delete</a>
+                                    <DeleteLink onDelete={() => setShowArticle4(false)} />
                                 </div>
                             </div>
-                        </article>
+                        </article> )}
 
+                        {showArticle5 && (
                         <article>
                             <img
                                 src="https://images.pexels.com/photos/2072158/pexels-photo-2072158.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -100,11 +134,12 @@ export default function News() {
                                 <div className='aButton'>
                                     <a className='aEdit' href="#">Edit</a>
                                     <a className='aReadMore' href="#">Read more</a>
-                                    <a className='aDelete' href="#">Delete</a>
+                                    <DeleteLink onDelete={() => setShowArticle5(false)} />
                                 </div>
                             </div>
-                        </article>
+                        </article> )}
 
+                        {showArticle6 && (
                         <article>
                             <img
                                 src="https://images.pexels.com/photos/12787666/pexels-photo-12787666.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -118,10 +153,10 @@ export default function News() {
                                 <div className='aButton'>
                                     <a className='aEdit' href="#">Edit</a>
                                     <a className='aReadMore' href="#">Read more</a>
-                                    <a className='aDelete' href="#">Delete</a>
+                                    <DeleteLink onDelete={() => setShowArticle6(false)} />
                                 </div>
                             </div>
-                        </article>
+                        </article> )}
 
                     </div>
                 </main>

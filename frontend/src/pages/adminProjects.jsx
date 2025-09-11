@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import TopBar from '../components/TopBar.jsx';
 import './Home.css';
 import './Projects.css';
@@ -13,10 +13,13 @@ export default function Projects() {
     const user = { firstName: 'John', lastName: 'Doe', role: 'admin' };
     const handleLogout = () => alert('Logout... (to implement)');
 
-    const [activeProject, setActiveProject] = useState(null);
+    const [activeProject, setActiveProject] = useState([]);
     const [filters, setFilters] = useState({ sector: [], location: [], maturity: [] });
 
-    // Derive location as last token in address (country) - fallback entire address
+    const handleDelete = (id) => {
+        setActiveProject((prev) => (prev || []).filter((p) => p.id !== id));
+    };
+
     const enriched = useMemo(() => projectsData.map(p => ({
         ...p,
         location: (p.address && p.address.split(/[, ]+/).pop()) || p.address || ''
@@ -76,9 +79,9 @@ export default function Projects() {
                             <StartupCard
                                 key={p.id || p.name}
                                 project={p}
-                                onDelete={(proj) => console.log("Supprimer", proj)}
-                                onEdit={(proj) => console.log("Éditer", proj)}
-                                onSelect={(proj) => setActiveProject(proj)}
+                                onDelete={() => handleDelete(p.id)}
+                                onEdit={(p) => console.log("Éditer", p)}
+                                onSelect={(p) => setActiveProject(p)}
                             />
                         ))}
                         {filtered.length === 0 && (

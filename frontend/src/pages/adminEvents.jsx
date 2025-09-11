@@ -45,10 +45,18 @@ function monthMatrix(year, month /* 0-based */) {
 
 function EventsListCard({ date }) {
     const iso = formatISO(date)
-    const items = eventsByDate[iso] || []
+    const [items, setItems] = useState(() => eventsByDate?.[iso] ?? []);
     const readable = date.toLocaleDateString(undefined, {
         weekday: 'long', year: 'numeric', month: 'short', day: 'numeric'
     })
+
+    useEffect(() => {
+        setItems(eventsByDate?.[iso] ?? []);
+    }, [eventsByDate, iso]);
+
+    const handleDelete = (eventId) => {
+        setItems((prev) => prev.filter((ev) => ev.id !== eventId));
+    };
 
     return (
     <aside className="events-card">
@@ -61,7 +69,7 @@ function EventsListCard({ date }) {
       ) : (
         <div className="events-list">
           {items.map((ev) => (
-            <EventItem key={ev.id} event={ev} />
+            <EventItem key={ev.id} event={ev} onDelete={() => handleDelete(ev.id)}/>
           ))}
         </div>
       )}
@@ -69,7 +77,7 @@ function EventsListCard({ date }) {
   )
 }
 
-function EventItem({ event }) {
+function EventItem({ event, onDelete }) {
   const [openMenu, setOpenMenu] = useState(false);
   const menuRef = useRef(null);
 
@@ -137,7 +145,7 @@ function EventItem({ event }) {
             <button
               onClick={() => {
                 setOpenMenu(false);
-                console.log("Supprimer", event);
+                onDelete();
               }}
               style={{
                 display: "block",

@@ -91,7 +91,7 @@ export default function StartupCard({ project, onEdit, onDelete, onSelect }) {
               onClick={(e) => {
                 e.stopPropagation();
                 setOpenMenu(false);
-                onDelete(project);
+                onDelete(project.id);
               }}
               style={{
                 display: "block",

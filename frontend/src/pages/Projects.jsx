@@ -8,6 +8,11 @@ import MultiSelect from '../components/MultiSelect.jsx';
 import '../components/MultiSelect.css';
 import Footer from "../components/Footer.jsx";
 
+/**
+ * Projects (Startups) listing page.
+ * Provides client-side filtering with MultiSelect controls and a modal for details.
+ * @component
+ */
 export default function Projects() {
     const [activeProject, setActiveProject] = useState(null);
     const [filters, setFilters] = useState({ sector: [], location: [], maturity: [] });

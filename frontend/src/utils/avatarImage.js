@@ -1,10 +1,18 @@
-// Utility to persist a small avatar preview in a cookie.
-// We store a compressed (resized) data URL (png) limited in size.
-// Cookie limits ~4KB per cookie; we'll target <3.5KB.
+/**
+ * Avatar image cookie helpers.
+ * Persist a small data URL preview in a cookie under ~3.5KB.
+ * @module avatarImage
+ */
 
+/** Cookie name used for the avatar preview. */
 const COOKIE_NAME = 'avatar_preview_v1'
+/** Maximum size of the stored data URL, in bytes. */
 const MAX_BYTES = 3500
 
+/**
+ * Read the avatar image data URL from cookies.
+ * @returns {string|null}
+ */
 export function getAvatarImageCookie() {
   if (typeof document === 'undefined') return null
   const match = document.cookie.split('; ').find(r => r.startsWith(COOKIE_NAME+'='))
@@ -15,6 +23,10 @@ export function getAvatarImageCookie() {
   } catch { return null }
 }
 
+/**
+ * Persist the avatar data URL in a cookie (if under size limit).
+ * @param {string} dataUrl
+ */
 export function setAvatarImageCookie(dataUrl) {
   if (typeof document === 'undefined') return
   if (!dataUrl) return clearAvatarImageCookie()
@@ -24,11 +36,21 @@ export function setAvatarImageCookie(dataUrl) {
   document.cookie = `${COOKIE_NAME}=${encodeURIComponent(dataUrl)}; expires=${expires}; path=/; SameSite=Lax`
 }
 
+/**
+ * Remove the avatar cookie.
+ */
 export function clearAvatarImageCookie() {
   if (typeof document === 'undefined') return
   document.cookie = `${COOKIE_NAME}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax`
 }
 
+/**
+ * Downscale an image file and return a data URL (webp preferred, png fallback).
+ * Returns null if the final data URL is too large.
+ * @param {File} file
+ * @param {number} [size=96] Maximum bounding box size.
+ * @returns {Promise<string|null>}
+ */
 export async function downscaleToDataUrl(file, size = 96) {
   if (!file) return null
   const img = await new Promise((res, rej) => {

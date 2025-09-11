@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 
 /**
  * MultiSelect (uncontrolled popover, controlled selection)
+ * @component
  * Accessible multi-select dropdown with:
  *  - Keyboard nav (arrows, home/end, enter/space, escape)
  *  - Search / typeahead filter

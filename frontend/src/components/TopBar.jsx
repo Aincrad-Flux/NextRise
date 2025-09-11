@@ -128,6 +128,15 @@ export default function TopBar({ startupSection, onStartupSectionChange }) {
     </nav>
   )}
   <div className="topbar-right">
+    {/* Loading skeleton to avoid layout shift on public pages while session resolves */}
+    {!(isStartup || isAdmin) && loading && (
+      <div className="auth-skeleton" aria-hidden="true">
+        <span className="sk-btn sk-wide" />
+        <span className="sk-btn sk-mid" />
+        <span className="sk-btn sk-sm" />
+        <span className="sk-avatar" />
+      </div>
+    )}
     {!(isStartup || isAdmin) && !user && !loading && (
           <div className="auth-buttons" aria-label="Authentication">
             <a href="/login" className="auth-btn sign-in" role="button">Sign in</a>

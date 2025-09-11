@@ -51,7 +51,6 @@ export default function StartupCard({ project, onEdit, onDelete, onSelect }) {
             border: "none",
             cursor: "pointer",
             fontSize: "1.2rem",
-            color: "white",
           }}
         >
           ⋮

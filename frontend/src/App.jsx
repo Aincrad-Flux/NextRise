@@ -15,6 +15,7 @@ import Messaging from './pages/Messaging.jsx'
 import AdminGeneral from './pages/adminGeneral.jsx'
 import AdminProjects from './pages/adminProjects.jsx'
 import AdminNews from './pages/adminNews.jsx'
+import AdminEvents from './pages/adminEvents.jsx'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/admin/general" element={<AdminGeneral />} />
         <Route path="/admin/projects" element={<AdminProjects />} />
         <Route path="/admin/news" element={<AdminNews />} />
+        <Route path="/admin/events" element={<AdminEvents />} />
         <Route path="/startup" element={<StartupHome />} />
         <Route path="/startup/profile" element={<StartupProfile />} />
         <Route path="/startup/opportunities" element={<Opportunities />} />

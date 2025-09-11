@@ -12,7 +12,7 @@ import Login from './pages/Login.jsx'
 import StartupProfile from './pages/StartupProfile.jsx'
 import Opportunities from './pages/Opportunities.jsx'
 import Messaging from './pages/Messaging.jsx'
-//import Admin from './pages/Admin.jsx'
+import AdminHome from './pages/AdminHome.jsx'
 
 function App() {
   return (
@@ -29,7 +29,7 @@ function App() {
         <Route path="/advanced-search" element={<Search />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
-        {/* <Route path="/admin/*" element={<Admin />} /> */}
+        <Route path="/admin" element={<AdminHome />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

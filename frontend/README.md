@@ -49,3 +49,26 @@ To extend:
 - Replace `/ _log` with your backend route
 - Add user/session context to each payload
 - Batch and compress if network overhead becomes significant
+
+# Frontend
+
+## Admin Data Manager
+
+A generic CRUD UI is provided for admin at route `/admin`.
+
+Component: `DataManager` (in `src/components/DataManager.jsx`)
+
+Props:
+- `resource` (string): maps to backend `/api/db/{resource}` endpoints.
+- `idField` (default `id`): primary key used for edit/delete.
+- `columns` (optional): override auto-detected columns. Format: `{ key, label, render? }`.
+- `pageSize` (default 25): client-side slice.
+- `transformSubmit(obj,isEdit)` (optional): mutate payload before send.
+
+Features:
+- Auto fetch list with `?select=*`.
+- Create (POST), Edit (PATCH /:id), Delete.
+- Infers fields from first row; strings/numbers/booleans mapped to inputs, objects to JSON textarea.
+- Excludes sensitive keys (password, secret, token) from listing.
+
+Extend by adding specialized managers or passing custom columns.

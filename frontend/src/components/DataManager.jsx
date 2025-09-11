@@ -14,7 +14,7 @@ import './DataManager.css'
  *  - pageSize (number) default 25 (client side slice only).
  *  - transformSubmit (fn) optional: (formObj, isEdit) => payload to send.
  */
-export default function DataManager({ resource, idField = 'id', columns, pageSize = 25, transformSubmit }) {
+export default function DataManager({ resource, idField = 'id', columns, pageSize = 25, transformSubmit, textAlign = 'left' }) {
   const API_BASE = (import.meta?.env?.VITE_BACKEND_URL || '').replace(/\/$/, '')
   const baseUrl = `${API_BASE}/api/db/${resource}`.replace(/\/+$/, '')
   const [items, setItems] = useState([])
@@ -119,7 +119,7 @@ export default function DataManager({ resource, idField = 'id', columns, pageSiz
       {error && <p style={{color:'var(--color-danger,#c00)'}}>{error}</p>}
       <div className="dm-cards-grid">
         {items.slice(0,pageSize).map(row => (
-          <article key={row[idField]} className="dm-card">
+          <article key={row[idField]} className={`dm-card text-${textAlign}`}>
             <h3 className="dm-card__title">{row[idField] || '(no id)'}</h3>
             <div className="dm-card__fields">
               {effectiveColumns.filter(c => c.key !== idField).map(c => (

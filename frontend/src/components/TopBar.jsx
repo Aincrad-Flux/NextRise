@@ -5,6 +5,7 @@ import './TopBar.css';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSession } from './SessionProvider.jsx';
+import { useNavigate } from 'react-router-dom';
 import AvatarMenu from './AvatarMenu';
 
 /**
@@ -17,7 +18,8 @@ export default function TopBar({ startupSection, onStartupSectionChange }) {
   const { pathname } = useLocation();
   const isStartup = pathname.startsWith('/startup');
   const isAdmin = pathname.startsWith('/admin');
-  const { user, loading } = useSession();
+  const { user, loading, logout } = useSession();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [dark, setDark] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -67,9 +69,13 @@ export default function TopBar({ startupSection, onStartupSectionChange }) {
     ['general','General'],
     ['projects','Projects'],
     ['profile','Profile'],
-    ['opportunities','Opportunities'],
     ['messaging','Messaging']
   ];
+
+  async function handleLogout() {
+    await logout();
+    navigate('/');
+  }
 
   return (
   <header className={`topbar${(isStartup || isAdmin) ? ' no-nav' : ''}`}>
@@ -132,6 +138,8 @@ export default function TopBar({ startupSection, onStartupSectionChange }) {
         {!(isStartup || isAdmin) && user && !loading && (
           <div style={{display:'flex',alignItems:'center',gap:'.6rem'}}>
             <a href={user.role === 'admin' ? '/admin' : '/startup'} className="auth-btn sign-in" role="button">Dashboard</a>
+            <a href="/profile" className="auth-btn sign-in" role="button">Profile</a>
+            <button type="button" className="auth-btn sign-up" onClick={handleLogout} style={{minWidth:'auto'}}>Logout</button>
             <AvatarMenu />
           </div>
         )}
@@ -198,8 +206,19 @@ export default function TopBar({ startupSection, onStartupSectionChange }) {
             <div className="mobile-actions">
               {!(isStartup || isAdmin) ? (
                 <div className="auth-buttons">
-                  <a href="/login" className="auth-btn sign-in" role="button" onClick={() => setMenuOpen(false)}>Sign in</a>
-                  <a href="/login#signup" className="auth-btn sign-up" role="button" onClick={() => setMenuOpen(false)}>Sign up</a>
+                  {!user && !loading && (
+                    <>
+                      <a href="/login" className="auth-btn sign-in" role="button" onClick={() => setMenuOpen(false)}>Sign in</a>
+                      <a href="/login#signup" className="auth-btn sign-up" role="button" onClick={() => setMenuOpen(false)}>Sign up</a>
+                    </>
+                  )}
+                  {user && !loading && (
+                    <>
+                      <a href={user.role === 'admin' ? '/admin' : '/startup'} className="auth-btn sign-in" role="button" onClick={() => setMenuOpen(false)}>Dashboard</a>
+                      <a href="/profile" className="auth-btn sign-in" role="button" onClick={() => setMenuOpen(false)}>Profile</a>
+                      <button type="button" className="auth-btn sign-up" onClick={() => { handleLogout(); setMenuOpen(false); }} style={{minWidth:'auto'}}>Logout</button>
+                    </>
+                  )}
                 </div>
               ) : (
                 <div className="profile-row" style={{alignItems:'flex-start'}}>

@@ -27,7 +27,6 @@ export default function StartupHome() {
           {section === 'general' && <Dashboard />}
           {section === 'projects' && <StartupProjects embedded />}
           {section === 'profile' && <StartupProfile />}
-          {section === 'opportunities' && <StartupOpportunities />}
           {section === 'messaging' && <StartupMessager />}
         </main>
       </div>

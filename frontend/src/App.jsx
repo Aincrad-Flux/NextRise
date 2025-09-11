@@ -14,6 +14,7 @@ import Opportunities from './pages/Opportunities.jsx'
 import Messaging from './pages/Messaging.jsx'
 import AdminHome from './pages/AdminHome.jsx'
 import { SessionProvider } from './components/SessionProvider.jsx'
+import UserProfile from './pages/UserProfile.jsx'
 
 function App() {
   return (
@@ -33,7 +34,8 @@ function App() {
         <Route path="/events" element={<Events />} />
         <Route path="/advanced-search" element={<Search />} />
         <Route path="/about" element={<About />} />
-        <Route path="/login" element={<Login />} />
+  <Route path="/login" element={<Login />} />
+  <Route path="/profile" element={<UserProfile />} />
         <Route path="/admin" element={<AdminHome />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -4,20 +4,7 @@ import { logger } from '../utils/logger.js'
 import './Home.css'
 import './News.css'
 import Footer from "../components/Footer.jsx";
-
-// Backend base URL aligné avec Events page (fallback localhost:3000)
-const API_BASE = import.meta?.env?.VITE_BACKEND_URL?.replace(/\/$/, '')
-  || (typeof window !== 'undefined' ? `${window.location.protocol}//localhost:3000` : 'http://localhost:3000')
-
-function api(path, query) {
-  const url = new URL(path.startsWith('/') ? path : `/${path}`, API_BASE)
-  if (query) {
-    for (const [k, v] of Object.entries(query)) {
-      if (v !== undefined && v !== null) url.searchParams.append(k, v)
-    }
-  }
-  return url.toString()
-}
+// NOTE: On utilise désormais le proxy Vite ('/api' relatif) pour éviter les problèmes HTTPS/CORS locaux.
 
 const DEFAULT_IMG = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2344&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 
@@ -46,9 +33,9 @@ export default function News() {
       setLoading(true)
       setError(null)
       try {
-        const url = api('/api/db/news', { select: '*' })
-        logger.info('[News] Fetch start', { url })
-        const res = await fetch(url, { signal: controller.signal })
+  const url = '/api/db/news?select=*'
+  logger.info('[News] Fetch start', { url })
+  const res = await fetch(url, { signal: controller.signal })
         if (!res.ok) {
           const txt = await res.text().catch(() => '')
             throw new Error(`HTTP ${res.status} ${res.statusText} ${txt}`.trim())
@@ -82,9 +69,9 @@ export default function News() {
       <main id="News" className="home-main constrained" style={{ padding: '2rem' }}>
         <h1>News</h1>
 
-        {loading && <p style={{opacity:.7}}>Chargement…</p>}
-        {!loading && error && <p style={{color:'var(--danger,crimson)'}}>Erreur: {error}</p>}
-        {!loading && !error && grid.length === 0 && <p>Aucune news.</p>}
+  {loading && <p style={{opacity:.7}}>Loading…</p>}
+  {!loading && error && <p style={{color:'var(--danger,crimson)'}}>Error: {error}</p>}
+  {!loading && !error && grid.length === 0 && <p>No news.</p>}
 
         <div className="news-grid">
           {grid.map(n => (

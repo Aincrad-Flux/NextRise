@@ -89,3 +89,7 @@
 .status.onboarding { background: rgba(56,189,248,0.15); border-color: rgba(56,189,248,0.4); color: var(--color-accent); }
 .status.in-review { background: rgba(250,204,21,0.15); border-color: rgba(250,204,21,0.4); color: #facc15; }
 .status.planning { background: rgba(168,85,247,0.15); border-color: rgba(168,85,247,0.4); color: #c084fc; }
+
+/* Horizontal pills nav (startup) */
+.pill-nav.active { background: linear-gradient(90deg,var(--violet-500), var(--rose-300)); color:#fff !important; border-color: var(--violet-400) !important; box-shadow: 0 6px 14px -4px rgba(193,116,242,0.45); }
+.pill-nav:hover:not(.active) { background: var(--color-surface-alt) !important; color: var(--color-text) !important; }

@@ -41,13 +41,15 @@ export default function Login() {
     }
   }
 
-  // Base URL (from docker-compose .env -> VITE_BACKEND_URL)
-  const API_BASE = import.meta?.env?.VITE_BACKEND_URL?.replace(/\/$/, '') || ''
+  // NOTE: On s'appuie sur le proxy Vite: les endpoints '/api/...' sont relatifs.
+  // Si un déploiement nécessite un domaine différent en prod, on pourra réintroduire une base via variable d'env.
+  const API_BASE = ''
 
   function redirectByRole(role) {
-    if (role === 'admin') return navigate('/admin')
-    // investor, founder, user -> /startup (default)
-    return navigate('/startup')
+  if (role === 'admin') return navigate('/admin')
+  if (role === 'investor') return navigate('/investor')
+  // founder, user -> /startup (default)
+  return navigate('/startup')
   }
 
   function handleChange(e, type) {
@@ -63,7 +65,7 @@ export default function Login() {
     try {
       const endpoint = mode === 'signin' ? '/api/auth/login' : '/api/auth/register'
       const body = mode === 'signin' ? signinForm : signupForm
-      const url = new URL(endpoint, API_BASE || window.location.origin)
+  const url = endpoint // relatif -> proxy ou même origine
       const t0 = Date.now()
 
       // Do not log passwords
@@ -89,8 +91,7 @@ export default function Login() {
       if (!user || !user.role) {
         // Fallback: fetch current session if role missing
         try {
-          const meUrl = new URL('/api/auth/me', API_BASE || window.location.origin)
-          const meRes = await fetch(meUrl, { credentials: 'include' })
+          const meRes = await fetch('/api/auth/me', { credentials: 'include' })
           const meData = await meRes.json().catch(() => ({}))
           logger.info('Auth fallback /me', { status: meRes.status, hasUser: !!meData?.user, role: meData?.user?.role })
           if (meRes.ok && meData?.user?.role) {

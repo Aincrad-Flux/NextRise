@@ -78,12 +78,22 @@ export function verifyToken(token) {
  * Cookie configuration used when setting the authentication token.
  * @type {AuthCookieOptions}
  */
+// Allow overriding the secure flag in local development when using plain HTTP.
+// By default cookies are secure only in production to avoid them being dropped by browsers
+// when served over http:// during local dev. You can force secure cookie with COOKIE_SECURE=true
+// or force insecure (even in prod) with COOKIE_SECURE=false (not recommended in production).
+const COOKIE_SECURE = (() => {
+  if (process.env.COOKIE_SECURE === 'true') return true;
+  if (process.env.COOKIE_SECURE === 'false') return false;
+  return process.env.NODE_ENV === 'production';
+})();
+
 export const cookieOptions = {
   name: "auth_token",
   httpOnly: true,
   sameSite: "lax",
   path: "/",
-  secure: process.env.NODE_ENV === "production",
+  secure: COOKIE_SECURE,
   maxAge: TOKEN_TTL_SECONDS,
 };
 

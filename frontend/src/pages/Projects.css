@@ -264,7 +264,7 @@
 
 /* Sidebar and dashboard layout styles are defined in Home.css for consistency across startup pages. */
 
-/* === Formulaire générique === */
+/* === Generic form === */
 .project-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; margin-top: 0.5rem; }
 .project-form input, .project-form select, .project-form textarea { width: 100%; appearance: none; background: var(--color-surface-alt); color: var(--color-text); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 0.55rem 0.65rem; box-shadow: var(--shadow-sm) inset; }
 .project-form textarea { min-height: 100px; resize: vertical; }
@@ -272,7 +272,7 @@
 .project-form button:hover, .primary-btn:hover { filter: brightness(1.07); }
 .project-form button:active, .primary-btn:active { filter: brightness(.93); }
 
-/* === Listes CRUD génériques (Opportunités) === */
+/* === Generic CRUD lists (Opportunities) === */
 .dashboard-content ul { list-style: none; padding-left: 0; margin-top: 1rem; display: grid; gap: 0.6rem; }
 .dashboard-content li { background: var(--color-surface-alt); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 0.7rem 0.8rem; display: flex; flex-direction: column; gap: 0.35rem; }
 .dashboard-content li > .row { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }

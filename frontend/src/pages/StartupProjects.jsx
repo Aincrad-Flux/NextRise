@@ -37,7 +37,7 @@ export default function StartupProjects({ embedded = false }) {
     };
 
     const handleDelete = (p) => {
-        const ok = window.confirm(`Supprimer le projet "${p.title}" ? Cette action est irréversible.`);
+    const ok = window.confirm(`Delete project "${p.title}"? This action is irreversible.`);
         if (!ok) return;
         setItems(prev => prev.filter(it => it.id !== p.id));
     };
@@ -47,8 +47,8 @@ export default function StartupProjects({ embedded = false }) {
     const content = (
         <div id="Projects" style={embedded ? undefined : {}}>
             <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'1rem', marginBottom:'1rem' }}>
-                <h1 style={{ margin: 0 }}>Projets</h1>
-                <button className="primary-btn" onClick={openCreate}>Nouveau projet</button>
+                <h1 style={{ margin: 0 }}>Projects</h1>
+                <button className="primary-btn" onClick={openCreate}>New project</button>
             </div>
 
             {/* filters removed */}
@@ -64,7 +64,7 @@ export default function StartupProjects({ embedded = false }) {
                     />
                 ))}
                 {filtered.length === 0 && (
-                    <p style={{ gridColumn: '1/-1', opacity: 0.75 }}>Aucun projet trouvé.</p>
+                    <p style={{ gridColumn: '1/-1', opacity: 0.75 }}>No project found.</p>
                 )}
             </div>
 

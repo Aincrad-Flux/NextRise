@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSession } from '../components/SessionProvider.jsx'
 import TopBar from '../components/TopBar.jsx'
 import AdminSidebar from '../components/AdminSidebar.jsx'
 import DataManager from '../components/DataManager.jsx'
@@ -8,20 +9,9 @@ import { logger } from '../utils/logger.js'
 
 export default function AdminHome() {
   const [section, setSection] = useState('dashboard')
+  const { logout } = useSession()
 
-  async function handleLogout() {
-    const API_BASE = import.meta?.env?.VITE_BACKEND_URL?.replace(/\/$/, '') || ''
-    const url = new URL('/api/auth/logout', API_BASE || window.location.origin)
-    logger.info('Admin logout start', { endpoint: String(url) })
-    try {
-      const res = await fetch(url, { method: 'POST', credentials: 'include' })
-      logger.info('Admin logout response', { status: res.status, ok: res.ok })
-    } catch (e) {
-      logger.warn('Admin logout request failed', e)
-    } finally {
-      window.location.href = '/'
-    }
-  }
+  async function handleLogout() { await logout(); window.location.href = '/' }
 
   return (
     <div className="admin-home">

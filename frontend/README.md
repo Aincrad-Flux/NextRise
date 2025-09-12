@@ -72,3 +72,28 @@ Features:
 - Excludes sensitive keys (password, secret, token) from listing.
 
 Extend by adding specialized managers or passing custom columns.
+
+## User Profile & Session
+
+Authenticated users now have quick access buttons in the top bar:
+
+- Profile: navigates to `/profile` where users can edit their personal account info (name, email, optional password change).
+- Logout: clears the session (calls `/api/auth/logout`) and redirects to home.
+
+Files:
+- `src/components/TopBar.jsx`: Added conditional Profile & Logout buttons (desktop + mobile menu).
+- `src/pages/UserProfile.jsx`: Simple form bound to the session user.
+- `src/utils/userApi.js`: `fetchUserProfile()` (GET `/api/user/me`) and `updateUserProfile()` (PATCH `/api/user/me`).
+
+API expectations (adjust backend to match if different):
+- `GET /api/user/me` -> `{ user: { id, name, email, ... } }`
+- `PATCH /api/user/me` body may include `name`, `email`, `password`.
+
+Security notes:
+- Password field is optional; blank means unchanged.
+- After save, session is refreshed via `SessionProvider.refresh()`.
+
+Next ideas:
+- Add avatar upload
+- Add 2FA settings
+- Add success/error toast instead of inline status text

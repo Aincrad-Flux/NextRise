@@ -9,11 +9,11 @@ const initialOpportunities = [];
 
 export default function Opportunities() {
   const [opportunities, setOpportunities] = useState(initialOpportunities);
-  const [newOpp, setNewOpp] = useState({ title: '', description: '', type: 'investissement' });
+  const [newOpp, setNewOpp] = useState({ title: '', description: '', type: 'investment' });
   const [editingId, setEditingId] = useState(null);
-  const [draft, setDraft] = useState({ title: '', description: '', type: 'investissement' });
+  const [draft, setDraft] = useState({ title: '', description: '', type: 'investment' });
 
-  const handleLogout = () => alert('Déconnexion... (à implémenter)');
+  const handleLogout = () => alert('Logout... (to implement)');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,7 +24,7 @@ export default function Opportunities() {
     e.preventDefault();
     if(!newOpp.title.trim()) return; // simple validation
     setOpportunities([...opportunities, { ...newOpp, id: Date.now() }]);
-    setNewOpp({ title: '', description: '', type: 'investissement' });
+  setNewOpp({ title: '', description: '', type: 'investment' });
   };
 
   const handleDelete = (id) => {
@@ -55,21 +55,21 @@ export default function Opportunities() {
         {/* If Sidebar/TopBar needed, they can be reintroduced depending on layout conventions */}
         <main className="home-main">
           <div className="opportunities-header">
-            <h2>Opportunités</h2>
+            <h2>Opportunities</h2>
           </div>
           <form className="opportunities-form" onSubmit={handleAdd}>
-            <input name="title" value={newOpp.title} onChange={handleChange} placeholder="Titre" required />
+            <input name="title" value={newOpp.title} onChange={handleChange} placeholder="Title" required />
             <input name="description" value={newOpp.description} onChange={handleChange} placeholder="Description" />
             <select name="type" value={newOpp.type} onChange={handleChange}>
-              <option value="investissement">Investissement</option>
-              <option value="financement">Financement</option>
-              <option value="match">Match Investisseur</option>
+              <option value="investment">Investment</option>
+              <option value="funding">Funding</option>
+              <option value="match">Investor Match</option>
             </select>
-            <button type="submit">Ajouter</button>
+            <button type="submit">Add</button>
           </form>
           <div className="opportunities-grid">
             {opportunities.length === 0 && (
-              <div className="empty-state">Aucune opportunité pour le moment.</div>
+              <div className="empty-state">No opportunities at the moment.</div>
             )}
             {opportunities.map(o => {
               const editing = editingId === o.id;
@@ -82,12 +82,12 @@ export default function Opportunities() {
                         name="title"
                         value={draft.title}
                         onChange={handleDraftChange}
-                        placeholder="Titre"
+                        placeholder="Title"
                       />
                       <select name="type" value={draft.type} onChange={handleDraftChange} className="inline-select">
-                        <option value="investissement">Investissement</option>
-                        <option value="financement">Financement</option>
-                        <option value="match">Match Investisseur</option>
+                        <option value="investment">Investment</option>
+                        <option value="funding">Funding</option>
+                        <option value="match">Investor Match</option>
                       </select>
                       <textarea
                         name="description"
@@ -97,9 +97,9 @@ export default function Opportunities() {
                         placeholder="Description"
                       />
                       <div className="card-actions">
-                        <button type="button" className="save" onClick={() => saveEdit(o.id)}>Sauvegarder</button>
-                        <button type="button" className="cancel" onClick={cancelEdit}>Annuler</button>
-                        <button type="button" className="delete" onClick={() => handleDelete(o.id)}>Supprimer</button>
+                        <button type="button" className="save" onClick={() => saveEdit(o.id)}>Save</button>
+                        <button type="button" className="cancel" onClick={cancelEdit}>Cancel</button>
+                        <button type="button" className="delete" onClick={() => handleDelete(o.id)}>Delete</button>
                       </div>
                     </>
                   ) : (
@@ -108,8 +108,8 @@ export default function Opportunities() {
                       <h3>{o.title}</h3>
                       {o.description && <p className="opportunity-desc">{o.description}</p>}
                       <div className="card-actions">
-                        <button type="button" className="edit" onClick={() => startEdit(o)}>Editer</button>
-                        <button type="button" className="delete" onClick={() => handleDelete(o.id)}>Supprimer</button>
+                        <button type="button" className="edit" onClick={() => startEdit(o)}>Edit</button>
+                        <button type="button" className="delete" onClick={() => handleDelete(o.id)}>Delete</button>
                       </div>
                     </>
                   )}
